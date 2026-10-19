@@ -119,7 +119,7 @@ interface PaletteItem {
 
 type RecentItem = Omit<PaletteItem, 'index' | 'group' | 'chips'>
 
-type CreateType = 'NPC' | 'Location' | 'Item' | 'Faction' | 'Lore' | 'Player' | 'Encounter'
+type CreateType = 'NPC' | 'Location' | 'Item' | 'Faction' | 'Lore' | 'Player' | 'Quest' | 'Encounter'
 
 const props = defineProps<{ modelValue: boolean }>()
 const emit = defineEmits<{ 'update:model-value': [value: boolean] }>()
@@ -155,6 +155,7 @@ const ENTITY_ROUTES: Record<string, string> = {
   Session: '/sessions',
   Player: '/players',
   Group: '/groups',
+  Quest: '/quests',
 }
 
 const CREATE_TYPES: Array<{ type: CreateType, icon: string, api?: string, route: string }> = [
@@ -164,6 +165,7 @@ const CREATE_TYPES: Array<{ type: CreateType, icon: string, api?: string, route:
   { type: 'Faction', icon: 'mdi-shield-plus', api: 'factions', route: '/factions' },
   { type: 'Lore', icon: 'mdi-book-plus', api: 'lore', route: '/lore' },
   { type: 'Player', icon: 'mdi-account-star', api: 'players', route: '/players' },
+  { type: 'Quest', icon: 'mdi-script-text-outline', api: 'quests', route: '/quests' },
   { type: 'Encounter', icon: 'mdi-sword-cross', route: '/encounters' },
 ]
 

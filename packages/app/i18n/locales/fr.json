@@ -3047,5 +3047,68 @@
       "commands": "Commandes",
       "pages": "Pages"
     }
+  },
+  "quests": {
+    "title": "Quêtes",
+    "subtitle": "Quêtes ouvertes, fils en suspens et qui le groupe n'a pas vu depuis longtemps",
+    "create": "Nouvelle quête",
+    "edit": "Modifier la quête",
+    "name": "Nom",
+    "status": "Statut",
+    "description": "Description",
+    "giver": "Commanditaire",
+    "reward": "Récompense",
+    "involved": "PNJ, lieux et objets impliqués",
+    "involvedHint": "Tout ce que cette quête concerne",
+    "saveFailed": "Impossible d'enregistrer la quête",
+    "deleteTitle": "Supprimer la quête",
+    "deleteConfirm": "Supprimer la quête « {name} » ?",
+    "questsHeading": "Quêtes",
+    "filterUnresolved": "Non résolues",
+    "filterResolved": "Terminées",
+    "filterAll": "Toutes",
+    "empty": "Aucune quête pour l'instant. Créez-en une avec « Nouvelle quête ».",
+    "noneInFilter": "Aucune quête dans cette vue.",
+    "givenBy": "De {name}",
+    "nextSession": "Pour la prochaine séance",
+    "nextSessionHint": "Ce que vous avez marqué pour en parler à la prochaine partie",
+    "nextSessionEmpty": "Rien de marqué. Dans une séance, ouvrez « Ce qui a changé » et cochez « À aborder à la prochaine séance ».",
+    "openThreads": "Conséquences non résolues",
+    "openThreadsHint": "Tout ce qui reste ouvert des séances passées",
+    "openThreadsEmpty": "Aucun élément ouvert.",
+    "lastMet": "PNJ vus pour la dernière fois",
+    "lastMetHint": "Quand le groupe a vu chaque PNJ pour la dernière fois (d'après les mentions de séance), le plus ancien d'abord",
+    "lastMetEmpty": "Aucun PNJ mentionné dans les séances.",
+    "lastSession": "dernière séance",
+    "sessionsAgo": "il y a 1 séance | il y a {count} séances",
+    "statuses": {
+      "open": "Ouverte",
+      "active": "Active",
+      "done": "Terminée",
+      "failed": "Échouée"
+    }
+  },
+  "continuity": {
+    "tab": "Ce qui a changé",
+    "hint": "Notez décisions, révélations, promesses, dettes et conséquences pour ne rien oublier.",
+    "kind": "Type",
+    "whatHappened": "Qu'est-ce qui a changé ?",
+    "textPlaceholder": "Le groupe a promis à Sildar de...",
+    "involves": "Qui ou quoi est impliqué",
+    "bringUpNext": "À aborder à la prochaine séance",
+    "notNext": "Ne pas aborder à la prochaine séance",
+    "empty": "Rien de noté pour l'instant.",
+    "reopen": "Rouvrir",
+    "resolve": "Marquer comme résolu",
+    "fromSession": "de {title}",
+    "saveFailed": "Échec de l'enregistrement",
+    "kinds": {
+      "decision": "Décision",
+      "reveal": "Révélation",
+      "promise": "Promesse",
+      "debt": "Dette",
+      "consequence": "Conséquence",
+      "thread": "Fil en suspens"
+    }
   }
 }

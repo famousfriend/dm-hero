@@ -2994,6 +2994,40 @@ export const migrations: Migration[] = [
       console.log('✅ Migration 68: Created party_status')
     },
   },
+  {
+    version: 69,
+    name: 'continuity_items',
+    up: (db) => {
+      // DM Command Center: what changed in a session (decisions, promises,
+      // consequences ...) and stays open until the DM resolves it. Quests use
+      // the existing "Quest" entity type; only these items need new tables.
+      db.exec(`
+        CREATE TABLE continuity_items (
+          id INTEGER PRIMARY KEY AUTOINCREMENT,
+          campaign_id INTEGER NOT NULL REFERENCES campaigns(id) ON DELETE CASCADE,
+          session_id INTEGER REFERENCES sessions(id) ON DELETE SET NULL,
+          kind TEXT NOT NULL,
+          text TEXT NOT NULL,
+          status TEXT NOT NULL DEFAULT 'open',
+          next_session INTEGER NOT NULL DEFAULT 0,
+          created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+          updated_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+          resolved_at TEXT
+        );
+        CREATE INDEX idx_continuity_items_campaign ON continuity_items(campaign_id, status);
+        CREATE INDEX idx_continuity_items_session ON continuity_items(session_id);
+
+        CREATE TABLE continuity_item_entities (
+          item_id INTEGER NOT NULL REFERENCES continuity_items(id) ON DELETE CASCADE,
+          entity_id INTEGER NOT NULL REFERENCES entities(id) ON DELETE CASCADE,
+          PRIMARY KEY (item_id, entity_id)
+        );
+        CREATE INDEX idx_continuity_item_entities_entity ON continuity_item_entities(entity_id);
+      `)
+
+      console.log('✅ Migration 69: Created continuity_items')
+    },
+  },
 ]
 
 export async function runMigrations(db: Database.Database) {

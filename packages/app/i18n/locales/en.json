@@ -3047,5 +3047,68 @@
       "commands": "Commands",
       "pages": "Pages"
     }
+  },
+  "quests": {
+    "title": "Quests",
+    "subtitle": "Open quests, loose ends and who the party has not seen in a while",
+    "create": "New quest",
+    "edit": "Edit quest",
+    "name": "Name",
+    "status": "Status",
+    "description": "Description",
+    "giver": "Quest giver",
+    "reward": "Reward",
+    "involved": "NPCs, places and things involved",
+    "involvedHint": "Anyone or anything this quest touches",
+    "saveFailed": "Could not save the quest",
+    "deleteTitle": "Delete quest",
+    "deleteConfirm": "Delete the quest \"{name}\"?",
+    "questsHeading": "Quests",
+    "filterUnresolved": "Unresolved",
+    "filterResolved": "Finished",
+    "filterAll": "All",
+    "empty": "No quests yet. Create one with \"New quest\".",
+    "noneInFilter": "No quests in this view.",
+    "givenBy": "From {name}",
+    "nextSession": "For next session",
+    "nextSessionHint": "Things you flagged to bring up when you next play",
+    "nextSessionEmpty": "Nothing flagged. In a session, open \"What changed\" and tick \"Bring up next session\".",
+    "openThreads": "Unresolved consequences",
+    "openThreadsHint": "Everything from past sessions that is still open",
+    "openThreadsEmpty": "No open items.",
+    "lastMet": "Last met NPCs",
+    "lastMetHint": "When the party last saw each NPC (from session mentions), longest ago first",
+    "lastMetEmpty": "No NPCs mentioned in sessions yet.",
+    "lastSession": "last session",
+    "sessionsAgo": "1 session ago | {count} sessions ago",
+    "statuses": {
+      "open": "Open",
+      "active": "Active",
+      "done": "Done",
+      "failed": "Failed"
+    }
+  },
+  "continuity": {
+    "tab": "What changed",
+    "hint": "Note decisions, reveals, promises, debts and consequences so nothing gets forgotten.",
+    "kind": "Kind",
+    "whatHappened": "What changed?",
+    "textPlaceholder": "The party promised Sildar to...",
+    "involves": "Who or what is involved",
+    "bringUpNext": "Bring up next session",
+    "notNext": "Do not bring up next session",
+    "empty": "Nothing recorded yet.",
+    "reopen": "Reopen",
+    "resolve": "Mark as resolved",
+    "fromSession": "from {title}",
+    "saveFailed": "Could not save",
+    "kinds": {
+      "decision": "Decision",
+      "reveal": "Reveal",
+      "promise": "Promise",
+      "debt": "Debt",
+      "consequence": "Consequence",
+      "thread": "Loose thread"
+    }
   }
 }

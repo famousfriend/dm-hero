@@ -3047,5 +3047,68 @@
       "commands": "Comandos",
       "pages": "Páginas"
     }
+  },
+  "quests": {
+    "title": "Misiones",
+    "subtitle": "Misiones abiertas, cabos sueltos y a quién no ve el grupo hace tiempo",
+    "create": "Nueva misión",
+    "edit": "Editar misión",
+    "name": "Nombre",
+    "status": "Estado",
+    "description": "Descripción",
+    "giver": "Quien la encarga",
+    "reward": "Recompensa",
+    "involved": "PNJ, lugares y cosas implicados",
+    "involvedHint": "Todo lo que toca esta misión",
+    "saveFailed": "No se pudo guardar la misión",
+    "deleteTitle": "Eliminar misión",
+    "deleteConfirm": "¿Eliminar la misión \"{name}\"?",
+    "questsHeading": "Misiones",
+    "filterUnresolved": "Sin resolver",
+    "filterResolved": "Terminadas",
+    "filterAll": "Todas",
+    "empty": "Aún no hay misiones. Crea una con \"Nueva misión\".",
+    "noneInFilter": "No hay misiones en esta vista.",
+    "givenBy": "De {name}",
+    "nextSession": "Para la próxima sesión",
+    "nextSessionHint": "Lo que marcaste para sacar en la próxima partida",
+    "nextSessionEmpty": "Nada marcado. En una sesión, abre \"Qué cambió\" y marca \"Sacar en la próxima sesión\".",
+    "openThreads": "Consecuencias sin resolver",
+    "openThreadsHint": "Todo lo de sesiones pasadas que sigue abierto",
+    "openThreadsEmpty": "No hay elementos abiertos.",
+    "lastMet": "PNJ vistos por última vez",
+    "lastMetHint": "Cuándo vio el grupo a cada PNJ por última vez (según menciones en sesiones), el más antiguo primero",
+    "lastMetEmpty": "Aún no hay PNJ mencionados en sesiones.",
+    "lastSession": "última sesión",
+    "sessionsAgo": "hace 1 sesión | hace {count} sesiones",
+    "statuses": {
+      "open": "Abierta",
+      "active": "Activa",
+      "done": "Completada",
+      "failed": "Fallida"
+    }
+  },
+  "continuity": {
+    "tab": "Qué cambió",
+    "hint": "Anota decisiones, revelaciones, promesas, deudas y consecuencias para que nada se olvide.",
+    "kind": "Tipo",
+    "whatHappened": "¿Qué cambió?",
+    "textPlaceholder": "El grupo prometió a Sildar...",
+    "involves": "Quién o qué está implicado",
+    "bringUpNext": "Sacar en la próxima sesión",
+    "notNext": "No sacar en la próxima sesión",
+    "empty": "Nada anotado todavía.",
+    "reopen": "Reabrir",
+    "resolve": "Marcar como resuelto",
+    "fromSession": "de {title}",
+    "saveFailed": "No se pudo guardar",
+    "kinds": {
+      "decision": "Decisión",
+      "reveal": "Revelación",
+      "promise": "Promesa",
+      "debt": "Deuda",
+      "consequence": "Consecuencia",
+      "thread": "Cabo suelto"
+    }
   }
 }

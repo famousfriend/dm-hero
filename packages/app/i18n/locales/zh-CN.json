@@ -3047,5 +3047,68 @@
       "commands": "命令",
       "pages": "页面"
     }
+  },
+  "quests": {
+    "title": "任务",
+    "subtitle": "未完成的任务、悬而未决的线索，以及队伍很久没见的人",
+    "create": "新建任务",
+    "edit": "编辑任务",
+    "name": "名称",
+    "status": "状态",
+    "description": "描述",
+    "giver": "任务发布者",
+    "reward": "奖励",
+    "involved": "相关的 NPC、地点和物品",
+    "involvedHint": "与此任务相关的一切",
+    "saveFailed": "无法保存任务",
+    "deleteTitle": "删除任务",
+    "deleteConfirm": "删除任务\"{name}\"？",
+    "questsHeading": "任务",
+    "filterUnresolved": "未解决",
+    "filterResolved": "已结束",
+    "filterAll": "全部",
+    "empty": "还没有任务。点击\"新建任务\"创建一个。",
+    "noneInFilter": "此视图中没有任务。",
+    "givenBy": "来自 {name}",
+    "nextSession": "下次游戏",
+    "nextSessionHint": "你标记为下次游戏要提起的事项",
+    "nextSessionEmpty": "没有标记的事项。在某次游戏中打开\"发生了什么变化\"并勾选\"下次游戏提起\"。",
+    "openThreads": "未解决的后果",
+    "openThreadsHint": "以往游戏中仍未解决的所有事项",
+    "openThreadsEmpty": "没有未解决的事项。",
+    "lastMet": "最近见过的 NPC",
+    "lastMetHint": "队伍最后一次见到每个 NPC 的时间（来自游戏提及），最久的在前",
+    "lastMetEmpty": "游戏记录中还没有提及 NPC。",
+    "lastSession": "上次游戏",
+    "sessionsAgo": "{count} 次游戏前",
+    "statuses": {
+      "open": "未开始",
+      "active": "进行中",
+      "done": "已完成",
+      "failed": "已失败"
+    }
+  },
+  "continuity": {
+    "tab": "发生了什么变化",
+    "hint": "记录决定、揭示、承诺、债务和后果，避免遗忘。",
+    "kind": "类型",
+    "whatHappened": "发生了什么变化？",
+    "textPlaceholder": "队伍答应 Sildar...",
+    "involves": "涉及的人或物",
+    "bringUpNext": "下次游戏提起",
+    "notNext": "下次游戏不提起",
+    "empty": "还没有记录。",
+    "reopen": "重新打开",
+    "resolve": "标记为已解决",
+    "fromSession": "来自 {title}",
+    "saveFailed": "保存失败",
+    "kinds": {
+      "decision": "决定",
+      "reveal": "揭示",
+      "promise": "承诺",
+      "debt": "债务",
+      "consequence": "后果",
+      "thread": "悬而未决"
+    }
   }
 }
