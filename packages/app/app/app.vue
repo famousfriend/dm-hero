@@ -35,12 +35,10 @@
       <GameTableShareDialog />
     </ClientOnly>
 
-    <GlobalSearch
-      v-model="showSearch"
-      v-model:search-query="searchQuery"
-      :search-results="filteredSearchResults"
-      @select-result="navigateToResult"
-    />
+    <!-- Ctrl+K command palette (also "/" and the search buttons) -->
+    <ClientOnly>
+      <CommandPalette v-model="showSearch" />
+    </ClientOnly>
 
     <!-- Global Snackbar -->
     <v-snackbar
@@ -76,34 +74,14 @@ import { useLocale } from 'vuetify'
 import { isAppLocale, toVuetifyLocale, type AppLocale } from '~~/types/locale'
 import NavigationDrawer from '~/components/layout/NavigationDrawer.vue'
 import AppBar from '~/components/layout/AppBar.vue'
-import GlobalSearch from '~/components/layout/GlobalSearch.vue'
+import CommandPalette from '~/components/layout/CommandPalette.vue'
 
 const vuetifyLocale = useLocale()
 const { locale, setLocale } = useI18n()
 const drawer = ref(true)
 const rail = ref(false)
 const showSearch = ref(false)
-const searchQuery = ref('')
-const searchResults = ref<
-  Array<{
-    id: number
-    name: string
-    type: string
-    icon: string
-    color: string
-    path: string
-    linkedEntities: string[]
-    archived_at?: string | null
-  }>
->([])
-
-// Filter archived from global search unless showArchived is enabled
 const entitiesStore = useEntitiesStore()
-const filteredSearchResults = computed(() =>
-  entitiesStore.showArchived
-    ? searchResults.value
-    : searchResults.value.filter(r => !r.archived_at),
-)
 
 // Stores
 const campaignStore = useCampaignStore()
@@ -165,33 +143,6 @@ function changeLocale(newLocale: string) {
     setLocale(newLocale)
     localeCookie.value = newLocale
   }
-}
-
-function getEntityPath(entityType: string, entityId: number, entityName: string): string {
-  // Map entity types to their corresponding routes
-  const typeMap: Record<string, string> = {
-    NPC: '/npcs',
-    Location: '/locations',
-    Item: '/items',
-    Faction: '/factions',
-    Lore: '/lore',
-    Session: '/sessions',
-    Player: '/players',
-    Group: '/groups',
-  }
-  const basePath = typeMap[entityType] || '/npcs'
-  const query = new URLSearchParams()
-  query.set('highlight', entityId.toString())
-  // Wrap entity name in quotes for exact phrase search (prevents splitting on spaces)
-  query.set('search', `"${entityName}"`)
-  return `${basePath}?${query.toString()}`
-}
-
-function navigateToResult(result: (typeof searchResults.value)[0]) {
-  const path = getEntityPath(result.type, result.id, result.name)
-  navigateTo(path, { replace: false }) // Force navigation even if on same page
-  showSearch.value = false
-  searchQuery.value = ''
 }
 
 // Watch for AI/MCP bulk-imports: poll the import signal and, when it advances,
@@ -256,6 +207,12 @@ onMounted(() => {
     const isTyping
       = target.tagName === 'INPUT' || target.tagName === 'TEXTAREA' || target.isContentEditable
 
+    // Ctrl+K / Cmd+K toggles the command palette, even while typing
+    if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') {
+      e.preventDefault()
+      showSearch.value = !showSearch.value
+      return
+    }
     // "/" öffnet Suche (nur wenn NICHT in Eingabefeld)
     if (e.key === '/' && !showSearch.value && !isTyping) {
       e.preventDefault()
@@ -271,47 +228,6 @@ onMounted(() => {
   onUnmounted(() => {
     window.removeEventListener('keydown', handleKeydown)
   })
-})
-
-// Search implementation
-watch(searchQuery, async (query) => {
-  if (!query || query.trim().length === 0) {
-    searchResults.value = []
-    return
-  }
-
-  if (!campaignStore.activeCampaignId) {
-    return
-  }
-
-  try {
-    const results = await $fetch<
-      Array<{
-        id: number
-        name: string
-        description: string
-        type: string
-        icon: string
-        color: string
-        linkedEntities: string[]
-      }>
-    >('/api/search', {
-      query: {
-        q: query.trim(),
-        campaignId: campaignStore.activeCampaignId,
-      },
-    })
-
-    searchResults.value = results.map(r => ({
-      ...r,
-      path: getEntityPath(r.type, r.id, r.name),
-      linkedEntities: r.linkedEntities || [],
-    }))
-  }
-  catch (error) {
-    console.error('Search failed:', error)
-    searchResults.value = []
-  }
 })
 </script>
 

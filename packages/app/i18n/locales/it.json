@@ -3025,5 +3025,27 @@
       "spellSlots": "Slot incantesimo",
       "inspiration": "Ispirazione"
     }
+  },
+  "palette": {
+    "placeholder": "Cerca o digita un comando…",
+    "empty": "Digita per cercare PNG, luoghi, regole e comandi",
+    "namePlaceholder": "Nome per {type}",
+    "nameHint": "Digita un nome e premi Invio per crearlo. Esc torna indietro.",
+    "create": "Nuovo: {type}",
+    "encounter": "Incontro",
+    "openCombat": "Apri il combattimento in corso",
+    "created": "\"{name}\" creato",
+    "createFailed": "Impossibile crearlo",
+    "keyMove": "sposta",
+    "keyOpen": "apri",
+    "keyClose": "chiudi",
+    "keyBack": "indietro",
+    "groups": {
+      "recent": "Recenti",
+      "entities": "Campagna",
+      "references": "Riferimento regole",
+      "commands": "Comandi",
+      "pages": "Pagine"
+    }
   }
 }

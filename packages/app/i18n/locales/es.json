@@ -3025,5 +3025,27 @@
       "spellSlots": "Espacios de conjuro",
       "inspiration": "Inspiración"
     }
+  },
+  "palette": {
+    "placeholder": "Busca o escribe un comando…",
+    "empty": "Escribe para buscar PNJ, lugares, reglas y comandos",
+    "namePlaceholder": "Nombre para {type}",
+    "nameHint": "Escribe un nombre y pulsa Enter para crearlo. Esc vuelve atrás.",
+    "create": "Nuevo: {type}",
+    "encounter": "Encuentro",
+    "openCombat": "Abrir combate en curso",
+    "created": "«{name}» creado",
+    "createFailed": "No se pudo crear",
+    "keyMove": "mover",
+    "keyOpen": "abrir",
+    "keyClose": "cerrar",
+    "keyBack": "atrás",
+    "groups": {
+      "recent": "Recientes",
+      "entities": "Campaña",
+      "references": "Referencia de reglas",
+      "commands": "Comandos",
+      "pages": "Páginas"
+    }
   }
 }

@@ -3025,5 +3025,27 @@
       "spellSlots": "Spell slots",
       "inspiration": "Inspiration"
     }
+  },
+  "palette": {
+    "placeholder": "Search or type a command…",
+    "empty": "Type to search NPCs, places, rules and commands",
+    "namePlaceholder": "Name of the new {type}",
+    "nameHint": "Type a name and press Enter to create it. Esc goes back.",
+    "create": "New {type}",
+    "encounter": "Encounter",
+    "openCombat": "Open running combat",
+    "created": "\"{name}\" created",
+    "createFailed": "Could not create it",
+    "keyMove": "move",
+    "keyOpen": "open",
+    "keyClose": "close",
+    "keyBack": "back",
+    "groups": {
+      "recent": "Recent",
+      "entities": "Campaign",
+      "references": "Rules reference",
+      "commands": "Commands",
+      "pages": "Pages"
+    }
   }
 }

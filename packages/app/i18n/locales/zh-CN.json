@@ -3025,5 +3025,27 @@
       "spellSlots": "法术位",
       "inspiration": "激励"
     }
+  },
+  "palette": {
+    "placeholder": "搜索或输入命令…",
+    "empty": "输入以搜索 NPC、地点、规则和命令",
+    "namePlaceholder": "新{type}的名称",
+    "nameHint": "输入名称并按回车创建。Esc 返回。",
+    "create": "新建{type}",
+    "encounter": "遭遇",
+    "openCombat": "打开进行中的战斗",
+    "created": "已创建“{name}”",
+    "createFailed": "无法创建",
+    "keyMove": "移动",
+    "keyOpen": "打开",
+    "keyClose": "关闭",
+    "keyBack": "返回",
+    "groups": {
+      "recent": "最近",
+      "entities": "战役",
+      "references": "规则参考",
+      "commands": "命令",
+      "pages": "页面"
+    }
   }
 }

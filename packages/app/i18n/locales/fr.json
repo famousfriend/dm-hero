@@ -3025,5 +3025,27 @@
       "spellSlots": "Emplacements de sorts",
       "inspiration": "Inspiration"
     }
+  },
+  "palette": {
+    "placeholder": "Rechercher ou taper une commande…",
+    "empty": "Tapez pour chercher PNJ, lieux, règles et commandes",
+    "namePlaceholder": "Nom pour {type}",
+    "nameHint": "Tapez un nom puis Entrée pour créer. Échap pour revenir.",
+    "create": "Nouveau : {type}",
+    "encounter": "Rencontre",
+    "openCombat": "Ouvrir le combat en cours",
+    "created": "« {name} » créé",
+    "createFailed": "Création impossible",
+    "keyMove": "naviguer",
+    "keyOpen": "ouvrir",
+    "keyClose": "fermer",
+    "keyBack": "retour",
+    "groups": {
+      "recent": "Récents",
+      "entities": "Campagne",
+      "references": "Référence des règles",
+      "commands": "Commandes",
+      "pages": "Pages"
+    }
   }
 }
