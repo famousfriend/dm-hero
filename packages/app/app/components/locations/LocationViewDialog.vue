@@ -58,6 +58,11 @@
           {{ $t('factions.title') }}
           <v-chip size="x-small" class="ml-2">{{ counts?.factions || 0 }}</v-chip>
         </v-tab>
+        <v-tab value="references">
+          <v-icon start>mdi-book-open-page-variant</v-icon>
+          {{ $t('codex.linkedReferences') }}
+          <v-chip v-if="referenceCount" size="x-small" class="ml-2">{{ referenceCount }}</v-chip>
+        </v-tab>
       </v-tabs>
 
       <v-divider />
@@ -203,6 +208,17 @@
               relation-type-translation-path="factions.locationTypes"
             />
           </v-window-item>
+          <v-window-item value="references" eager>
+            <div :class="{ 'pa-4': true }">
+              <CodexLinksPanel
+                v-if="location?.id"
+                owner-type="entity"
+                :owner-id="location.id"
+                readonly
+                @changed="referenceCount = $event"
+              />
+            </div>
+          </v-window-item>
         </v-window>
       </v-card-text>
 
@@ -289,6 +305,9 @@ interface Props {
   loadingPlayers?: boolean
   loadingFactions?: boolean
 }
+
+// Linked Codex references, shown on the tab badge
+const referenceCount = ref(0)
 
 const props = withDefaults(defineProps<Props>(), {
   npcs: () => [],

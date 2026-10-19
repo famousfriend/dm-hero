@@ -34,6 +34,8 @@ export interface CodexEntry extends CodexEntrySummary {
   sourceTitle: string
   license: string
   attribution: string | null
+  /** Set when the entry was removed (bookmark deleted, dropped from a dataset) */
+  deletedAt?: string | null
 }
 
 // Characters a slug may contain. Kept narrow on purpose: everything here is

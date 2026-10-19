@@ -2932,8 +2932,27 @@
     "kinds": {
       "spell": "Conjuro",
       "monster": "Monstruo",
-      "condition": "Estado"
-    }
+      "condition": "Estado",
+      "item": "Objeto",
+      "feat": "Dote",
+      "rule": "Regla"
+    },
+    "linkedReferences": "Referencias",
+    "linksHint": "Reglas que quieres tener a mano para esta entrada. Haz clic en una para leerla en el panel lateral.",
+    "noLinks": "Ninguna todavía",
+    "addReference": "Añadir referencia",
+    "noResults": "No se encontró nada. Añade un marcador para libros no incluidos.",
+    "addBookmark": "Añadir marcador",
+    "bookmarkHint": "Para reglas de libros no incluidos (como XGE). Solo se guardan el nombre y un enlace, sin texto de reglas.",
+    "bookmarkName": "Nombre",
+    "bookmarkKind": "Tipo",
+    "bookmarkBook": "Código del libro",
+    "bookmarkUrl": "Enlace",
+    "bookmarkFailed": "Revisa el nombre, el código del libro (letras o dígitos) y el enlace (empieza por https://).",
+    "linkFailed": "No se pudo guardar la referencia",
+    "bookmark": "Marcador",
+    "bookmarkInfo": "Solo enlace. Ábrelo para leer el texto completo.",
+    "deleteBookmark": "Eliminar marcador"
   },
   "party": {
     "title": "Grupo",

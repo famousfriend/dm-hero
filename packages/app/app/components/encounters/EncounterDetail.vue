@@ -18,6 +18,12 @@
       </template>
     </div>
 
+    <!-- Rules this encounter needs at hand (monsters, spells, conditions) -->
+    <div class="d-flex align-center ga-2 mb-4">
+      <span class="text-body-medium text-medium-emphasis">{{ $t('codex.linkedReferences') }}:</span>
+      <CodexLinksPanel owner-type="encounter" :owner-id="encounter.id" compact class="flex-grow-1" />
+    </div>
+
     <!-- SETUP PHASE: participant list + add -->
     <template v-if="encounter.status === 'setup'">
       <EncountersEncounterSetupList

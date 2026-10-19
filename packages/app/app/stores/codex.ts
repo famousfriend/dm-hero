@@ -2,7 +2,7 @@ import { defineStore } from 'pinia'
 import type { CodexEntry } from '~~/types/codex'
 
 interface CodexUsage {
-  ownerType: 'session' | 'document'
+  ownerType: 'session' | 'document' | 'entity' | 'encounter'
   ownerId: number
   title: string
   entityId?: number
@@ -38,6 +38,14 @@ export const useCodexStore = defineStore('codex', {
       if (this.history.length < 2) return
       this.history.pop()
       await this.load(this.currentUid!)
+    },
+
+    /** Removes the open bookmark from search; links to it keep their name. */
+    async deleteBookmark() {
+      const uid = this.currentUid
+      if (!uid) return
+      await $fetch('/api/codex/bookmarks', { method: 'DELETE', query: { uid } })
+      this.close()
     },
 
     close() {

@@ -2932,8 +2932,27 @@
     "kinds": {
       "spell": "法术",
       "monster": "怪物",
-      "condition": "状态"
-    }
+      "condition": "状态",
+      "item": "物品",
+      "feat": "专长",
+      "rule": "规则"
+    },
+    "linkedReferences": "规则参考",
+    "linksHint": "为此条目准备的规则。点击即可在侧边栏中阅读。",
+    "noLinks": "暂无",
+    "addReference": "添加参考",
+    "noResults": "未找到。可为未收录的书籍添加书签。",
+    "addBookmark": "添加书签",
+    "bookmarkHint": "用于未收录书籍中的规则（如 XGE）。只保存名称和链接，不保存规则文本。",
+    "bookmarkName": "名称",
+    "bookmarkKind": "类型",
+    "bookmarkBook": "书籍代码",
+    "bookmarkUrl": "链接",
+    "bookmarkFailed": "请检查名称、书籍代码（字母或数字）和链接（以 https:// 开头）。",
+    "linkFailed": "无法保存参考",
+    "bookmark": "书签",
+    "bookmarkInfo": "仅链接。打开即可阅读全文。",
+    "deleteBookmark": "删除书签"
   },
   "party": {
     "title": "队伍",

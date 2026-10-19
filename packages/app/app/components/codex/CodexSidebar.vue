@@ -27,8 +27,12 @@
           <template v-else-if="codex.entry">
             <div class="d-flex flex-wrap ga-2 mb-3">
               <v-chip size="small" variant="tonal">{{ kindLabel(codex.entry.kind) }}</v-chip>
-              <v-chip size="small" variant="outlined">{{ codex.entry.sourceCode.toUpperCase() }}</v-chip>
+              <v-chip size="small" variant="outlined">{{ sourceLabel }}</v-chip>
+              <v-chip v-if="isBookmark" size="small" variant="outlined" prepend-icon="mdi-bookmark-outline">
+                {{ $t('codex.bookmark') }}
+              </v-chip>
             </div>
+            <p v-if="isBookmark" class="text-body-medium text-medium-emphasis">{{ $t('codex.bookmarkInfo') }}</p>
             <ClientOnly>
               <MdPreview
                 v-if="codex.entry.body"
@@ -51,7 +55,7 @@
               <v-list-item
                 v-for="usage in codex.usages"
                 :key="`${usage.ownerType}-${usage.ownerId}`"
-                :prepend-icon="usage.ownerType === 'session' ? 'mdi-calendar' : 'mdi-file-document-outline'"
+                :prepend-icon="usageIcon(usage)"
                 :title="usage.title"
               />
             </v-list>
@@ -70,6 +74,17 @@
           >
             {{ $t('codex.openExternal') }}
           </v-btn>
+          <v-btn
+            v-if="isBookmark && !codex.entry?.deletedAt"
+            block
+            variant="text"
+            color="error"
+            prepend-icon="mdi-bookmark-remove-outline"
+            class="mb-2"
+            @click="deleteBookmark"
+          >
+            {{ $t('codex.deleteBookmark') }}
+          </v-btn>
           <div v-if="codex.entry?.license" class="text-caption text-medium-emphasis">
             {{ codex.entry.sourceTitle }} · {{ codex.entry.license }}
             <span v-if="codex.entry.attribution" :title="codex.entry.attribution">ⓘ</span>
@@ -83,12 +98,13 @@
 <script setup lang="ts">
 import { MdPreview } from 'md-editor-v3'
 import { useTheme } from 'vuetify'
-import { externalUrl as buildExternalUrl } from '~~/types/codex'
+import { externalUrl as buildExternalUrl, parseUid } from '~~/types/codex'
 
 const codex = useCodexStore()
 const { t } = useI18n()
 const theme = useTheme()
 const { openExternalUrl } = useElectron()
+const snackbar = useSnackbarStore()
 
 const editorTheme = computed<'light' | 'dark'>(() => (theme.global.current.value.dark ? 'dark' : 'light'))
 
@@ -96,6 +112,31 @@ const editorTheme = computed<'light' | 'dark'>(() => (theme.global.current.value
 const externalUrl = computed(() =>
   codex.entry?.externalUrl ?? (codex.currentUid ? buildExternalUrl(codex.currentUid) : null),
 )
+
+const isBookmark = computed(() => codex.entry?.sourceCode === 'bookmark')
+
+// Bookmarks show their book (XGE); bundled entries their dataset (SRD51)
+const sourceLabel = computed(() => {
+  const entry = codex.entry
+  if (!entry) return ''
+  return (isBookmark.value ? parseUid(entry.uid)?.source ?? '' : entry.sourceCode).toUpperCase()
+})
+
+function usageIcon(usage: { ownerType: string, entityType?: string }): string {
+  if (usage.ownerType === 'session') return 'mdi-calendar'
+  if (usage.ownerType === 'encounter') return 'mdi-sword-cross'
+  if (usage.ownerType === 'entity') return usage.entityType === 'location' ? 'mdi-map-marker' : 'mdi-account'
+  return 'mdi-file-document-outline'
+}
+
+async function deleteBookmark() {
+  try {
+    await codex.deleteBookmark()
+  }
+  catch {
+    snackbar.error(t('codex.bookmarkFailed'))
+  }
+}
 
 function kindLabel(kind: string): string {
   const key = `codex.kinds.${kind}`
