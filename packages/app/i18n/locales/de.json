@@ -2932,8 +2932,27 @@
     "kinds": {
       "spell": "Zauber",
       "monster": "Monster",
-      "condition": "Zustand"
-    }
+      "condition": "Zustand",
+      "item": "Gegenstand",
+      "feat": "Talent",
+      "rule": "Regel"
+    },
+    "linkedReferences": "Referenzen",
+    "linksHint": "Regeln, die du für diesen Eintrag griffbereit haben willst. Klicke darauf, um sie im Seitenpanel zu lesen.",
+    "noLinks": "Noch keine",
+    "addReference": "Referenz hinzufügen",
+    "noResults": "Nichts gefunden. Lege ein Lesezeichen für nicht enthaltene Bücher an.",
+    "addBookmark": "Lesezeichen hinzufügen",
+    "bookmarkHint": "Für Regeln aus nicht enthaltenen Büchern (z. B. XGE). Gespeichert werden nur Name und Link, kein Regeltext.",
+    "bookmarkName": "Name",
+    "bookmarkKind": "Art",
+    "bookmarkBook": "Buchkürzel",
+    "bookmarkUrl": "Link",
+    "bookmarkFailed": "Prüfe Name, Buchkürzel (Buchstaben oder Ziffern) und Link (beginnt mit https://).",
+    "linkFailed": "Referenz konnte nicht gespeichert werden",
+    "bookmark": "Lesezeichen",
+    "bookmarkInfo": "Nur Link. Öffne ihn, um den vollen Text zu lesen.",
+    "deleteBookmark": "Lesezeichen löschen"
   },
   "party": {
     "title": "Gruppe",

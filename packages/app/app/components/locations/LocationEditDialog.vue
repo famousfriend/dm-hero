@@ -60,6 +60,11 @@
             {{ $t('factions.title') }}
             <v-chip size="x-small" class="ml-2">{{ counts.factions }}</v-chip>
           </v-tab>
+          <v-tab value="references">
+            <v-icon start>mdi-book-open-page-variant</v-icon>
+            {{ $t('codex.linkedReferences') }}
+            <v-chip v-if="referenceCount" size="x-small" class="ml-2">{{ referenceCount }}</v-chip>
+          </v-tab>
         </v-tabs>
 
         <v-card-text class="flex-grow-1 overflow-y-auto">
@@ -204,6 +209,16 @@
                 @changed="loadCounts(location!.id)"
               />
             </v-tabs-window-item>
+            <v-tabs-window-item value="references" eager>
+              <div :class="{ 'pa-4': false }">
+                <CodexLinksPanel
+                  v-if="location?.id"
+                  owner-type="entity"
+                  :owner-id="location.id"
+                  @changed="referenceCount = $event"
+                />
+              </div>
+            </v-tabs-window-item>
           </v-tabs-window>
 
           <!-- Create mode (no tabs) - show all details fields -->
@@ -347,6 +362,9 @@ interface LinkedLore {
 }
 
 // Props & Emits
+// Linked Codex references, shown on the tab badge
+const referenceCount = ref(0)
+
 const props = defineProps<{
   show: boolean
   locationId?: number | null

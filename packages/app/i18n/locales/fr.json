@@ -2932,8 +2932,27 @@
     "kinds": {
       "spell": "Sort",
       "monster": "Monstre",
-      "condition": "État"
-    }
+      "condition": "État",
+      "item": "Objet",
+      "feat": "Don",
+      "rule": "Règle"
+    },
+    "linkedReferences": "Références",
+    "linksHint": "Règles à garder sous la main pour cette fiche. Cliquez pour les lire dans le panneau latéral.",
+    "noLinks": "Aucune pour l'instant",
+    "addReference": "Ajouter une référence",
+    "noResults": "Aucun résultat. Ajoutez un signet pour les livres non inclus.",
+    "addBookmark": "Ajouter un signet",
+    "bookmarkHint": "Pour les règles de livres non inclus (comme XGE). Seuls le nom et un lien sont enregistrés, pas le texte.",
+    "bookmarkName": "Nom",
+    "bookmarkKind": "Type",
+    "bookmarkBook": "Code du livre",
+    "bookmarkUrl": "Lien",
+    "bookmarkFailed": "Vérifiez le nom, le code du livre (lettres ou chiffres) et le lien (commençant par https://).",
+    "linkFailed": "Impossible d'enregistrer la référence",
+    "bookmark": "Signet",
+    "bookmarkInfo": "Lien uniquement. Ouvrez-le pour lire le texte complet.",
+    "deleteBookmark": "Supprimer le signet"
   },
   "party": {
     "title": "Groupe",

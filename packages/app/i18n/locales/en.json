@@ -2932,8 +2932,27 @@
     "kinds": {
       "spell": "Spell",
       "monster": "Monster",
-      "condition": "Condition"
-    }
+      "condition": "Condition",
+      "item": "Item",
+      "feat": "Feat",
+      "rule": "Rule"
+    },
+    "linkedReferences": "References",
+    "linksHint": "Rules you want at hand for this entry. Click one to read it in the side panel.",
+    "noLinks": "None yet",
+    "addReference": "Add reference",
+    "noResults": "Nothing found. Add a bookmark for books that aren't included.",
+    "addBookmark": "Add bookmark",
+    "bookmarkHint": "For rules from books that aren't included (like XGE). Only the name and a link are saved, no rules text.",
+    "bookmarkName": "Name",
+    "bookmarkKind": "Type",
+    "bookmarkBook": "Book code",
+    "bookmarkUrl": "Link",
+    "bookmarkFailed": "Check the name, book code (letters or digits) and link (starting with https://).",
+    "linkFailed": "Could not save the reference",
+    "bookmark": "Bookmark",
+    "bookmarkInfo": "Link only. Open it to read the full text.",
+    "deleteBookmark": "Delete bookmark"
   },
   "party": {
     "title": "Party",

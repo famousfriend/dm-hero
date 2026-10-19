@@ -68,6 +68,11 @@
             {{ $t('players.title') }}
             <v-chip size="x-small" class="ml-2">{{ counts.players }}</v-chip>
           </v-tab>
+          <v-tab value="references">
+            <v-icon start>mdi-book-open-page-variant</v-icon>
+            {{ $t('codex.linkedReferences') }}
+            <v-chip v-if="referenceCount" size="x-small" class="ml-2">{{ referenceCount }}</v-chip>
+          </v-tab>
         </v-tabs>
 
         <v-card-text class="flex-grow-1 overflow-y-auto">
@@ -353,6 +358,16 @@
                 @changed="refreshNpc"
               />
             </v-tabs-window-item>
+            <v-tabs-window-item value="references" eager>
+              <div :class="{ 'pa-4': false }">
+                <CodexLinksPanel
+                  v-if="npc?.id"
+                  owner-type="entity"
+                  :owner-id="npc.id"
+                  @changed="referenceCount = $event"
+                />
+              </div>
+            </v-tabs-window-item>
           </v-tabs-window>
 
           <!-- Create Form (no tabs) -->
@@ -575,6 +590,9 @@ import { toArray } from '~/utils/array'
 // ============================================================================
 // Props & Emits - SIMPLIFIED: only show and npcId needed!
 // ============================================================================
+// Linked Codex references, shown on the tab badge
+const referenceCount = ref(0)
+
 const props = defineProps<{
   show: boolean
   npcId?: number | null // null/undefined = create mode

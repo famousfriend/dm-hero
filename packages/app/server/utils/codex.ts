@@ -3,8 +3,11 @@ import type Database from 'better-sqlite3'
 import srdDataset from '../codex-data/srd-5.1.json'
 import { createLevenshtein } from './levenshtein'
 import {
+  CODEX_KINDS,
   buildUid,
   externalUrl,
+  nameFromSlug,
+  parseUid,
   extractCodexUids,
   slugify,
   type CodexEntry,
@@ -171,14 +174,14 @@ export function getCodexEntry(db: Database.Database, uid: string): CodexEntry | 
   const row = db
     .prepare(
       `
-      SELECT e.ref_uid, e.kind, e.name, e.summary, e.body_md, e.data_json,
+      SELECT e.ref_uid, e.kind, e.name, e.summary, e.body_md, e.data_json, e.deleted_at,
              s.code AS source_code, s.title AS source_title, s.license, s.attribution
       FROM ref_entries e JOIN ref_sources s ON s.id = e.source_id
       WHERE e.ref_uid = ?
     `,
     )
     .get(uid) as
-    | (EntryRow & { body_md: string | null, data_json: string | null, source_title: string, license: string, attribution: string | null })
+    | (EntryRow & { body_md: string | null, data_json: string | null, deleted_at: string | null, source_title: string, license: string, attribution: string | null })
     | undefined
   if (!row) return null
   return {
@@ -189,10 +192,11 @@ export function getCodexEntry(db: Database.Database, uid: string): CodexEntry | 
     sourceCode: row.source_code,
     body: row.body_md,
     data: row.data_json ? JSON.parse(row.data_json) : null,
-    externalUrl: externalUrl(row.ref_uid),
+    externalUrl: bookmarkUrl(row.data_json) ?? externalUrl(row.ref_uid),
     sourceTitle: row.source_title,
     license: row.license,
     attribution: row.attribution,
+    deletedAt: row.deleted_at,
   }
 }
 
@@ -200,7 +204,7 @@ export function getCodexEntry(db: Database.Database, uid: string): CodexEntry | 
 // Usage links ("Used in")
 // ============================================================================
 
-export type CodexOwnerType = 'session' | 'document'
+export type CodexOwnerType = 'session' | 'document' | 'entity' | 'encounter'
 
 /** Mirrors syncSessionMentions: token links of one owner follow its markdown. */
 export function syncRefLinks(
@@ -264,7 +268,38 @@ export function getCodexUsages(db: Database.Database, campaignId: number, uid: s
     )
     .all(campaignId, uid) as Array<{ id: number, title: string, entity_id: number, entity_name: string, entity_type: string }>
 
+  const entities = db
+    .prepare(
+      `
+      SELECT e.id, e.name, lower(t.name) AS entity_type
+      FROM ref_links l
+      JOIN entities e ON e.id = l.owner_id
+      JOIN entity_types t ON t.id = e.type_id
+      WHERE l.owner_type = 'entity' AND l.campaign_id = ? AND l.ref_uid = ? AND e.deleted_at IS NULL
+      ORDER BY e.name
+    `,
+    )
+    .all(campaignId, uid) as Array<{ id: number, name: string, entity_type: string }>
+  const encounters = db
+    .prepare(
+      `
+      SELECT en.id, en.name
+      FROM ref_links l JOIN encounters en ON en.id = l.owner_id
+      WHERE l.owner_type = 'encounter' AND l.campaign_id = ? AND l.ref_uid = ? AND en.deleted_at IS NULL
+      ORDER BY en.name
+    `,
+    )
+    .all(campaignId, uid) as Array<{ id: number, name: string }>
+
   return [
+    ...entities.map(e => ({
+      ownerType: 'entity' as const,
+      ownerId: e.id,
+      title: e.name,
+      entityId: e.id,
+      entityType: e.entity_type,
+    })),
+    ...encounters.map(e => ({ ownerType: 'encounter' as const, ownerId: e.id, title: e.name })),
     ...sessions.map(s => ({
       ownerType: 'session' as const,
       ownerId: s.id,
@@ -278,4 +313,166 @@ export function getCodexUsages(db: Database.Database, campaignId: number, uid: s
       entityType: d.entity_type,
     })),
   ]
+}
+
+// ============================================================================
+// Linked references (picked by hand on NPCs, locations, encounters ...)
+// ============================================================================
+
+export type CodexLinkOwnerType = 'entity' | 'encounter'
+
+export interface CodexLinkedEntry extends CodexEntrySummary {
+  /** false when the uid no longer resolves (e.g. a deleted bookmark) */
+  available: boolean
+}
+
+/** Campaign of a link owner, or null when it does not exist. */
+export function getLinkOwnerCampaign(db: Database.Database, ownerType: CodexLinkOwnerType, ownerId: number): number | null {
+  const row = (
+    ownerType === 'entity'
+      ? db.prepare('SELECT campaign_id FROM entities WHERE id = ? AND deleted_at IS NULL').get(ownerId)
+      : db.prepare('SELECT campaign_id FROM encounters WHERE id = ? AND deleted_at IS NULL').get(ownerId)
+  ) as { campaign_id: number } | undefined
+  return row?.campaign_id ?? null
+}
+
+export function listManualLinks(db: Database.Database, ownerType: CodexLinkOwnerType, ownerId: number): CodexLinkedEntry[] {
+  const rows = db
+    .prepare(
+      `
+      SELECT l.ref_uid, e.kind, e.name, e.summary, s.code AS source_code, e.deleted_at
+      FROM ref_links l
+      LEFT JOIN ref_entries e ON e.ref_uid = l.ref_uid
+      LEFT JOIN ref_sources s ON s.id = e.source_id
+      WHERE l.owner_type = ? AND l.owner_id = ? AND l.origin = 'manual'
+      ORDER BY l.id
+    `,
+    )
+    .all(ownerType, ownerId) as Array<{
+    ref_uid: string
+    kind: string | null
+    name: string | null
+    summary: string | null
+    source_code: string | null
+    deleted_at: string | null
+  }>
+  return rows.map((row) => {
+    const parsed = parseUid(row.ref_uid)
+    return {
+      uid: row.ref_uid,
+      kind: row.kind ?? parsed?.kind ?? 'rule',
+      name: row.name ?? (parsed ? nameFromSlug(parsed.slug) : row.ref_uid),
+      summary: row.summary,
+      sourceCode: row.source_code ?? parsed?.source ?? '',
+      available: row.name !== null && row.deleted_at === null,
+    }
+  })
+}
+
+export function addManualLink(
+  db: Database.Database,
+  campaignId: number,
+  ownerType: CodexLinkOwnerType,
+  ownerId: number,
+  uid: string,
+): void {
+  db.prepare(
+    'INSERT OR IGNORE INTO ref_links (campaign_id, ref_uid, owner_type, owner_id, origin) VALUES (?, ?, ?, ?, \'manual\')',
+  ).run(campaignId, uid, ownerType, ownerId)
+}
+
+export function removeManualLink(db: Database.Database, ownerType: CodexLinkOwnerType, ownerId: number, uid: string): void {
+  db.prepare('DELETE FROM ref_links WHERE owner_type = ? AND owner_id = ? AND ref_uid = ? AND origin = \'manual\'').run(
+    ownerType,
+    ownerId,
+    uid,
+  )
+}
+
+// ============================================================================
+// Bookmarks: link-only entries for books we may not bundle (PHB, XGE ...).
+// Only a name, the book code and a URL are stored - never rules text.
+// ============================================================================
+
+export const BOOKMARK_SOURCE = 'bookmark'
+
+export interface BookmarkInput {
+  kind: string
+  name: string
+  book: string
+  url: string
+}
+
+export class BookmarkError extends Error {}
+
+function bookmarkUrl(dataJson: string | null): string | null {
+  if (!dataJson) return null
+  try {
+    const url = (JSON.parse(dataJson) as { url?: unknown }).url
+    return typeof url === 'string' ? url : null
+  }
+  catch {
+    return null
+  }
+}
+
+function ensureBookmarkSource(db: Database.Database): number {
+  const existing = db.prepare('SELECT id FROM ref_sources WHERE code = ?').get(BOOKMARK_SOURCE) as { id: number } | undefined
+  if (existing) return existing.id
+  return Number(
+    db
+      .prepare(
+        `INSERT INTO ref_sources (code, title, license, attribution, origin)
+         VALUES (?, 'Bookmarks', 'Link only (no text stored)', NULL, 'user')`,
+      )
+      .run(BOOKMARK_SOURCE).lastInsertRowid,
+  )
+}
+
+/** Creates (or updates) a bookmark and returns it. Existing bundled entries are returned unchanged. */
+export function saveBookmark(db: Database.Database, input: BookmarkInput): CodexEntrySummary {
+  const name = String(input.name ?? '').trim().slice(0, 120)
+  const book = String(input.book ?? '').trim().toLowerCase()
+  const url = String(input.url ?? '').trim()
+  if (!CODEX_KINDS.includes(input.kind as never)) throw new BookmarkError('Unknown kind')
+  if (!slugify(name)) throw new BookmarkError('Name is required')
+  if (!/^[a-z0-9]{1,12}$/.test(book)) throw new BookmarkError('Book code must be letters or digits, like XGE')
+  let parsedUrl: URL
+  try {
+    parsedUrl = new URL(url)
+  }
+  catch {
+    throw new BookmarkError('Link must be a web address')
+  }
+  if (parsedUrl.protocol !== 'https:' && parsedUrl.protocol !== 'http:') throw new BookmarkError('Link must be a web address')
+
+  const uid = buildUid(input.kind, name, book)
+  const sourceId = ensureBookmarkSource(db)
+  const existing = db.prepare('SELECT source_id FROM ref_entries WHERE ref_uid = ?').get(uid) as { source_id: number } | undefined
+  if (existing && existing.source_id !== sourceId) {
+    // Already in a bundled dataset: nothing to bookmark
+    const row = getCodexEntry(db, uid)!
+    return { uid: row.uid, kind: row.kind, name: row.name, summary: row.summary, sourceCode: row.sourceCode }
+  }
+  db.prepare(
+    `
+    INSERT INTO ref_entries (ref_uid, kind, name, source_id, summary, body_md, data_json)
+    VALUES (?, ?, ?, ?, NULL, NULL, ?)
+    ON CONFLICT(ref_uid) DO UPDATE SET name = excluded.name, data_json = excluded.data_json,
+      deleted_at = NULL, updated_at = CURRENT_TIMESTAMP
+  `,
+  ).run(uid, input.kind, name, sourceId, JSON.stringify({ url: parsedUrl.toString(), book }))
+  return { uid, kind: input.kind, name, summary: null, sourceCode: BOOKMARK_SOURCE }
+}
+
+/** Removes a bookmark from search. Links and tokens keep working and show its name from the uid. */
+export function deleteBookmark(db: Database.Database, uid: string): boolean {
+  const result = db
+    .prepare(
+      `UPDATE ref_entries SET deleted_at = CURRENT_TIMESTAMP
+       WHERE ref_uid = ? AND deleted_at IS NULL
+         AND source_id = (SELECT id FROM ref_sources WHERE code = ?)`,
+    )
+    .run(uid, BOOKMARK_SOURCE)
+  return result.changes > 0
 }

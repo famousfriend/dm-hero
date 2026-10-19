@@ -68,6 +68,11 @@
           {{ $t('common.images') }}
           <v-chip v-if="counts" size="x-small" class="ml-2">{{ counts.images }}</v-chip>
         </v-tab>
+        <v-tab value="references">
+          <v-icon start>mdi-book-open-page-variant</v-icon>
+          {{ $t('codex.linkedReferences') }}
+          <v-chip v-if="referenceCount" size="x-small" class="ml-2">{{ referenceCount }}</v-chip>
+        </v-tab>
       </v-tabs>
 
       <v-divider />
@@ -289,6 +294,17 @@
               @preview="openImagePreview"
             />
           </v-window-item>
+          <v-window-item value="references" eager>
+            <div :class="{ 'pa-4': true }">
+              <CodexLinksPanel
+                v-if="npc?.id"
+                owner-type="entity"
+                :owner-id="npc.id"
+                readonly
+                @changed="referenceCount = $event"
+              />
+            </div>
+          </v-window-item>
         </v-window>
       </v-card-text>
 
@@ -332,6 +348,9 @@ interface Props {
   classes?: Array<{ name: string, name_de?: string | null, name_en?: string | null }>
   canGoBack?: boolean
 }
+
+// Linked Codex references, shown on the tab badge
+const referenceCount = ref(0)
 
 const props = withDefaults(defineProps<Props>(), {
   races: () => [],

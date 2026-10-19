@@ -2932,8 +2932,27 @@
     "kinds": {
       "spell": "Incantesimo",
       "monster": "Mostro",
-      "condition": "Condizione"
-    }
+      "condition": "Condizione",
+      "item": "Oggetto",
+      "feat": "Talento",
+      "rule": "Regola"
+    },
+    "linkedReferences": "Riferimenti",
+    "linksHint": "Regole da tenere a portata di mano per questa voce. Clicca per leggerle nel pannello laterale.",
+    "noLinks": "Ancora nessuno",
+    "addReference": "Aggiungi riferimento",
+    "noResults": "Nessun risultato. Aggiungi un segnalibro per i libri non inclusi.",
+    "addBookmark": "Aggiungi segnalibro",
+    "bookmarkHint": "Per regole di libri non inclusi (come XGE). Vengono salvati solo nome e link, nessun testo.",
+    "bookmarkName": "Nome",
+    "bookmarkKind": "Tipo",
+    "bookmarkBook": "Codice libro",
+    "bookmarkUrl": "Link",
+    "bookmarkFailed": "Controlla nome, codice libro (lettere o cifre) e link (inizia con https://).",
+    "linkFailed": "Impossibile salvare il riferimento",
+    "bookmark": "Segnalibro",
+    "bookmarkInfo": "Solo link. Aprilo per leggere il testo completo.",
+    "deleteBookmark": "Elimina segnalibro"
   },
   "party": {
     "title": "Gruppo",
