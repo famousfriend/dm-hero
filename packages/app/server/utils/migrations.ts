@@ -2920,8 +2920,8 @@ export async function runMigrations(db: Database.Database) {
 
   console.log(`🔄 Running ${pendingMigrations.length} migration(s)...`)
 
-  // Backup before migrations
-  createBackup()
+  // Backup before migrations (nothing to protect on a brand-new database)
+  if (currentVersion > 0) createBackup(db)
 
   for (const migration of pendingMigrations) {
     // BEGIN IMMEDIATE grabs the write lock up front. If a second connection

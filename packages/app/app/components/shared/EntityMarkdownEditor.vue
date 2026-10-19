@@ -763,7 +763,7 @@ function handleEditorClick(event: MouseEvent) {
 
 function sanitizeHtml(html: string): string {
   const buildBadge = (type: string, id: string, entityId: number) => {
-    const name = resolveEntityName(type, entityId)
+    const name = escapeHtml(resolveEntityName(type, entityId))
     const icon = getEntityIcon(type)
     const colorMap: Record<string, string> = {
       npc: '#D4A574',
@@ -778,7 +778,7 @@ function sanitizeHtml(html: string): string {
 
     let displayHtml = name
     if (type === 'player') {
-      const humanName = resolvePlayerHumanName(entityId)
+      const humanName = escapeHtml(resolvePlayerHumanName(entityId))
       if (humanName) {
         displayHtml = `${humanName} <span style="font-size: 0.75rem; opacity: 0.8;">(${name})</span>`
       }

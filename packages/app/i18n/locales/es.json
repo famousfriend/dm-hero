@@ -1815,6 +1815,23 @@
       "exportFailed": "Error en la exportación",
       "openFolderFailed": "No se pudo abrir la carpeta"
     },
+    "backups": {
+      "title": "Copias de seguridad",
+      "subtitle": "Instantáneas de toda tu base de datos (campañas, sesiones, notas). Se crea una automáticamente antes de cada actualización; se conservan las {count} más recientes. Las imágenes no se incluyen – usa la exportación de campaña para ellas.",
+      "createNow": "Hacer copia ahora",
+      "importFile": "Importar archivo de copia",
+      "created": "Creada",
+      "size": "Tamaño",
+      "restore": "Restaurar",
+      "empty": "Aún no hay copias de seguridad.",
+      "location": "Carpeta de copias",
+      "confirmTitle": "¿Restaurar esta copia?",
+      "confirmText": "Tus datos actuales se reemplazarán por la copia del {date}. Antes se guarda una copia del estado actual, para que puedas volver atrás.",
+      "createSuccess": "Copia de seguridad creada",
+      "failed": "Error al crear la copia",
+      "restoreSuccess": "Copia restaurada – recargando",
+      "restoreFailed": "Error al restaurar"
+    },
     "logs": {
       "subtitle": "Los errores y advertencias se escriben en un archivo de registro",
       "logPath": "Archivo de registro",

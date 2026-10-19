@@ -1,11 +1,12 @@
+import { basename } from 'path'
 import { createBackup } from '../utils/db'
 
 export default defineEventHandler(() => {
   const backupPath = createBackup()
 
   if (!backupPath) {
-    throw createError({ statusCode: 400, message: 'No database to backup' })
+    throw createError({ statusCode: 500, message: 'Backup failed' })
   }
 
-  return { success: true, path: backupPath }
+  return { success: true, path: backupPath, name: basename(backupPath) }
 })

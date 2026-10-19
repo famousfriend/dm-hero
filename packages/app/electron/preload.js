@@ -8,6 +8,9 @@ contextBridge.exposeInMainWorld('electronAPI', {
   // Export database to user-selected location
   exportDatabase: () => ipcRenderer.invoke('export-database'),
 
+  // Copy a .db file into the backup folder (returns its backup name)
+  importBackupFile: () => ipcRenderer.invoke('import-backup-file'),
+
   // Open uploads folder in file explorer
   openUploadsFolder: () => ipcRenderer.invoke('open-uploads-folder'),
 

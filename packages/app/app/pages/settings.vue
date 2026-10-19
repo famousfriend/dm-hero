@@ -169,6 +169,9 @@
       </v-card-actions>
     </v-card>
 
+    <!-- Backups (server-side snapshots, web and desktop) -->
+    <BackupsCard />
+
     <!-- Data Management Section (Electron only) -->
     <v-card v-if="isElectron" class="mt-6">
       <v-card-text>
@@ -348,6 +351,7 @@
 </template>
 
 <script setup lang="ts">
+import BackupsCard from '~/components/settings/BackupsCard.vue'
 import { useAnnouncements } from '~/composables/useAnnouncements'
 import { useElectron } from '~/composables/useElectron'
 import { useFeatureTooltipSettings } from '~/composables/useFeatureTooltips'

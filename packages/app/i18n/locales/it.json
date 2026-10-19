@@ -1815,6 +1815,23 @@
       "exportFailed": "Esportazione non riuscita",
       "openFolderFailed": "Impossibile aprire la cartella"
     },
+    "backups": {
+      "title": "Backup",
+      "subtitle": "Istantanee dell'intero database (campagne, sessioni, note). Ne viene creato uno automaticamente prima di ogni aggiornamento; vengono conservati i {count} più recenti. Le immagini non sono incluse – usa l'esportazione della campagna.",
+      "createNow": "Esegui backup ora",
+      "importFile": "Importa file di backup",
+      "created": "Creato",
+      "size": "Dimensione",
+      "restore": "Ripristina",
+      "empty": "Nessun backup ancora.",
+      "location": "Cartella dei backup",
+      "confirmTitle": "Ripristinare questo backup?",
+      "confirmText": "I dati attuali verranno sostituiti dal backup del {date}. Prima viene salvato lo stato attuale, così puoi tornare indietro.",
+      "createSuccess": "Backup creato",
+      "failed": "Backup non riuscito",
+      "restoreSuccess": "Backup ripristinato – ricaricamento",
+      "restoreFailed": "Ripristino non riuscito"
+    },
     "logs": {
       "subtitle": "Errori e avvisi vengono scritti in un file di log",
       "logPath": "File di log",
