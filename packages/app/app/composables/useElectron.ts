@@ -38,6 +38,7 @@ export interface UpdateDownloadProgress {
 export interface ElectronAPI {
   isElectron: boolean
   exportDatabase: () => Promise<{ success: boolean, canceled?: boolean, filePath?: string, error?: string }>
+  importBackupFile: () => Promise<{ success: boolean, canceled?: boolean, name?: string, error?: string }>
   openUploadsFolder: () => Promise<{ success: boolean, error?: string }>
   openLogsFolder: () => Promise<{ success: boolean, error?: string }>
   getDataPaths: () => Promise<{ databasePath: string, uploadPath: string, logsPath: string }>
@@ -142,6 +143,16 @@ export function useElectron() {
         return { success: false, error: 'Not running in Electron' }
       }
       return electronAPI.exportDatabase()
+    },
+
+    /**
+     * Copy a .db file the user picks into the backup folder (Electron only)
+     */
+    async importBackupFile(): Promise<{ success: boolean, canceled?: boolean, name?: string, error?: string }> {
+      if (!electronAPI) {
+        return { success: false, error: 'Not running in Electron' }
+      }
+      return electronAPI.importBackupFile()
     },
 
     /**

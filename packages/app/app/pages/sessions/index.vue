@@ -1139,7 +1139,7 @@ function sanitizeHtml(html: string): string {
 
   // Helper to build entity badge HTML
   const buildBadge = (type: string, id: string, entityId: number) => {
-    const name = resolveEntityName(type, entityId)
+    const name = escapeHtml(resolveEntityName(type, entityId))
     const icon = getEntityIcon(type)
     const color = getEntityColor(type)
 
@@ -1147,7 +1147,7 @@ function sanitizeHtml(html: string): string {
     // If no Spielername set, show character name in italics
     let displayHtml = name
     if (type === 'player') {
-      const humanName = resolvePlayerHumanName(entityId)
+      const humanName = escapeHtml(resolvePlayerHumanName(entityId))
       if (humanName) {
         // Spielername groß, Character-Name klein in Klammern
         displayHtml = `${humanName} <span style="font-size: 0.75rem; opacity: 0.8;">(${name})</span>`

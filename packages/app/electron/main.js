@@ -11,6 +11,27 @@ const __dirname = path.dirname(__filename)
 
 const isDev = process.env.NODE_ENV === 'development'
 const PROD_SERVER_PORT = 3456
+const SERVER_URL = isDev ? 'http://localhost:3000' : `http://127.0.0.1:${PROD_SERVER_PORT}`
+
+// Only these schemes may be handed to the OS (shell.openExternal also opens
+// file:, custom protocol handlers etc., which a link in user content must never reach)
+const EXTERNAL_PROTOCOLS = new Set(['https:', 'http:', 'mailto:'])
+function isSafeExternalUrl(url) {
+  try {
+    return EXTERNAL_PROTOCOLS.has(new URL(url).protocol)
+  }
+  catch {
+    return false
+  }
+}
+function openExternalSafe(url) {
+  if (!isSafeExternalUrl(url)) {
+    console.warn('[Electron] Blocked external URL:', url)
+    return false
+  }
+  shell.openExternal(url)
+  return true
+}
 
 // Linux: Sandbox fix for AppArmor (Ubuntu 24.04+/Kubuntu) and
 // force X11 ozone backend to avoid Electron 39 SIGSEGV on Wayland+NVIDIA (#286).
@@ -340,7 +361,7 @@ function createWindow() {
   })
 
   // Load the appropriate URL
-  const serverUrl = isDev ? 'http://localhost:3000' : `http://127.0.0.1:${PROD_SERVER_PORT}`
+  const serverUrl = SERVER_URL
   console.log('[Electron] Loading URL:', serverUrl)
 
   // Everything that is not our own server (YouTube, Tabletop Audio, docs, …)
@@ -348,13 +369,13 @@ function createWindow() {
   const isAppUrl = url => url.startsWith(serverUrl)
   mainWindow.webContents.setWindowOpenHandler(({ url }) => {
     if (isAppUrl(url)) return { action: 'allow' }
-    shell.openExternal(url)
+    openExternalSafe(url)
     return { action: 'deny' }
   })
   mainWindow.webContents.on('will-navigate', (event, url) => {
     if (isAppUrl(url)) return
     event.preventDefault()
-    shell.openExternal(url)
+    openExternalSafe(url)
   })
 
   mainWindow.loadURL(serverUrl)
@@ -378,14 +399,6 @@ ipcMain.handle('get-data-paths', () => {
 })
 
 ipcMain.handle('export-database', async () => {
-  const paths = isDev
-    ? { databasePath: path.join(process.cwd(), 'data', 'dm-hero.db') }
-    : getDataPaths()
-
-  if (!existsSync(paths.databasePath)) {
-    return { success: false, error: 'Database file not found' }
-  }
-
   // Generate default filename with timestamp
   const timestamp = new Date().toISOString().split('T')[0]
   const defaultFilename = `dm-hero-backup-${timestamp}.db`
@@ -401,8 +414,36 @@ ipcMain.handle('export-database', async () => {
   }
 
   try {
-    copyFileSync(paths.databasePath, result.filePath)
+    // The server writes a consistent snapshot (the raw .db file misses data still in the WAL)
+    const response = await fetch(`${SERVER_URL}/api/backup`, { method: 'POST' })
+    if (!response.ok) throw new Error(`Backup failed (${response.status})`)
+    const backup = await response.json()
+    copyFileSync(backup.path, result.filePath)
     return { success: true, filePath: result.filePath }
+  }
+  catch (error) {
+    return { success: false, error: error.message }
+  }
+})
+
+// Copy a database file the user picks into the backup folder, so it can be restored from Settings
+ipcMain.handle('import-backup-file', async () => {
+  const result = await dialog.showOpenDialog(mainWindow, {
+    title: 'Import Backup',
+    filters: [{ name: 'SQLite Database', extensions: ['db'] }],
+    properties: ['openFile'],
+  })
+  if (result.canceled || !result.filePaths.length) {
+    return { success: false, canceled: true }
+  }
+
+  try {
+    const response = await fetch(`${SERVER_URL}/api/backups`)
+    if (!response.ok) throw new Error(`Could not read backup folder (${response.status})`)
+    const { directory } = await response.json()
+    const name = `dm-hero-imported-${new Date().toISOString().replace(/[:.]/g, '-')}.db`
+    copyFileSync(result.filePaths[0], path.join(directory, name))
+    return { success: true, name }
   }
   catch (error) {
     return { success: false, error: error.message }
@@ -447,6 +488,9 @@ ipcMain.handle('open-logs-folder', async () => {
 
 // Open external URL in system browser
 ipcMain.handle('open-external-url', async (event, url) => {
+  if (!isSafeExternalUrl(url)) {
+    return { success: false, error: 'URL scheme not allowed' }
+  }
   try {
     await shell.openExternal(url)
     return { success: true }

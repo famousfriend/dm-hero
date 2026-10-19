@@ -1815,6 +1815,23 @@
       "exportFailed": "Export failed",
       "openFolderFailed": "Could not open folder"
     },
+    "backups": {
+      "title": "Backups",
+      "subtitle": "Snapshots of your whole database (campaigns, sessions, notes). One is made automatically before every update; the newest {count} are kept. Images are not included – use campaign export for those.",
+      "createNow": "Back up now",
+      "importFile": "Import backup file",
+      "created": "Created",
+      "size": "Size",
+      "restore": "Restore",
+      "empty": "No backups yet.",
+      "location": "Backup folder",
+      "confirmTitle": "Restore this backup?",
+      "confirmText": "Your current data will be replaced by the backup from {date}. A backup of the current state is made first, so you can switch back.",
+      "createSuccess": "Backup created",
+      "failed": "Backup failed",
+      "restoreSuccess": "Backup restored – reloading",
+      "restoreFailed": "Restore failed"
+    },
     "logs": {
       "subtitle": "Errors and warnings are written to a log file",
       "logPath": "Log File",

@@ -1815,6 +1815,23 @@
       "exportFailed": "Échec de l'export",
       "openFolderFailed": "Impossible d'ouvrir le dossier"
     },
+    "backups": {
+      "title": "Sauvegardes",
+      "subtitle": "Instantanés de toute votre base de données (campagnes, sessions, notes). Une sauvegarde est créée automatiquement avant chaque mise à jour ; les {count} plus récentes sont conservées. Les images ne sont pas incluses – utilisez l'export de campagne pour cela.",
+      "createNow": "Sauvegarder maintenant",
+      "importFile": "Importer un fichier de sauvegarde",
+      "created": "Créée",
+      "size": "Taille",
+      "restore": "Restaurer",
+      "empty": "Aucune sauvegarde pour l'instant.",
+      "location": "Dossier des sauvegardes",
+      "confirmTitle": "Restaurer cette sauvegarde ?",
+      "confirmText": "Vos données actuelles seront remplacées par la sauvegarde du {date}. L'état actuel est sauvegardé d'abord, vous pourrez donc revenir en arrière.",
+      "createSuccess": "Sauvegarde créée",
+      "failed": "Échec de la sauvegarde",
+      "restoreSuccess": "Sauvegarde restaurée – rechargement",
+      "restoreFailed": "Échec de la restauration"
+    },
     "logs": {
       "subtitle": "Les erreurs et avertissements sont écrits dans un fichier journal",
       "logPath": "Fichier journal",

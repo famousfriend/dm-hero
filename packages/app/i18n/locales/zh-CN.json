@@ -1815,6 +1815,23 @@
       "exportFailed": "导出失败",
       "openFolderFailed": "无法打开文件夹"
     },
+    "backups": {
+      "title": "备份",
+      "subtitle": "整个数据库（战役、会话、笔记）的快照。每次更新前会自动创建一个；保留最新的 {count} 个。不包含图片——请使用战役导出。",
+      "createNow": "立即备份",
+      "importFile": "导入备份文件",
+      "created": "创建时间",
+      "size": "大小",
+      "restore": "恢复",
+      "empty": "还没有备份。",
+      "location": "备份文件夹",
+      "confirmTitle": "恢复此备份？",
+      "confirmText": "当前数据将被 {date} 的备份替换。恢复前会先备份当前状态，因此可以切换回来。",
+      "createSuccess": "备份已创建",
+      "failed": "备份失败",
+      "restoreSuccess": "备份已恢复——正在重新加载",
+      "restoreFailed": "恢复失败"
+    },
     "logs": {
       "subtitle": "错误和警告写入日志文件",
       "logPath": "日志文件",

@@ -1815,6 +1815,23 @@
       "exportFailed": "Export fehlgeschlagen",
       "openFolderFailed": "Ordner konnte nicht geöffnet werden"
     },
+    "backups": {
+      "title": "Sicherungen",
+      "subtitle": "Schnappschüsse deiner gesamten Datenbank (Kampagnen, Sessions, Notizen). Vor jedem Update wird automatisch einer erstellt; die neuesten {count} bleiben erhalten. Bilder sind nicht enthalten – dafür gibt es den Kampagnen-Export.",
+      "createNow": "Jetzt sichern",
+      "importFile": "Sicherungsdatei importieren",
+      "created": "Erstellt",
+      "size": "Größe",
+      "restore": "Wiederherstellen",
+      "empty": "Noch keine Sicherungen.",
+      "location": "Sicherungsordner",
+      "confirmTitle": "Diese Sicherung wiederherstellen?",
+      "confirmText": "Deine aktuellen Daten werden durch die Sicherung vom {date} ersetzt. Vorher wird der aktuelle Stand gesichert, damit du zurückwechseln kannst.",
+      "createSuccess": "Sicherung erstellt",
+      "failed": "Sicherung fehlgeschlagen",
+      "restoreSuccess": "Sicherung wiederhergestellt – wird neu geladen",
+      "restoreFailed": "Wiederherstellung fehlgeschlagen"
+    },
     "logs": {
       "subtitle": "Fehler und Warnungen werden in eine Log-Datei geschrieben",
       "logPath": "Log-Datei",
