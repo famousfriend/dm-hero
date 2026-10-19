@@ -3047,5 +3047,68 @@
       "commands": "Befehle",
       "pages": "Seiten"
     }
+  },
+  "quests": {
+    "title": "Quests",
+    "subtitle": "Offene Quests, lose Enden und wen die Gruppe lange nicht gesehen hat",
+    "create": "Neue Quest",
+    "edit": "Quest bearbeiten",
+    "name": "Name",
+    "status": "Status",
+    "description": "Beschreibung",
+    "giver": "Auftraggeber",
+    "reward": "Belohnung",
+    "involved": "Beteiligte NSCs, Orte und Dinge",
+    "involvedHint": "Alles, was diese Quest betrifft",
+    "saveFailed": "Quest konnte nicht gespeichert werden",
+    "deleteTitle": "Quest löschen",
+    "deleteConfirm": "Die Quest \"{name}\" löschen?",
+    "questsHeading": "Quests",
+    "filterUnresolved": "Offen",
+    "filterResolved": "Abgeschlossen",
+    "filterAll": "Alle",
+    "empty": "Noch keine Quests. Lege eine mit \"Neue Quest\" an.",
+    "noneInFilter": "Keine Quests in dieser Ansicht.",
+    "givenBy": "Von {name}",
+    "nextSession": "Für die nächste Sitzung",
+    "nextSessionHint": "Was du beim nächsten Spielabend ansprechen wolltest",
+    "nextSessionEmpty": "Nichts markiert. Öffne in einer Sitzung \"Was hat sich geändert\" und hake \"Nächste Sitzung ansprechen\" an.",
+    "openThreads": "Offene Konsequenzen",
+    "openThreadsHint": "Alles aus vergangenen Sitzungen, das noch offen ist",
+    "openThreadsEmpty": "Keine offenen Einträge.",
+    "lastMet": "Zuletzt getroffene NSCs",
+    "lastMetHint": "Wann die Gruppe jeden NSC zuletzt gesehen hat (aus Sitzungserwähnungen), älteste zuerst",
+    "lastMetEmpty": "Noch keine NSCs in Sitzungen erwähnt.",
+    "lastSession": "letzte Sitzung",
+    "sessionsAgo": "vor 1 Sitzung | vor {count} Sitzungen",
+    "statuses": {
+      "open": "Offen",
+      "active": "Aktiv",
+      "done": "Erledigt",
+      "failed": "Gescheitert"
+    }
+  },
+  "continuity": {
+    "tab": "Was hat sich geändert",
+    "hint": "Halte Entscheidungen, Enthüllungen, Versprechen, Schulden und Konsequenzen fest, damit nichts vergessen wird.",
+    "kind": "Art",
+    "whatHappened": "Was hat sich geändert?",
+    "textPlaceholder": "Die Gruppe hat Sildar versprochen...",
+    "involves": "Wer oder was ist beteiligt",
+    "bringUpNext": "Nächste Sitzung ansprechen",
+    "notNext": "Nicht in der nächsten Sitzung ansprechen",
+    "empty": "Noch nichts festgehalten.",
+    "reopen": "Wieder öffnen",
+    "resolve": "Als erledigt markieren",
+    "fromSession": "aus {title}",
+    "saveFailed": "Speichern fehlgeschlagen",
+    "kinds": {
+      "decision": "Entscheidung",
+      "reveal": "Enthüllung",
+      "promise": "Versprechen",
+      "debt": "Schuld",
+      "consequence": "Konsequenz",
+      "thread": "Loser Faden"
+    }
   }
 }

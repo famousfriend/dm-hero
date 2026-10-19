@@ -181,6 +181,10 @@
             <v-icon start> mdi-link-variant </v-icon>
             {{ $t('sessions.mentions') }} ({{ extractedMentions.length }})
           </v-tab>
+          <v-tab value="continuity">
+            <v-icon start> mdi-script-text-outline </v-icon>
+            {{ $t('continuity.tab') }}
+          </v-tab>
         </v-tabs>
 
         <v-card-text style="max-height: 70vh; overflow-y: auto">
@@ -441,6 +445,12 @@
               <div v-else class="text-body-medium text-disabled">
                 {{ $t('sessions.noMentions') }}
               </div>
+            </v-tabs-window-item>
+
+            <!-- What changed (continuity) Tab -->
+            <v-tabs-window-item value="continuity">
+              <p class="text-body-medium text-medium-emphasis mb-3">{{ $t('continuity.hint') }}</p>
+              <QuestsContinuityList v-if="editingSession" :session-id="editingSession.id" />
             </v-tabs-window-item>
           </v-tabs-window>
 

@@ -3047,5 +3047,68 @@
       "commands": "Comandi",
       "pages": "Pagine"
     }
+  },
+  "quests": {
+    "title": "Missioni",
+    "subtitle": "Missioni aperte, questioni in sospeso e chi il gruppo non vede da tempo",
+    "create": "Nuova missione",
+    "edit": "Modifica missione",
+    "name": "Nome",
+    "status": "Stato",
+    "description": "Descrizione",
+    "giver": "Committente",
+    "reward": "Ricompensa",
+    "involved": "PNG, luoghi e oggetti coinvolti",
+    "involvedHint": "Tutto ciò che riguarda questa missione",
+    "saveFailed": "Impossibile salvare la missione",
+    "deleteTitle": "Elimina missione",
+    "deleteConfirm": "Eliminare la missione \"{name}\"?",
+    "questsHeading": "Missioni",
+    "filterUnresolved": "Non risolte",
+    "filterResolved": "Concluse",
+    "filterAll": "Tutte",
+    "empty": "Nessuna missione. Creane una con \"Nuova missione\".",
+    "noneInFilter": "Nessuna missione in questa vista.",
+    "givenBy": "Da {name}",
+    "nextSession": "Per la prossima sessione",
+    "nextSessionHint": "Ciò che hai segnato da riprendere alla prossima partita",
+    "nextSessionEmpty": "Niente segnato. In una sessione apri \"Cosa è cambiato\" e spunta \"Riprendere nella prossima sessione\".",
+    "openThreads": "Conseguenze irrisolte",
+    "openThreadsHint": "Tutto ciò che è ancora aperto dalle sessioni passate",
+    "openThreadsEmpty": "Nessun elemento aperto.",
+    "lastMet": "PNG incontrati per ultimi",
+    "lastMetHint": "Quando il gruppo ha visto ogni PNG l'ultima volta (dalle menzioni nelle sessioni), dal più lontano",
+    "lastMetEmpty": "Nessun PNG menzionato nelle sessioni.",
+    "lastSession": "ultima sessione",
+    "sessionsAgo": "1 sessione fa | {count} sessioni fa",
+    "statuses": {
+      "open": "Aperta",
+      "active": "Attiva",
+      "done": "Completata",
+      "failed": "Fallita"
+    }
+  },
+  "continuity": {
+    "tab": "Cosa è cambiato",
+    "hint": "Annota decisioni, rivelazioni, promesse, debiti e conseguenze perché nulla vada dimenticato.",
+    "kind": "Tipo",
+    "whatHappened": "Cosa è cambiato?",
+    "textPlaceholder": "Il gruppo ha promesso a Sildar di...",
+    "involves": "Chi o cosa è coinvolto",
+    "bringUpNext": "Riprendere nella prossima sessione",
+    "notNext": "Non riprendere nella prossima sessione",
+    "empty": "Ancora nulla di annotato.",
+    "reopen": "Riapri",
+    "resolve": "Segna come risolto",
+    "fromSession": "da {title}",
+    "saveFailed": "Salvataggio non riuscito",
+    "kinds": {
+      "decision": "Decisione",
+      "reveal": "Rivelazione",
+      "promise": "Promessa",
+      "debt": "Debito",
+      "consequence": "Conseguenza",
+      "thread": "Questione in sospeso"
+    }
   }
 }
