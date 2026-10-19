@@ -2917,5 +2917,21 @@
     "playerApp": {
       "hint": "Vos joueurs ouvrent {link} sur leur téléphone ou ordinateur et rejoignent avec le code de partie et leur PIN."
     }
+  },
+  "codex": {
+    "title": "Référence",
+    "back": "Retour",
+    "notFound": "« {uid} » n’est pas dans votre bibliothèque de référence.",
+    "usedIn": "Utilisé dans cette campagne",
+    "openExternal": "Ouvrir sur 5e.tools",
+    "insertTitle": "Insérer une référence",
+    "searchPlaceholder": "Rechercher sorts, monstres, états…",
+    "typeToSearch": "Tapez au moins 2 lettres",
+    "editorHint": "pour la référence des règles",
+    "kinds": {
+      "spell": "Sort",
+      "monster": "Monstre",
+      "condition": "État"
+    }
   }
 }

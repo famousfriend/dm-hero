@@ -117,6 +117,8 @@
       <div class="editor-hint text-body-small text-medium-emphasis mt-1 d-flex align-center">
         <v-hotkey keys="ctrl+shift+space" :platform="platform" class="mr-2" />
         <span>{{ $t('editor.quickSearchHintText') }}</span>
+        <kbd class="ml-4 mr-2">@</kbd>
+        <span>{{ $t('codex.editorHint') }}</span>
       </div>
     </ClientOnly>
 
@@ -132,14 +134,14 @@
     >
       <v-card min-width="350" height="380" elevation="12" class="quick-search-card d-flex flex-column">
         <v-card-title class="text-body-large py-2 flex-grow-0 flex-shrink-0">
-          <v-icon start size="small">mdi-lightning-bolt</v-icon>
-          {{ $t('editor.quickInsert') }}
+          <v-icon start size="small">{{ quickSearchMode === 'codex' ? 'mdi-book-open-page-variant' : 'mdi-lightning-bolt' }}</v-icon>
+          {{ quickSearchMode === 'codex' ? $t('codex.insertTitle') : $t('editor.quickInsert') }}
         </v-card-title>
         <v-divider class="flex-grow-0 flex-shrink-0" />
         <v-text-field
           ref="quickSearchInput"
           v-model="quickSearchQuery"
-          :placeholder="$t('editor.quickSearchPlaceholder')"
+          :placeholder="quickSearchMode === 'codex' ? $t('codex.searchPlaceholder') : $t('editor.quickSearchPlaceholder')"
           variant="solo-filled"
           flat
           density="compact"
@@ -153,7 +155,30 @@
           @keydown.up.prevent="navigateQuickSearch(-1)"
           @keydown.tab.prevent="navigateQuickSearch(1)"
         />
-        <v-list v-if="!quickSearchQuery" density="compact" class="py-0 flex-grow-1" style="overflow-y: auto">
+        <!-- Reference Codex results (@ trigger) -->
+        <v-list v-if="quickSearchMode === 'codex'" density="compact" class="py-0 flex-grow-1" style="overflow-y: auto">
+          <v-list-item
+            v-for="(entry, index) in codexResults"
+            :key="entry.uid"
+            :class="{ 'v-list-item--active': index === selectedResultIndex }"
+            @click="insertCodexEntry(entry)"
+          >
+            <template #prepend>
+              <v-icon :icon="codexKindIcon(entry.kind)" size="small" />
+            </template>
+            <v-list-item-title>{{ entry.name }}</v-list-item-title>
+            <v-list-item-subtitle v-if="entry.summary">{{ entry.summary }}</v-list-item-subtitle>
+            <template #append>
+              <v-chip size="x-small" variant="outlined">{{ entry.sourceCode.toUpperCase() }}</v-chip>
+            </template>
+          </v-list-item>
+          <v-list-item v-if="codexResults.length === 0">
+            <v-list-item-title class="text-disabled">
+              {{ quickSearchQuery.trim().length < 2 ? $t('codex.typeToSearch') : $t('common.noResults') }}
+            </v-list-item-title>
+          </v-list-item>
+        </v-list>
+        <v-list v-else-if="!quickSearchQuery" density="compact" class="py-0 flex-grow-1" style="overflow-y: auto">
           <v-list-item
             v-for="(type, index) in entityTypes"
             :key="type.value"
@@ -258,6 +283,7 @@ import type { ToolbarNames } from 'md-editor-v3'
 import 'md-editor-v3/lib/style.css'
 import { useTheme } from 'vuetify'
 import EntityPreviewDialog from './EntityPreviewDialog.vue'
+import { codexToken, type CodexEntrySummary } from '~~/types/codex'
 
 type EntityType = 'npc' | 'location' | 'item' | 'faction' | 'lore' | 'player' | 'session'
 
@@ -296,6 +322,7 @@ const { t } = useI18n()
 const { locale } = useI18n()
 const theme = useTheme()
 const entitiesStore = useEntitiesStore()
+const codexStore = useCodexStore()
 
 // ============================================================================
 // State
@@ -313,6 +340,7 @@ type EditorInsertBlock = {
 }
 interface MdEditorExpose {
   insert: (gen: () => EditorInsertBlock) => void
+  getEditorView: () => { state: { selection: { main: { head: number } }, sliceDoc: (from: number, to: number) => string } } | undefined
 }
 const editorRef = ref<MdEditorExpose | null>(null)
 
@@ -378,6 +406,11 @@ const quickSearchTarget = ref<HTMLElement | null>(null)
 const quickSearchInput = ref<InstanceType<typeof import('vuetify/components')['VTextField']> | null>(null)
 const selectedResultIndex = ref(0)
 const lastActiveElement = ref<HTMLElement | null>(null)
+// 'codex' = opened by typing @, searches the rules reference instead of entities
+const quickSearchMode = ref<'entity' | 'codex'>('entity')
+const codexResults = ref<CodexEntrySummary[]>([])
+let codexSearchTimer: ReturnType<typeof setTimeout> | undefined
+let codexSearchSeq = 0
 
 // Entity Preview
 const showEntityPreviewDialog = ref(false)
@@ -618,27 +651,71 @@ function openImageGallery() {
 const editorWrapperRef = ref<HTMLElement | null>(null)
 
 function handleKeydown(event: KeyboardEvent) {
+  // Typing @ at the start of a word opens the Reference Codex search.
+  // Mid-word (emails like a@b.com) the @ is typed normally.
+  if (event.key === '@' && !event.ctrlKey && !event.metaKey && !showQuickSearch.value && atWordStart(event)) {
+    event.preventDefault()
+    event.stopPropagation()
+    openQuickSearch('codex')
+    return
+  }
+  // Keys typed right after @, before the search field has focus, belong to the search
+  if (
+    showQuickSearch.value && quickSearchMode.value === 'codex' && event.key.length === 1
+    && !event.ctrlKey && !event.metaKey && (event.target as HTMLElement | null)?.closest?.('.cm-content')
+  ) {
+    event.preventDefault()
+    event.stopPropagation()
+    quickSearchQuery.value += event.key
+    quickSearchInput.value?.focus()
+    return
+  }
   // Trigger quick search with Ctrl+Shift+Space (or Cmd+Shift+Space on Mac)
   if (event.key === ' ' && (event.ctrlKey || event.metaKey) && event.shiftKey && !showQuickSearch.value) {
     event.preventDefault()
     event.stopPropagation()
-    // Save the current active element (textarea) to restore focus later
-    lastActiveElement.value = document.activeElement as HTMLElement
-    // Use the editor wrapper as target for the popup
-    quickSearchTarget.value = editorWrapperRef.value
-    quickSearchQuery.value = ''
-    selectedResultIndex.value = 0
-    showQuickSearch.value = true
-    // Focus the input after the menu opens - use setTimeout to ensure DOM is ready
-    setTimeout(() => {
-      quickSearchInput.value?.focus()
-    }, 50)
+    openQuickSearch('entity')
   }
 }
 
+function openQuickSearch(mode: 'entity' | 'codex') {
+  // Save the current active element (textarea) to restore focus later
+  lastActiveElement.value = document.activeElement as HTMLElement
+  // Use the editor wrapper as target for the popup
+  quickSearchTarget.value = editorWrapperRef.value
+  quickSearchMode.value = mode
+  quickSearchQuery.value = ''
+  codexResults.value = []
+  selectedResultIndex.value = 0
+  showQuickSearch.value = true
+  // Focus the input after the menu opens - use setTimeout to ensure DOM is ready
+  setTimeout(() => {
+    quickSearchInput.value?.focus()
+  }, 50)
+}
+
+/** True when the cursor in the editor is at the start of the text or after whitespace/bracket. */
+function atWordStart(event: KeyboardEvent): boolean {
+  if (!(event.target as HTMLElement | null)?.closest?.('.cm-content')) return false
+  const view = editorRef.value?.getEditorView?.()
+  if (!view) return false
+  const head = view.state.selection.main.head
+  return head === 0 || /[\s([]/.test(view.state.sliceDoc(head - 1, head))
+}
+
+// Esc in codex mode keeps what was typed as plain text ("@fire"), so nothing is lost
 function closeQuickSearch() {
+  if (quickSearchMode.value === 'codex') {
+    insertAtCursor(`@${quickSearchQuery.value}`)
+  }
+  resetQuickSearch()
+}
+
+function resetQuickSearch() {
   showQuickSearch.value = false
   quickSearchQuery.value = ''
+  quickSearchMode.value = 'entity'
+  codexResults.value = []
   selectedResultIndex.value = 0
   // Restore focus to the editor
   nextTick(() => {
@@ -649,7 +726,12 @@ function closeQuickSearch() {
 function onQuickSearchClose(isOpen: boolean) {
   if (!isOpen) {
     // Menu was closed (click outside, etc.)
+    if (quickSearchMode.value === 'codex' && quickSearchQuery.value) {
+      insertAtCursor(`@${quickSearchQuery.value}`)
+    }
     quickSearchQuery.value = ''
+    quickSearchMode.value = 'entity'
+    codexResults.value = []
     selectedResultIndex.value = 0
     // Restore focus to the editor
     nextTick(() => {
@@ -667,9 +749,11 @@ function selectEntityType(type: EntityType) {
 
 function navigateQuickSearch(direction: number) {
   // Determine max index based on current view (entity types or search results)
-  const max = quickSearchQuery.value
-    ? quickSearchResults.value.length - 1
-    : entityTypes.value.length - 1
+  const max = quickSearchMode.value === 'codex'
+    ? codexResults.value.length - 1
+    : quickSearchQuery.value
+      ? quickSearchResults.value.length - 1
+      : entityTypes.value.length - 1
 
   if (max < 0) return
 
@@ -688,6 +772,11 @@ function navigateQuickSearch(direction: number) {
 }
 
 function handleQuickSearchEnter() {
+  if (quickSearchMode.value === 'codex') {
+    const selected = codexResults.value[selectedResultIndex.value]
+    if (selected) insertCodexEntry(selected)
+    return
+  }
   if (!quickSearchQuery.value) {
     // No query = selecting entity type from the list
     const selectedType = entityTypes.value[selectedResultIndex.value]
@@ -711,6 +800,43 @@ function insertQuickEntity(entity: { id: number, type: EntityType }) {
   insertAtCursor(link)
   closeQuickSearch()
 }
+
+function insertCodexEntry(entry: CodexEntrySummary) {
+  codexStore.names[entry.uid] = entry.name
+  insertAtCursor(codexToken(entry.uid))
+  resetQuickSearch()
+  nextTick(() => lastActiveElement.value?.focus())
+}
+
+function codexKindIcon(kind: string): string {
+  const icons: Record<string, string> = {
+    spell: 'mdi-auto-fix',
+    monster: 'mdi-paw',
+    condition: 'mdi-alert-circle-outline',
+  }
+  return icons[kind] || 'mdi-book-open-page-variant'
+}
+
+// Debounced server search while the @ popup is open
+watch(quickSearchQuery, (query) => {
+  if (quickSearchMode.value !== 'codex') return
+  clearTimeout(codexSearchTimer)
+  selectedResultIndex.value = 0
+  if (query.trim().length < 2) {
+    codexResults.value = []
+    return
+  }
+  const seq = ++codexSearchSeq
+  codexSearchTimer = setTimeout(async () => {
+    try {
+      const results = await $fetch<CodexEntrySummary[]>('/api/codex/search', { query: { q: query, limit: 20 } })
+      if (seq === codexSearchSeq) codexResults.value = results
+    }
+    catch {
+      if (seq === codexSearchSeq) codexResults.value = []
+    }
+  }, 120)
+})
 
 // ============================================================================
 // Editor Helpers
@@ -813,7 +939,8 @@ function sanitizeHtml(html: string): string {
     return buildBadge(type, id, entityId)
   })
 
-  return result
+  // Reference Codex tokens {{codex:kind:slug|source}}
+  return renderCodexChips(result, uid => codexStore.names[uid])
 }
 
 // ============================================================================

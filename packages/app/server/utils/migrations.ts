@@ -2907,6 +2907,69 @@ export const migrations: Migration[] = [
       console.log('✅ Migration 66: Added thread_dirty to game_table_players')
     },
   },
+  {
+    version: 67,
+    name: 'reference_codex',
+    up: (db) => {
+      // DM Command Center: Reference Codex. Global rules reference (not campaign
+      // data): kept out of `entities` so it never shows up in entity counts,
+      // campaign exports or player sharing. Entries are addressed by ref_uid
+      // ("spell:fireball|phb"), which is what markdown tokens store.
+      db.exec(`
+        CREATE TABLE ref_sources (
+          id INTEGER PRIMARY KEY AUTOINCREMENT,
+          code TEXT NOT NULL UNIQUE,
+          title TEXT NOT NULL,
+          license TEXT NOT NULL,
+          attribution TEXT,
+          origin TEXT NOT NULL,
+          version TEXT,
+          imported_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
+        );
+
+        CREATE TABLE ref_entries (
+          id INTEGER PRIMARY KEY AUTOINCREMENT,
+          ref_uid TEXT NOT NULL UNIQUE,
+          kind TEXT NOT NULL,
+          name TEXT NOT NULL,
+          source_id INTEGER NOT NULL REFERENCES ref_sources(id),
+          summary TEXT,
+          body_md TEXT,
+          data_json TEXT,
+          created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+          updated_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+          deleted_at TEXT
+        );
+        CREATE INDEX idx_ref_entries_kind ON ref_entries(kind);
+
+        CREATE VIRTUAL TABLE ref_entries_fts USING fts5(name, summary, body_md);
+        CREATE TRIGGER ref_entries_fts_insert AFTER INSERT ON ref_entries BEGIN
+          INSERT INTO ref_entries_fts(rowid, name, summary, body_md) VALUES (new.id, new.name, new.summary, new.body_md);
+        END;
+        CREATE TRIGGER ref_entries_fts_delete AFTER DELETE ON ref_entries BEGIN
+          DELETE FROM ref_entries_fts WHERE rowid = old.id;
+        END;
+        CREATE TRIGGER ref_entries_fts_update AFTER UPDATE ON ref_entries BEGIN
+          UPDATE ref_entries_fts SET name = new.name, summary = new.summary, body_md = new.body_md WHERE rowid = new.id;
+        END;
+
+        -- Where a reference is used. By uid, not id, so links survive a dataset re-import.
+        CREATE TABLE ref_links (
+          id INTEGER PRIMARY KEY AUTOINCREMENT,
+          campaign_id INTEGER NOT NULL REFERENCES campaigns(id) ON DELETE CASCADE,
+          ref_uid TEXT NOT NULL,
+          owner_type TEXT NOT NULL,
+          owner_id INTEGER NOT NULL,
+          origin TEXT NOT NULL DEFAULT 'token',
+          created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+          UNIQUE(owner_type, owner_id, ref_uid, origin)
+        );
+        CREATE INDEX idx_ref_links_uid ON ref_links(campaign_id, ref_uid);
+      `)
+
+      console.log('✅ Migration 67: Created Reference Codex tables')
+    },
+  },
 ]
 
 export async function runMigrations(db: Database.Database) {

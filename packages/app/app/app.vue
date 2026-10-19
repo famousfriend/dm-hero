@@ -25,6 +25,11 @@
       </div>
     </v-main>
 
+    <!-- Reference Codex panel: opened by clicking a reference chip in any note -->
+    <ClientOnly>
+      <CodexSidebar />
+    </ClientOnly>
+
     <!-- Share dialog: can be opened from anywhere (share buttons on entity cards) -->
     <ClientOnly>
       <GameTableShareDialog />

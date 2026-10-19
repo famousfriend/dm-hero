@@ -1,4 +1,5 @@
 import { getDb } from '../../../../utils/db'
+import { syncRefLinks } from '../../../../utils/codex'
 
 export default defineEventHandler(async (event) => {
   const db = getDb()
@@ -56,6 +57,14 @@ export default defineEventHandler(async (event) => {
     WHERE id = ? AND entity_id = ?
   `,
   ).run(...params)
+
+  if (content !== undefined) {
+    // Sync Reference Codex links ({{codex:...}} tokens) in the document
+    const owner = db.prepare('SELECT campaign_id FROM entities WHERE id = ?').get(entityId) as
+      | { campaign_id: number }
+      | undefined
+    if (owner) syncRefLinks(db, owner.campaign_id, 'document', Number(docId), content)
+  }
 
   // Return updated document
   const document = db

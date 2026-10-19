@@ -1,5 +1,6 @@
 import { getDb } from '../../utils/db'
 import { syncSessionMentions } from '../../utils/extract-mentions'
+import { syncRefLinks } from '../../utils/codex'
 
 export default defineEventHandler(async (event) => {
   const db = getDb()
@@ -71,6 +72,12 @@ export default defineEventHandler(async (event) => {
 
   // Sync session_mentions from markdown links in notes
   syncSessionMentions(db, parseInt(id, 10), notes)
+
+  // Sync Reference Codex links ({{codex:...}} tokens) in notes
+  const owner = db.prepare('SELECT campaign_id FROM sessions WHERE id = ?').get(id) as
+    | { campaign_id: number }
+    | undefined
+  if (owner) syncRefLinks(db, owner.campaign_id, 'session', parseInt(id, 10), notes)
 
   const session = db
     .prepare(

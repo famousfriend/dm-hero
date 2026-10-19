@@ -774,6 +774,7 @@ interface EntityMention {
 const router = useRouter()
 const campaignStore = useCampaignStore()
 const entitiesStore = useEntitiesStore()
+const codexStore = useCodexStore()
 const theme = useTheme()
 const { openExternalUrl } = useElectron()
 const { locale } = useI18n()
@@ -1182,7 +1183,8 @@ function sanitizeHtml(html: string): string {
     return buildBadge(type, id, entityId)
   })
 
-  return result
+  // Reference Codex tokens {{codex:kind:slug|source}}
+  return renderCodexChips(result, uid => codexStore.names[uid])
 }
 
 function getEntityIcon(type: string): string {

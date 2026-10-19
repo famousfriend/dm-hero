@@ -2917,5 +2917,21 @@
     "playerApp": {
       "hint": "Deine Spieler öffnen {link} auf Handy oder Laptop und treten mit Spielcode und ihrer PIN bei."
     }
+  },
+  "codex": {
+    "title": "Regelreferenz",
+    "back": "Zurück",
+    "notFound": "„{uid}“ ist nicht in deiner Referenzbibliothek.",
+    "usedIn": "In dieser Kampagne verwendet",
+    "openExternal": "Auf 5e.tools öffnen",
+    "insertTitle": "Referenz einfügen",
+    "searchPlaceholder": "Zauber, Monster, Zustände suchen…",
+    "typeToSearch": "Mindestens 2 Buchstaben eingeben",
+    "editorHint": "für Regelreferenz",
+    "kinds": {
+      "spell": "Zauber",
+      "monster": "Monster",
+      "condition": "Zustand"
+    }
   }
 }
