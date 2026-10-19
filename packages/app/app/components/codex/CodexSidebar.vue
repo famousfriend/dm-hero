@@ -175,9 +175,13 @@ onBeforeUnmount(() => {
 </script>
 
 <style scoped>
+/* Starts below the app bar: in the Windows app the top strip is the window's
+   drag area and holds the minimize/close buttons, which would swallow clicks
+   on the panel's own back/close buttons. */
 .codex-sidebar {
   position: fixed;
-  top: 0;
+  top: 64px;
+  -webkit-app-region: no-drag;
   right: 0;
   bottom: 0;
   width: min(420px, 100vw);
