@@ -67,17 +67,26 @@
 import type { PartyMember } from '~~/types/party'
 
 const { t } = useI18n()
-const campaignStore = useCampaignStore()
-const snackbar = useSnackbarStore()
+const {
+  campaignId,
+  members,
+  loading,
+  refreshing,
+  hasLinked,
+  loadAndRefresh,
+  refreshAll,
+  refreshOne,
+  updateManual,
+  replaceMember,
+  onReplace,
+  scheduleRefresh,
+} = useParty()
 
-const campaignId = computed(() => campaignStore.activeCampaignIdNumber)
-const members = ref<PartyMember[]>([])
-const loading = ref(false)
-const refreshing = ref(false)
 const editing = ref<PartyMember | null>(null)
 const now = ref(Date.now())
-
-const hasLinked = computed(() => members.value.some(m => m.ddbCharacterId))
+onReplace.push((updated) => {
+  if (editing.value?.entityId === updated.entityId) editing.value = updated
+})
 
 // Auto-refresh interval, remembered per browser (0 = off)
 const REFRESH_KEY = 'dmcc-party-refresh-seconds'
@@ -90,73 +99,6 @@ const refreshOptions = computed(() => [
 ])
 const refreshSeconds = ref(60)
 
-async function load() {
-  if (!campaignId.value) return
-  loading.value = true
-  try {
-    members.value = await $fetch<PartyMember[]>('/api/party', { query: { campaignId: campaignId.value } })
-  }
-  finally {
-    loading.value = false
-  }
-}
-
-async function refreshAll(force = false) {
-  if (!campaignId.value || refreshing.value) return
-  refreshing.value = true
-  try {
-    if (force) {
-      for (const member of members.value.filter(m => m.ddbCharacterId)) {
-        replaceMember(await $fetch<PartyMember>(`/api/party/${member.entityId}/refresh`, { method: 'POST' }))
-      }
-    }
-    else {
-      members.value = await $fetch<PartyMember[]>('/api/party/refresh', {
-        method: 'POST',
-        query: { campaignId: campaignId.value },
-      })
-    }
-  }
-  catch {
-    snackbar.error(t('party.refreshFailed'))
-  }
-  finally {
-    refreshing.value = false
-  }
-}
-
-async function refreshOne(member: PartyMember) {
-  replaceMember(await $fetch<PartyMember>(`/api/party/${member.entityId}/refresh`, { method: 'POST' }))
-}
-
-async function updateManual(member: PartyMember, manual: Record<string, unknown>) {
-  try {
-    replaceMember(await $fetch<PartyMember>(`/api/party/${member.entityId}`, { method: 'PATCH', body: { manual } }))
-  }
-  catch {
-    snackbar.error(t('party.saveFailed'))
-  }
-}
-
-function replaceMember(updated: PartyMember) {
-  const index = members.value.findIndex(m => m.entityId === updated.entityId)
-  if (index >= 0) members.value[index] = updated
-  if (editing.value?.entityId === updated.entityId) editing.value = updated
-}
-
-// Timers: auto-refresh only while this page is open and visible; a clock for "x min ago"
-let refreshTimer: ReturnType<typeof setInterval> | undefined
-let clockTimer: ReturnType<typeof setInterval> | undefined
-
-function scheduleRefresh() {
-  clearInterval(refreshTimer)
-  if (refreshSeconds.value > 0) {
-    refreshTimer = setInterval(() => {
-      if (document.visibilityState === 'visible' && hasLinked.value) refreshAll()
-    }, refreshSeconds.value * 1000)
-  }
-}
-
 watch(refreshSeconds, (value) => {
   try {
     localStorage.setItem(REFRESH_KEY, String(value))
@@ -164,14 +106,11 @@ watch(refreshSeconds, (value) => {
   catch {
     // storage unavailable: setting just isn't remembered
   }
-  scheduleRefresh()
+  scheduleRefresh(value)
 })
 
-watch(campaignId, async () => {
-  members.value = []
-  await load()
-  if (hasLinked.value) refreshAll()
-})
+// A clock for "x min ago"
+let clockTimer: ReturnType<typeof setInterval> | undefined
 
 onMounted(async () => {
   try {
@@ -183,16 +122,12 @@ onMounted(async () => {
   catch {
     // keep default
   }
-  await load()
-  if (hasLinked.value) refreshAll()
-  scheduleRefresh()
+  await loadAndRefresh()
+  scheduleRefresh(refreshSeconds.value)
   clockTimer = setInterval(() => (now.value = Date.now()), 15000)
 })
 
-onBeforeUnmount(() => {
-  clearInterval(refreshTimer)
-  clearInterval(clockTimer)
-})
+onBeforeUnmount(() => clearInterval(clockTimer))
 </script>
 
 <style scoped>

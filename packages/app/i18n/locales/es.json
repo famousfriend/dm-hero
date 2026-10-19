@@ -54,7 +54,8 @@
       "saveFailed": "No se pudo guardar la navegación",
       "loadFailed": "No se pudo cargar la navegación guardada; inténtalo de nuevo en un momento."
     },
-    "party": "Grupo"
+    "party": "Grupo",
+    "live": "Sesión en vivo"
   },
   "themes": {
     "dark": "Oscuro (Taberna de medianoche)",
@@ -3110,5 +3111,41 @@
       "consequence": "Consecuencia",
       "thread": "Cabo suelto"
     }
+  },
+  "live": {
+    "title": "Sesión en vivo",
+    "modes": {
+      "live": "En vivo",
+      "prep": "Preparación"
+    },
+    "modeHint": {
+      "live": "Todo lo que necesitas en la mesa en una sola pantalla",
+      "prep": "Prepárate: cabos sueltos, misiones y notas para la próxima sesión"
+    },
+    "panels": "Paneles",
+    "panelsHint": "Visibles en modo {mode}",
+    "resetLayout": "Restablecer diseño",
+    "expand": "Expandir",
+    "collapse": "Contraer",
+    "panel": {
+      "party": "Grupo",
+      "combat": "Combate",
+      "session": "Qué cambió en esta sesión",
+      "notes": "Notas del DM",
+      "lookup": "Consultar reglas",
+      "next": "Para la próxima sesión",
+      "quests": "Misiones abiertas"
+    },
+    "hpPlaceholder": "±PG",
+    "hpHint": "Escribe -7 para daño o 5 para curar y pulsa Intro",
+    "deathSaves": "Caído · salvaciones {ok}✓ {fail}✗",
+    "noEncounters": "No hay encuentros preparados ni en curso.",
+    "newEncounter": "Nombre del nuevo encuentro",
+    "notePlaceholder": "Nota rápida…",
+    "noNotes": "No hay notas abiertas.",
+    "noteDone": "Hecho",
+    "lookupPlaceholder": "Busca un conjuro, monstruo, estado…",
+    "currentSession": "Sesión",
+    "noSessions": "Aún no hay sesiones."
   }
 }

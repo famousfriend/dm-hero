@@ -54,7 +54,8 @@
       "saveFailed": "Navigation konnte nicht gespeichert werden",
       "loadFailed": "Die gespeicherte Navigation konnte nicht geladen werden – versuch es gleich noch einmal."
     },
-    "party": "Gruppe"
+    "party": "Gruppe",
+    "live": "Live-Sitzung"
   },
   "themes": {
     "dark": "Dunkel (Mitternachts-Taverne)",
@@ -3110,5 +3111,41 @@
       "consequence": "Konsequenz",
       "thread": "Loser Faden"
     }
+  },
+  "live": {
+    "title": "Live-Sitzung",
+    "modes": {
+      "live": "Live",
+      "prep": "Vorbereitung"
+    },
+    "modeHint": {
+      "live": "Alles, was du am Spieltisch brauchst, auf einem Bildschirm",
+      "prep": "Vorbereiten: lose Enden, Quests und Notizen für die nächste Sitzung"
+    },
+    "panels": "Bereiche",
+    "panelsHint": "Angezeigt im Modus {mode}",
+    "resetLayout": "Layout zurücksetzen",
+    "expand": "Ausklappen",
+    "collapse": "Einklappen",
+    "panel": {
+      "party": "Gruppe",
+      "combat": "Kampf",
+      "session": "Was hat sich in dieser Sitzung geändert",
+      "notes": "SL-Notizen",
+      "lookup": "Regeln nachschlagen",
+      "next": "Für die nächste Sitzung",
+      "quests": "Offene Quests"
+    },
+    "hpPlaceholder": "±TP",
+    "hpHint": "-7 für Schaden oder 5 zum Heilen eingeben, dann Enter",
+    "deathSaves": "Bewusstlos · Würfe {ok}✓ {fail}✗",
+    "noEncounters": "Keine vorbereiteten oder laufenden Begegnungen.",
+    "newEncounter": "Name der neuen Begegnung",
+    "notePlaceholder": "Schnelle Notiz…",
+    "noNotes": "Keine offenen Notizen.",
+    "noteDone": "Erledigt",
+    "lookupPlaceholder": "Zauber, Monster, Zustand nachschlagen…",
+    "currentSession": "Sitzung",
+    "noSessions": "Noch keine Sitzungen."
   }
 }

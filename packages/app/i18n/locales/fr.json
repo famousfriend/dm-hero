@@ -54,7 +54,8 @@
       "saveFailed": "Impossible d’enregistrer la navigation",
       "loadFailed": "Impossible de charger la navigation enregistrée – réessaie dans un instant."
     },
-    "party": "Groupe"
+    "party": "Groupe",
+    "live": "Séance en direct"
   },
   "themes": {
     "dark": "Sombre (Taverne de minuit)",
@@ -3110,5 +3111,41 @@
       "consequence": "Conséquence",
       "thread": "Fil en suspens"
     }
+  },
+  "live": {
+    "title": "Séance en direct",
+    "modes": {
+      "live": "En direct",
+      "prep": "Préparation"
+    },
+    "modeHint": {
+      "live": "Tout ce qu'il faut à la table sur un seul écran",
+      "prep": "Préparez-vous : fils en suspens, quêtes et notes pour la prochaine séance"
+    },
+    "panels": "Panneaux",
+    "panelsHint": "Affichés en mode {mode}",
+    "resetLayout": "Réinitialiser la disposition",
+    "expand": "Déplier",
+    "collapse": "Replier",
+    "panel": {
+      "party": "Groupe",
+      "combat": "Combat",
+      "session": "Ce qui a changé cette séance",
+      "notes": "Notes du MJ",
+      "lookup": "Consulter les règles",
+      "next": "Pour la prochaine séance",
+      "quests": "Quêtes ouvertes"
+    },
+    "hpPlaceholder": "±PV",
+    "hpHint": "Tapez -7 pour des dégâts ou 5 pour soigner, puis Entrée",
+    "deathSaves": "À terre · jets {ok}✓ {fail}✗",
+    "noEncounters": "Aucune rencontre préparée ou en cours.",
+    "newEncounter": "Nom de la nouvelle rencontre",
+    "notePlaceholder": "Note rapide…",
+    "noNotes": "Aucune note ouverte.",
+    "noteDone": "Fait",
+    "lookupPlaceholder": "Chercher un sort, un monstre, un état…",
+    "currentSession": "Séance",
+    "noSessions": "Aucune séance pour l'instant."
   }
 }

@@ -54,7 +54,8 @@
       "saveFailed": "Impossibile salvare la navigazione",
       "loadFailed": "Impossibile caricare la navigazione salvata: riprova tra poco."
     },
-    "party": "Gruppo"
+    "party": "Gruppo",
+    "live": "Sessione dal vivo"
   },
   "themes": {
     "dark": "Scuro (Taverna di mezzanotte)",
@@ -3110,5 +3111,41 @@
       "consequence": "Conseguenza",
       "thread": "Questione in sospeso"
     }
+  },
+  "live": {
+    "title": "Sessione dal vivo",
+    "modes": {
+      "live": "Dal vivo",
+      "prep": "Preparazione"
+    },
+    "modeHint": {
+      "live": "Tutto ciò che serve al tavolo in una sola schermata",
+      "prep": "Preparati: questioni in sospeso, missioni e note per la prossima sessione"
+    },
+    "panels": "Pannelli",
+    "panelsHint": "Visibili in modalità {mode}",
+    "resetLayout": "Ripristina layout",
+    "expand": "Espandi",
+    "collapse": "Comprimi",
+    "panel": {
+      "party": "Gruppo",
+      "combat": "Combattimento",
+      "session": "Cosa è cambiato in questa sessione",
+      "notes": "Note del DM",
+      "lookup": "Consulta regole",
+      "next": "Per la prossima sessione",
+      "quests": "Missioni aperte"
+    },
+    "hpPlaceholder": "±PF",
+    "hpHint": "Scrivi -7 per i danni o 5 per curare, poi premi Invio",
+    "deathSaves": "A terra · tiri {ok}✓ {fail}✗",
+    "noEncounters": "Nessun incontro preparato o in corso.",
+    "newEncounter": "Nome del nuovo incontro",
+    "notePlaceholder": "Nota veloce…",
+    "noNotes": "Nessuna nota aperta.",
+    "noteDone": "Fatto",
+    "lookupPlaceholder": "Cerca un incantesimo, mostro, condizione…",
+    "currentSession": "Sessione",
+    "noSessions": "Ancora nessuna sessione."
   }
 }

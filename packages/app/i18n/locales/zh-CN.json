@@ -54,7 +54,8 @@
       "saveFailed": "无法保存导航",
       "loadFailed": "无法加载已保存的导航，请稍后再试。"
     },
-    "party": "队伍"
+    "party": "队伍",
+    "live": "实时游戏"
   },
   "themes": {
     "dark": "黑暗（午夜酒馆）",
@@ -3110,5 +3111,41 @@
       "consequence": "后果",
       "thread": "悬而未决"
     }
+  },
+  "live": {
+    "title": "实时游戏",
+    "modes": {
+      "live": "游戏中",
+      "prep": "准备"
+    },
+    "modeHint": {
+      "live": "在一个屏幕上显示桌边所需的一切",
+      "prep": "做好准备：下次游戏的悬而未决事项、任务和笔记"
+    },
+    "panels": "面板",
+    "panelsHint": "在{mode}模式中显示",
+    "resetLayout": "重置布局",
+    "expand": "展开",
+    "collapse": "收起",
+    "panel": {
+      "party": "队伍",
+      "combat": "战斗",
+      "session": "本次游戏发生了什么变化",
+      "notes": "DM 笔记",
+      "lookup": "规则查询",
+      "next": "下次游戏",
+      "quests": "进行中的任务"
+    },
+    "hpPlaceholder": "±HP",
+    "hpHint": "输入 -7 表示伤害，输入 5 表示治疗，然后按回车",
+    "deathSaves": "倒地 · 豁免 {ok}✓ {fail}✗",
+    "noEncounters": "没有已准备或进行中的遭遇。",
+    "newEncounter": "新遭遇名称",
+    "notePlaceholder": "快速笔记…",
+    "noNotes": "没有未完成的笔记。",
+    "noteDone": "完成",
+    "lookupPlaceholder": "查询法术、怪物、状态…",
+    "currentSession": "游戏",
+    "noSessions": "还没有游戏记录。"
   }
 }
