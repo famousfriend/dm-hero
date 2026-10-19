@@ -20,7 +20,8 @@ interface UpdateInfo {
 }
 
 // For browser fallback
-const GITHUB_REPO = 'Flo0806/dm-hero'
+// DM Command Center fork: updates come from Raul's fork, never upstream (R15)
+const GITHUB_REPO = 'famousfriend/dm-hero'
 const STORAGE_KEY_DISMISSED = 'dm-hero-update-dismissed'
 
 /**
