@@ -3025,5 +3025,27 @@
       "spellSlots": "Zauberplätze",
       "inspiration": "Inspiration"
     }
+  },
+  "palette": {
+    "placeholder": "Suchen oder Befehl eingeben…",
+    "empty": "Tippe, um NSCs, Orte, Regeln und Befehle zu suchen",
+    "namePlaceholder": "Name für {type}",
+    "nameHint": "Namen eingeben und Enter drücken. Esc geht zurück.",
+    "create": "Neu: {type}",
+    "encounter": "Begegnung",
+    "openCombat": "Laufenden Kampf öffnen",
+    "created": "„{name}“ angelegt",
+    "createFailed": "Konnte nicht angelegt werden",
+    "keyMove": "wählen",
+    "keyOpen": "öffnen",
+    "keyClose": "schließen",
+    "keyBack": "zurück",
+    "groups": {
+      "recent": "Zuletzt",
+      "entities": "Kampagne",
+      "references": "Regelreferenz",
+      "commands": "Befehle",
+      "pages": "Seiten"
+    }
   }
 }
