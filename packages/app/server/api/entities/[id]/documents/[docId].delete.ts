@@ -36,6 +36,7 @@ export default defineEventHandler(async (event) => {
     WHERE id = ? AND entity_id = ?
   `,
   ).run(docId, entityId)
+  db.prepare('DELETE FROM ref_links WHERE owner_type = \'document\' AND owner_id = ?').run(docId)
 
   return { success: true }
 })

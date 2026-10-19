@@ -2917,5 +2917,21 @@
     "playerApp": {
       "hint": "I tuoi giocatori aprono {link} sul telefono o sul portatile ed entrano con il codice della partita e il loro PIN."
     }
+  },
+  "codex": {
+    "title": "Riferimento",
+    "back": "Indietro",
+    "notFound": "\"{uid}\" non è nella tua libreria di riferimento.",
+    "usedIn": "Usato in questa campagna",
+    "openExternal": "Apri su 5e.tools",
+    "insertTitle": "Inserisci riferimento",
+    "searchPlaceholder": "Cerca incantesimi, mostri, condizioni…",
+    "typeToSearch": "Digita almeno 2 lettere",
+    "editorHint": "per il riferimento alle regole",
+    "kinds": {
+      "spell": "Incantesimo",
+      "monster": "Mostro",
+      "condition": "Condizione"
+    }
   }
 }

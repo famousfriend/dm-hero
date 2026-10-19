@@ -134,6 +134,7 @@ withDefaults(defineProps<Props>(), {
 const { locale } = useI18n()
 const theme = useTheme()
 const entitiesStore = useEntitiesStore()
+const codexStore = useCodexStore()
 
 // Theme & Locale
 const currentLocale = computed(() => (locale.value === 'de' ? 'de-DE' : 'en-US'))
@@ -261,7 +262,8 @@ function sanitizeHtml(html: string): string {
     return buildBadge(type, id, entityId)
   })
 
-  return result
+  // Reference Codex tokens {{codex:kind:slug|source}}
+  return renderCodexChips(result, uid => codexStore.names[uid])
 }
 
 function handleClick(event: MouseEvent) {

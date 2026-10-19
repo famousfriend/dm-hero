@@ -1,5 +1,6 @@
 import { getDb } from '../../utils/db'
 import { syncSessionMentions } from '../../utils/extract-mentions'
+import { syncRefLinks } from '../../utils/codex'
 
 export default defineEventHandler(async (event) => {
   const db = getDb()
@@ -65,6 +66,7 @@ export default defineEventHandler(async (event) => {
 
   // Sync session_mentions from markdown links in notes
   syncSessionMentions(db, sessionId, notes)
+  syncRefLinks(db, Number(campaignId), 'session', sessionId, notes)
 
   const session = db
     .prepare(

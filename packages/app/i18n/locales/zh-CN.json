@@ -2917,5 +2917,21 @@
     "playerApp": {
       "hint": "你的玩家在手机或电脑上打开 {link}，用游戏代码和自己的 PIN 加入。"
     }
+  },
+  "codex": {
+    "title": "规则参考",
+    "back": "返回",
+    "notFound": "“{uid}”不在你的参考库中。",
+    "usedIn": "在本战役中使用",
+    "openExternal": "在 5e.tools 打开",
+    "insertTitle": "插入参考",
+    "searchPlaceholder": "搜索法术、怪物、状态…",
+    "typeToSearch": "至少输入 2 个字符",
+    "editorHint": "插入规则参考",
+    "kinds": {
+      "spell": "法术",
+      "monster": "怪物",
+      "condition": "状态"
+    }
   }
 }

@@ -2917,5 +2917,21 @@
     "playerApp": {
       "hint": "Tus jugadores abren {link} en el móvil o el portátil y se unen con el código de partida y su PIN."
     }
+  },
+  "codex": {
+    "title": "Referencia",
+    "back": "Atrás",
+    "notFound": "\"{uid}\" no está en tu biblioteca de referencia.",
+    "usedIn": "Usado en esta campaña",
+    "openExternal": "Abrir en 5e.tools",
+    "insertTitle": "Insertar referencia",
+    "searchPlaceholder": "Buscar conjuros, monstruos, estados…",
+    "typeToSearch": "Escribe al menos 2 letras",
+    "editorHint": "para referencia de reglas",
+    "kinds": {
+      "spell": "Conjuro",
+      "monster": "Monstruo",
+      "condition": "Estado"
+    }
   }
 }

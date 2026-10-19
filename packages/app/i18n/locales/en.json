@@ -2917,5 +2917,21 @@
     "playerApp": {
       "hint": "Your players open {link} on their phone or laptop and join with the game code and their PIN."
     }
+  },
+  "codex": {
+    "title": "Reference",
+    "back": "Back",
+    "notFound": "\"{uid}\" is not in your reference library.",
+    "usedIn": "Used in this campaign",
+    "openExternal": "Open on 5e.tools",
+    "insertTitle": "Insert reference",
+    "searchPlaceholder": "Search spells, monsters, conditions…",
+    "typeToSearch": "Type at least 2 letters",
+    "editorHint": "for rules reference",
+    "kinds": {
+      "spell": "Spell",
+      "monster": "Monster",
+      "condition": "Condition"
+    }
   }
 }
