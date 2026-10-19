@@ -1,0 +1,859 @@
+{
+ "success": true,
+ "message": "Character successfully received.",
+ "data": {
+  "id": 1001,
+  "name": "Torin ",
+  "stats": [
+   {
+    "id": 1,
+    "value": 12
+   },
+   {
+    "id": 2,
+    "value": 18
+   },
+   {
+    "id": 3,
+    "value": 13
+   },
+   {
+    "id": 4,
+    "value": 13
+   },
+   {
+    "id": 5,
+    "value": 15
+   },
+   {
+    "id": 6,
+    "value": 11
+   }
+  ],
+  "bonusStats": [
+   {
+    "id": 1,
+    "value": null
+   },
+   {
+    "id": 2,
+    "value": 1
+   },
+   {
+    "id": 3,
+    "value": 1
+   },
+   {
+    "id": 4,
+    "value": null
+   },
+   {
+    "id": 5,
+    "value": null
+   },
+   {
+    "id": 6,
+    "value": null
+   }
+  ],
+  "overrideStats": [
+   {
+    "id": 1,
+    "value": null
+   },
+   {
+    "id": 2,
+    "value": null
+   },
+   {
+    "id": 3,
+    "value": null
+   },
+   {
+    "id": 4,
+    "value": null
+   },
+   {
+    "id": 5,
+    "value": null
+   },
+   {
+    "id": 6,
+    "value": null
+   }
+  ],
+  "baseHitPoints": 45,
+  "bonusHitPoints": 0,
+  "overrideHitPoints": null,
+  "removedHitPoints": 0,
+  "temporaryHitPoints": 0,
+  "inspiration": false,
+  "deathSaves": {
+   "failCount": 0,
+   "successCount": 0,
+   "isStabilized": false
+  },
+  "conditions": [],
+  "spellSlots": [
+   {
+    "level": 1,
+    "used": 0,
+    "available": 0
+   },
+   {
+    "level": 2,
+    "used": 0,
+    "available": 0
+   },
+   {
+    "level": 3,
+    "used": 0,
+    "available": 0
+   },
+   {
+    "level": 4,
+    "used": 0,
+    "available": 0
+   },
+   {
+    "level": 5,
+    "used": 0,
+    "available": 0
+   },
+   {
+    "level": 6,
+    "used": 0,
+    "available": 0
+   },
+   {
+    "level": 7,
+    "used": 0,
+    "available": 0
+   },
+   {
+    "level": 8,
+    "used": 0,
+    "available": 0
+   },
+   {
+    "level": 9,
+    "used": 0,
+    "available": 0
+   }
+  ],
+  "pactMagic": [
+   {
+    "level": 1,
+    "used": 0,
+    "available": 0
+   },
+   {
+    "level": 2,
+    "used": 0,
+    "available": 0
+   },
+   {
+    "level": 3,
+    "used": 0,
+    "available": 0
+   },
+   {
+    "level": 4,
+    "used": 0,
+    "available": 0
+   },
+   {
+    "level": 5,
+    "used": 0,
+    "available": 0
+   }
+  ],
+  "classes": [
+   {
+    "level": 7,
+    "definition": {
+     "name": "Monk",
+     "spellCastingAbilityId": null
+    },
+    "subclassDefinition": {
+     "name": "Dracon Fist",
+     "spellCastingAbilityId": 5
+    }
+   }
+  ],
+  "modifiers": {
+   "race": [
+    {
+     "type": "language",
+     "subType": "common",
+     "value": null,
+     "fixedValue": null,
+     "statId": null,
+     "componentId": 64
+    },
+    {
+     "type": "language",
+     "subType": "dwarvish",
+     "value": null,
+     "fixedValue": null,
+     "statId": null,
+     "componentId": 64
+    },
+    {
+     "type": "proficiency",
+     "subType": "stealth",
+     "value": null,
+     "fixedValue": null,
+     "statId": null,
+     "componentId": 65
+    },
+    {
+     "type": "bonus",
+     "subType": "dexterity-score",
+     "value": 1,
+     "fixedValue": 1,
+     "statId": null,
+     "componentId": 102
+    },
+    {
+     "type": "bonus",
+     "subType": "wisdom-score",
+     "value": 1,
+     "fixedValue": 1,
+     "statId": null,
+     "componentId": 102
+    }
+   ],
+   "class": [
+    {
+     "type": "set",
+     "subType": "unarmored-armor-class",
+     "value": null,
+     "fixedValue": null,
+     "statId": 5,
+     "componentId": 226
+    },
+    {
+     "type": "bonus",
+     "subType": "unarmored-movement",
+     "value": 10,
+     "fixedValue": 10,
+     "statId": null,
+     "componentId": 229
+    },
+    {
+     "type": "set",
+     "subType": "subclass",
+     "value": null,
+     "fixedValue": null,
+     "statId": null,
+     "componentId": 230
+    },
+    {
+     "type": "bonus",
+     "subType": "choose-an-ability-score",
+     "value": 1,
+     "fixedValue": 1,
+     "statId": null,
+     "componentId": 232
+    },
+    {
+     "type": "bonus",
+     "subType": "choose-an-ability-score",
+     "value": 1,
+     "fixedValue": 1,
+     "statId": null,
+     "componentId": 232
+    },
+    {
+     "type": "set",
+     "subType": "extra-attacks",
+     "value": 1,
+     "fixedValue": 1,
+     "statId": null,
+     "componentId": 234
+    },
+    {
+     "type": "bonus",
+     "subType": "unarmored-movement",
+     "value": 5,
+     "fixedValue": 5,
+     "statId": null,
+     "componentId": 455
+    },
+    {
+     "type": "proficiency",
+     "subType": "simple-weapons",
+     "value": null,
+     "fixedValue": null,
+     "statId": null,
+     "componentId": 464
+    },
+    {
+     "type": "proficiency",
+     "subType": "shortsword",
+     "value": null,
+     "fixedValue": null,
+     "statId": null,
+     "componentId": 464
+    },
+    {
+     "type": "proficiency",
+     "subType": "brewers-supplies",
+     "value": null,
+     "fixedValue": null,
+     "statId": null,
+     "componentId": 464
+    },
+    {
+     "type": "proficiency",
+     "subType": "strength-saving-throws",
+     "value": null,
+     "fixedValue": null,
+     "statId": null,
+     "componentId": 464
+    },
+    {
+     "type": "proficiency",
+     "subType": "dexterity-saving-throws",
+     "value": null,
+     "fixedValue": null,
+     "statId": null,
+     "componentId": 464
+    },
+    {
+     "type": "proficiency",
+     "subType": "acrobatics",
+     "value": null,
+     "fixedValue": null,
+     "statId": null,
+     "componentId": 464
+    },
+    {
+     "type": "proficiency",
+     "subType": "athletics",
+     "value": null,
+     "fixedValue": null,
+     "statId": null,
+     "componentId": 464
+    }
+   ],
+   "background": [
+    {
+     "type": "proficiency",
+     "subType": "arcana",
+     "value": null,
+     "fixedValue": null,
+     "statId": null,
+     "componentId": 11
+    },
+    {
+     "type": "proficiency",
+     "subType": "history",
+     "value": null,
+     "fixedValue": null,
+     "statId": null,
+     "componentId": 11
+    },
+    {
+     "type": "language",
+     "subType": "infernal",
+     "value": null,
+     "fixedValue": null,
+     "statId": null,
+     "componentId": 11
+    },
+    {
+     "type": "language",
+     "subType": "elvish",
+     "value": null,
+     "fixedValue": null,
+     "statId": null,
+     "componentId": 11
+    }
+   ],
+   "item": [
+    {
+     "type": "bonus",
+     "subType": "hit-points",
+     "value": null,
+     "fixedValue": 2,
+     "statId": null,
+     "componentId": 8960641
+    },
+    {
+     "type": "weapon-property",
+     "subType": "reach",
+     "value": null,
+     "fixedValue": null,
+     "statId": null,
+     "componentId": 10273566
+    },
+    {
+     "type": "weapon-property",
+     "subType": "finesse",
+     "value": null,
+     "fixedValue": null,
+     "statId": null,
+     "componentId": 10273566
+    }
+   ],
+   "feat": [
+    {
+     "type": "bonus",
+     "subType": "ability-score-maximum",
+     "value": 1,
+     "fixedValue": 1,
+     "statId": 3,
+     "componentId": 2053821
+    },
+    {
+     "type": "proficiency",
+     "subType": "flail",
+     "value": null,
+     "fixedValue": null,
+     "statId": 2,
+     "componentId": 2054967
+    },
+    {
+     "type": "proficiency",
+     "subType": "choose-a-simple-weapon",
+     "value": null,
+     "fixedValue": null,
+     "statId": 2,
+     "componentId": 2054967
+    },
+    {
+     "type": "bonus",
+     "subType": "melee-weapon-attacks",
+     "value": 1,
+     "fixedValue": 1,
+     "statId": 2,
+     "componentId": 2054967
+    }
+   ],
+   "condition": []
+  },
+  "inventory": [
+   {
+    "id": 919012868,
+    "equipped": false,
+    "isAttuned": false,
+    "definition": {
+     "id": 8960641,
+     "name": "Potion of Healing",
+     "armorClass": null,
+     "armorTypeId": null,
+     "filterType": "Potion",
+     "type": "Potion",
+     "canAttune": false
+    }
+   },
+   {
+    "id": 846894965,
+    "equipped": true,
+    "isAttuned": false,
+    "definition": {
+     "id": 10273566,
+     "name": "Dragon Censer (Meteor Hammer)",
+     "armorClass": null,
+     "armorTypeId": null,
+     "filterType": "Weapon",
+     "type": "Flail",
+     "canAttune": false
+    }
+   },
+   {
+    "id": 846278201,
+    "equipped": true,
+    "isAttuned": false,
+    "definition": {
+     "id": 16,
+     "name": "Dart",
+     "armorClass": null,
+     "armorTypeId": null,
+     "filterType": "Weapon",
+     "type": "Dart",
+     "canAttune": false
+    }
+   },
+   {
+    "id": 905613405,
+    "equipped": false,
+    "isAttuned": false,
+    "definition": {
+     "id": 7,
+     "name": "Book",
+     "armorClass": null,
+     "armorTypeId": null,
+     "filterType": "Other Gear",
+     "type": "Gear",
+     "canAttune": false
+    }
+   },
+   {
+    "id": 846278202,
+    "equipped": false,
+    "isAttuned": false,
+    "definition": {
+     "id": 9,
+     "name": "Ink (1 ounce bottle)",
+     "armorClass": null,
+     "armorTypeId": null,
+     "filterType": "Other Gear",
+     "type": "Gear",
+     "canAttune": false
+    }
+   },
+   {
+    "id": 846278193,
+    "equipped": false,
+    "isAttuned": false,
+    "definition": {
+     "id": 20,
+     "name": "Backpack",
+     "armorClass": null,
+     "armorTypeId": null,
+     "filterType": "Other Gear",
+     "type": "Gear",
+     "canAttune": false
+    }
+   },
+   {
+    "id": 847664556,
+    "equipped": false,
+    "isAttuned": false,
+    "definition": {
+     "id": 33,
+     "name": "Case, Map or Scroll",
+     "armorClass": null,
+     "armorTypeId": null,
+     "filterType": "Other Gear",
+     "type": "Gear",
+     "canAttune": false
+    }
+   },
+   {
+    "id": 846278204,
+    "equipped": false,
+    "isAttuned": false,
+    "definition": {
+     "id": 38,
+     "name": "Clothes, Common",
+     "armorClass": null,
+     "armorTypeId": null,
+     "filterType": "Other Gear",
+     "type": "Gear",
+     "canAttune": false
+    }
+   },
+   {
+    "id": 1019075617,
+    "equipped": false,
+    "isAttuned": false,
+    "definition": {
+     "id": 201,
+     "name": "Grenade, Fragmentation",
+     "armorClass": null,
+     "armorTypeId": null,
+     "filterType": "Other Gear",
+     "type": "Gear",
+     "canAttune": false
+    }
+   },
+   {
+    "id": 846278203,
+    "equipped": false,
+    "isAttuned": false,
+    "definition": {
+     "id": 212,
+     "name": "Small Knife",
+     "armorClass": null,
+     "armorTypeId": null,
+     "filterType": "Other Gear",
+     "type": "Gear",
+     "canAttune": false
+    }
+   },
+   {
+    "id": 846278194,
+    "equipped": false,
+    "isAttuned": false,
+    "definition": {
+     "id": 24,
+     "name": "Bedroll",
+     "armorClass": null,
+     "armorTypeId": null,
+     "filterType": "Other Gear",
+     "type": "Gear",
+     "canAttune": false
+    }
+   },
+   {
+    "id": 846278195,
+    "equipped": false,
+    "isAttuned": false,
+    "definition": {
+     "id": 61,
+     "name": "Mess Kit",
+     "armorClass": null,
+     "armorTypeId": null,
+     "filterType": "Other Gear",
+     "type": "Gear",
+     "canAttune": false
+    }
+   },
+   {
+    "id": 846278198,
+    "equipped": false,
+    "isAttuned": false,
+    "definition": {
+     "id": 75,
+     "name": "Rations (1 day)",
+     "armorClass": null,
+     "armorTypeId": null,
+     "filterType": "Other Gear",
+     "type": "Gear",
+     "canAttune": false
+    }
+   },
+   {
+    "id": 846278200,
+    "equipped": false,
+    "isAttuned": false,
+    "definition": {
+     "id": 77,
+     "name": "Rope, Hempen (50 feet)",
+     "armorClass": null,
+     "armorTypeId": null,
+     "filterType": "Other Gear",
+     "type": "Gear",
+     "canAttune": false
+    }
+   },
+   {
+    "id": 846278196,
+    "equipped": false,
+    "isAttuned": false,
+    "definition": {
+     "id": 90,
+     "name": "Tinderbox",
+     "armorClass": null,
+     "armorTypeId": null,
+     "filterType": "Other Gear",
+     "type": "Gear",
+     "canAttune": false
+    }
+   },
+   {
+    "id": 846278197,
+    "equipped": false,
+    "isAttuned": false,
+    "definition": {
+     "id": 91,
+     "name": "Torch",
+     "armorClass": null,
+     "armorTypeId": null,
+     "filterType": "Other Gear",
+     "type": "Gear",
+     "canAttune": false
+    }
+   },
+   {
+    "id": 846278199,
+    "equipped": false,
+    "isAttuned": false,
+    "definition": {
+     "id": 92,
+     "name": "Waterskin",
+     "armorClass": null,
+     "armorTypeId": null,
+     "filterType": "Other Gear",
+     "type": "Gear",
+     "canAttune": false
+    }
+   },
+   {
+    "id": 315378559,
+    "equipped": false,
+    "isAttuned": false,
+    "definition": {
+     "id": 43,
+     "name": "Crowbar",
+     "armorClass": null,
+     "armorTypeId": null,
+     "filterType": "Other Gear",
+     "type": "Gear",
+     "canAttune": false
+    }
+   },
+   {
+    "id": 315378558,
+    "equipped": false,
+    "isAttuned": false,
+    "definition": {
+     "id": 47,
+     "name": "Hammer",
+     "armorClass": null,
+     "armorTypeId": null,
+     "filterType": "Other Gear",
+     "type": "Gear",
+     "canAttune": false
+    }
+   },
+   {
+    "id": 315378557,
+    "equipped": false,
+    "isAttuned": false,
+    "definition": {
+     "id": 67,
+     "name": "Piton",
+     "armorClass": null,
+     "armorTypeId": null,
+     "filterType": "Other Gear",
+     "type": "Gear",
+     "canAttune": false
+    }
+   },
+   {
+    "id": 315378556,
+    "equipped": false,
+    "isAttuned": false,
+    "definition": {
+     "id": 75,
+     "name": "Rations (1 day)",
+     "armorClass": null,
+     "armorTypeId": null,
+     "filterType": "Other Gear",
+     "type": "Gear",
+     "canAttune": false
+    }
+   },
+   {
+    "id": 315378555,
+    "equipped": false,
+    "isAttuned": false,
+    "definition": {
+     "id": 77,
+     "name": "Rope, Hempen (50 feet)",
+     "armorClass": null,
+     "armorTypeId": null,
+     "filterType": "Other Gear",
+     "type": "Gear",
+     "canAttune": false
+    }
+   },
+   {
+    "id": 315378554,
+    "equipped": false,
+    "isAttuned": false,
+    "definition": {
+     "id": 90,
+     "name": "Tinderbox",
+     "armorClass": null,
+     "armorTypeId": null,
+     "filterType": "Other Gear",
+     "type": "Gear",
+     "canAttune": false
+    }
+   },
+   {
+    "id": 315378553,
+    "equipped": false,
+    "isAttuned": false,
+    "definition": {
+     "id": 91,
+     "name": "Torch",
+     "armorClass": null,
+     "armorTypeId": null,
+     "filterType": "Other Gear",
+     "type": "Gear",
+     "canAttune": false
+    }
+   },
+   {
+    "id": 315378552,
+    "equipped": false,
+    "isAttuned": false,
+    "definition": {
+     "id": 92,
+     "name": "Waterskin",
+     "armorClass": null,
+     "armorTypeId": null,
+     "filterType": "Other Gear",
+     "type": "Gear",
+     "canAttune": false
+    }
+   },
+   {
+    "id": 315378551,
+    "equipped": false,
+    "isAttuned": false,
+    "definition": {
+     "id": 316,
+     "name": "Clothing, cold weather",
+     "armorClass": null,
+     "armorTypeId": null,
+     "filterType": "Other Gear",
+     "type": "Gear",
+     "canAttune": false
+    }
+   },
+   {
+    "id": 315378550,
+    "equipped": false,
+    "isAttuned": false,
+    "definition": {
+     "id": 317,
+     "name": "Crampons",
+     "armorClass": null,
+     "armorTypeId": null,
+     "filterType": "Other Gear",
+     "type": "Gear",
+     "canAttune": false
+    }
+   },
+   {
+    "id": 315378561,
+    "equipped": false,
+    "isAttuned": false,
+    "definition": {
+     "id": 318,
+     "name": "Snowshoes",
+     "armorClass": null,
+     "armorTypeId": null,
+     "filterType": "Other Gear",
+     "type": "Gear",
+     "canAttune": false
+    }
+   }
+  ],
+  "characterValues": [
+   {
+    "typeId": 27,
+    "value": 1,
+    "valueId": "17"
+   },
+   {
+    "typeId": 26,
+    "value": 3,
+    "valueId": "14"
+   },
+   {
+    "typeId": 26,
+    "value": 1,
+    "valueId": "6"
+   },
+   {
+    "typeId": 26,
+    "value": 3,
+    "valueId": "4"
+   },
+   {
+    "typeId": 26,
+    "value": 4,
+    "valueId": "5"
+   }
+  ]
+ }
+}

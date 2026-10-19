@@ -2970,6 +2970,30 @@ export const migrations: Migration[] = [
       console.log('✅ Migration 67: Created Reference Codex tables')
     },
   },
+  {
+    version: 68,
+    name: 'party_status',
+    up: (db) => {
+      // DM Command Center: party view. One row per player entity: optional
+      // D&D Beyond link with the last good numbers, plus manual values that win
+      // over D&D Beyond until the DM reverts them.
+      db.exec(`
+        CREATE TABLE party_status (
+          entity_id INTEGER PRIMARY KEY REFERENCES entities(id) ON DELETE CASCADE,
+          ddb_character_id TEXT,
+          ddb_stats_json TEXT,
+          ddb_explain_json TEXT,
+          ddb_fetched_at TEXT,
+          ddb_error TEXT,
+          ddb_attempted_at TEXT,
+          manual_json TEXT NOT NULL DEFAULT '{}',
+          updated_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
+        );
+      `)
+
+      console.log('✅ Migration 68: Created party_status')
+    },
+  },
 ]
 
 export async function runMigrations(db: Database.Database) {
