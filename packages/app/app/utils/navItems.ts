@@ -13,6 +13,7 @@ const fixed = (icon: string) => () => icon
 
 export const NAV_ITEMS: Record<NavKey, NavItem> = {
   search: { icon: fixed('mdi-magnify'), title: 'nav.search', needsCampaign: true },
+  live: { icon: fixed('mdi-play-circle-outline'), title: 'nav.live', to: '/live', needsCampaign: true },
   npcs: { icon: fixed('mdi-account-group'), title: 'nav.npcs', to: '/npcs', needsCampaign: true },
   locations: { icon: fixed('mdi-map-marker'), title: 'nav.locations', to: '/locations', needsCampaign: true },
   items: { icon: fixed('mdi-sword'), title: 'nav.items', to: '/items', needsCampaign: true },

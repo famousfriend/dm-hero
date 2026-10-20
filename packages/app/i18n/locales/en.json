@@ -54,7 +54,8 @@
       "saveFailed": "Could not save the navigation",
       "loadFailed": "Could not load the saved navigation – please try again in a moment."
     },
-    "party": "Party"
+    "party": "Party",
+    "live": "Live session"
   },
   "themes": {
     "dark": "Dark (Midnight Tavern)",
@@ -3110,5 +3111,41 @@
       "consequence": "Consequence",
       "thread": "Loose thread"
     }
+  },
+  "live": {
+    "title": "Live session",
+    "modes": {
+      "live": "Live",
+      "prep": "Prep"
+    },
+    "modeHint": {
+      "live": "Everything you need at the table on one screen",
+      "prep": "Get ready: loose ends, quests and notes for the next session"
+    },
+    "panels": "Panels",
+    "panelsHint": "Shown in {mode} mode",
+    "resetLayout": "Reset layout",
+    "expand": "Expand",
+    "collapse": "Collapse",
+    "panel": {
+      "party": "Party",
+      "combat": "Combat",
+      "session": "What changed this session",
+      "notes": "DM notes",
+      "lookup": "Rules lookup",
+      "next": "For next session",
+      "quests": "Open quests"
+    },
+    "hpPlaceholder": "±HP",
+    "hpHint": "Type -7 for damage or 5 to heal, then press Enter",
+    "deathSaves": "Down · saves {ok}✓ {fail}✗",
+    "noEncounters": "No prepared or running encounters.",
+    "newEncounter": "New encounter name",
+    "notePlaceholder": "Quick note…",
+    "noNotes": "No open notes.",
+    "noteDone": "Done",
+    "lookupPlaceholder": "Look up a spell, monster, condition…",
+    "currentSession": "Session",
+    "noSessions": "No sessions yet."
   }
 }
