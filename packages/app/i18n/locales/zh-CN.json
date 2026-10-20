@@ -1620,7 +1620,12 @@
         "reactions": "反应",
         "legendary": "传奇动作"
       }
-    }
+    },
+    "syncPlayers": "同步玩家",
+    "syncPlayersHint": "把玩家在队伍视图（和 D&D Beyond）中的生命值和护甲等级带入本场战斗",
+    "syncPlayersDone": "已从队伍视图更新 {n} 名玩家",
+    "syncPlayersSame": "玩家数据已是最新",
+    "syncPlayersFailed": "无法连接 D&D Beyond：{names}。已使用最后已知的数值。"
   },
   "documents": {
     "title": "文件",

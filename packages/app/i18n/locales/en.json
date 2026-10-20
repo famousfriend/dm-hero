@@ -1620,7 +1620,12 @@
         "reactions": "Reactions",
         "legendary": "Legendary actions"
       }
-    }
+    },
+    "syncPlayers": "Sync players",
+    "syncPlayersHint": "Get the players' HP and AC from the Party view (and D&D Beyond) into this fight",
+    "syncPlayersDone": "Updated {n} players from the Party view",
+    "syncPlayersSame": "Players are already up to date",
+    "syncPlayersFailed": "D&D Beyond could not be reached for: {names}. Their last known values were used."
   },
   "documents": {
     "title": "Documents",

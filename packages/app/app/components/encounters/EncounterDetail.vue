@@ -8,6 +8,18 @@
         {{ $t(`encounters.statuses.${encounter.status}`) }}
       </v-chip>
       <v-spacer />
+      <!-- Players' HP and AC from the Party view / D&D Beyond, at any time in the fight -->
+      <v-btn
+        v-if="hasPlayers && encounter.status !== 'finished'"
+        size="small"
+        variant="tonal"
+        prepend-icon="mdi-cloud-sync"
+        :loading="syncing"
+        :title="$t('encounters.syncPlayersHint')"
+        @click="syncPlayers"
+      >
+        {{ $t('encounters.syncPlayers') }}
+      </v-btn>
       <!-- Round + Turn navigation (combat only) -->
       <template v-if="isCombat">
         <v-chip color="primary" variant="tonal" prepend-icon="mdi-refresh">
@@ -165,6 +177,7 @@
 
 <script setup lang="ts">
 import type { EncounterParticipant } from '~~/types/encounter'
+import type { PartyMember } from '~~/types/party'
 
 const { t } = useI18n()
 const encounterStore = useEncounterStore()
@@ -180,6 +193,41 @@ const allIniSet = computed(() =>
   encounterStore.participants.length > 0
   && encounterStore.participants.every(p => p.initiative != null),
 )
+
+const syncing = ref(false)
+const hasPlayers = computed(() => encounterStore.participants.some(p => p.entity_type === 'Player' && p.entity_id))
+
+/** Refreshes linked D&D Beyond sheets, then copies each player's HP, temp HP and AC into this fight (logged, undoable) */
+async function syncPlayers() {
+  if (!encounter.value) return
+  syncing.value = true
+  try {
+    const members = await $fetch<PartyMember[]>('/api/party/refresh', { method: 'POST', query: { campaignId: encounter.value.campaign_id } })
+    const byEntity = new Map(members.map(m => [m.entityId, m]))
+    let changed = 0
+    for (const p of encounterStore.participants) {
+      const member = p.entity_type === 'Player' && p.entity_id ? byEntity.get(p.entity_id) : undefined
+      if (!member) continue
+      const stats = member.effective
+      const updates: Partial<EncounterParticipant> = {}
+      if (stats.hpMax && stats.hpMax !== p.max_hp) updates.max_hp = stats.hpMax
+      if (stats.hpMax && stats.hpCurrent !== p.current_hp) updates.current_hp = stats.hpCurrent
+      if (stats.hpTemp !== p.temp_hp) updates.temp_hp = stats.hpTemp
+      if (stats.ac && stats.ac !== p.armor_class) updates.armor_class = stats.ac
+      if (!Object.keys(updates).length) continue
+      if (await encounterStore.updateParticipant(encounter.value.id, p.id, updates)) changed++
+    }
+    const failed = members.filter(m => m.ddbError && encounterStore.participants.some(p => p.entity_id === m.entityId))
+    if (failed.length) snackbarStore.warning(t('encounters.syncPlayersFailed', { names: failed.map(m => m.entityName).join(', ') }))
+    else snackbarStore.success(changed ? t('encounters.syncPlayersDone', { n: changed }) : t('encounters.syncPlayersSame'))
+  }
+  catch {
+    snackbarStore.error(t('party.refreshFailed'))
+  }
+  finally {
+    syncing.value = false
+  }
+}
 
 async function onRemove(id: number) {
   if (!encounter.value) return

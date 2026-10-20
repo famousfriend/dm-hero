@@ -1620,7 +1620,12 @@
         "reactions": "Reacciones",
         "legendary": "Acciones legendarias"
       }
-    }
+    },
+    "syncPlayers": "Sincronizar jugadores",
+    "syncPlayersHint": "Trae los PG y la CA de los jugadores desde la vista de grupo (y D&D Beyond) a este combate",
+    "syncPlayersDone": "{n} jugadores actualizados desde la vista de grupo",
+    "syncPlayersSame": "Los jugadores ya están al día",
+    "syncPlayersFailed": "No se pudo contactar con D&D Beyond para: {names}. Se usaron los últimos valores conocidos."
   },
   "documents": {
     "title": "Documentos",
