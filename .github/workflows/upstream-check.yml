@@ -1,0 +1,58 @@
+name: Check for DM Hero updates
+
+# DM Command Center is a fork of DM Hero (Flo0806/dm-hero). Once a week this
+# looks for DM Hero changes that aren't in this fork yet and opens one issue
+# listing them (or updates the open one). Merging them is done by hand in a
+# PR that keeps this fork's features and leaves out what duplicates them.
+
+on:
+  schedule:
+    - cron: '0 6 * * 1' # Mondays 06:00 UTC
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Compare with DM Hero
+        id: compare
+        run: |
+          git remote add upstream https://github.com/Flo0806/dm-hero.git
+          git fetch --quiet upstream main
+          COUNT=$(git rev-list --count HEAD..upstream/main)
+          echo "count=$COUNT" >> "$GITHUB_OUTPUT"
+          echo "sha=$(git rev-parse --short upstream/main)" >> "$GITHUB_OUTPUT"
+          {
+            echo "DM Hero has **$COUNT** change(s) that aren't in DM Command Center yet (up to \`$(git rev-parse --short upstream/main)\`)."
+            echo
+            echo "Compare: https://github.com/Flo0806/dm-hero/compare/$(git merge-base HEAD upstream/main)...main"
+            echo
+            echo "| Commit | Change |"
+            echo "|---|---|"
+            git log --no-merges --format='| `%h` | %s |' HEAD..upstream/main | head -100
+            echo
+            echo "Next step: tell Claude in the project \"update from DM Hero\". It merges these into a PR that keeps all DM Command Center features and leaves out changes that duplicate them, then you test and merge as usual."
+          } > body.md
+          cat body.md
+
+      - name: Open or update the issue
+        if: steps.compare.outputs.count != '0'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh label create upstream-update --color 1d76db --description "New DM Hero changes to merge" 2>/dev/null || true
+          NUMBER=$(gh issue list --label upstream-update --state open --json number --jq '.[0].number')
+          TITLE="DM Hero update available (${{ steps.compare.outputs.count }} changes)"
+          if [ -n "$NUMBER" ]; then
+            gh issue edit "$NUMBER" --title "$TITLE" --body-file body.md
+          else
+            gh issue create --title "$TITLE" --label upstream-update --body-file body.md
+          fi
