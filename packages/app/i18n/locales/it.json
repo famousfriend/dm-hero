@@ -1559,6 +1559,35 @@
         "recharge": "Ricarica",
         "legendary": "Azioni leggendarie"
       }
+    },
+    "monster": {
+      "title": "Attacchi e incantesimi",
+      "attack": "Attacca",
+      "castSpell": "Lancia incantesimo",
+      "readSpell": "Leggi l'incantesimo",
+      "left": "ne restano {n}",
+      "slotsLeft": "ne restano {n} su {max}",
+      "levelShort": "Liv {n}",
+      "toHit": "{n} a colpire",
+      "save": "tiro salvezza {save}",
+      "spellDc": "CD tiro salvezza incantesimi {n}",
+      "rollToHit": "Tira d20 {bonus} a colpire",
+      "rollDamage": "poi {dice} danni",
+      "attackRoll": "{total} a colpire (tiro {roll})",
+      "damageRoll": "{total} danni ({dice})",
+      "natOne": "1 naturale, mancato",
+      "crit": "Colpo critico!",
+      "atWill": "A volontà, nulla speso",
+      "slotUsed": "Slot di livello {level} usato, ne restano {n}",
+      "upcast": "Lanciato con uno slot di livello {level}, ne restano {n}",
+      "casts": "{name} lancia {spell}",
+      "sections": {
+        "traits": "Tratti",
+        "actions": "Azioni",
+        "bonusActions": "Azioni bonus",
+        "reactions": "Reazioni",
+        "legendary": "Azioni leggendarie"
+      }
     }
   },
   "documents": {

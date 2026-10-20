@@ -1559,6 +1559,35 @@
         "recharge": "Recharge",
         "legendary": "Actions légendaires"
       }
+    },
+    "monster": {
+      "title": "Attaques et sorts",
+      "attack": "Attaquer",
+      "castSpell": "Lancer un sort",
+      "readSpell": "Lire le sort",
+      "left": "reste {n}",
+      "slotsLeft": "reste {n} sur {max}",
+      "levelShort": "Niv {n}",
+      "toHit": "{n} au toucher",
+      "save": "sauvegarde {save}",
+      "spellDc": "DD de sauvegarde des sorts {n}",
+      "rollToHit": "Lancez d20 {bonus} au toucher",
+      "rollDamage": "puis {dice} dégâts",
+      "attackRoll": "{total} au toucher (dé : {roll})",
+      "damageRoll": "{total} dégâts ({dice})",
+      "natOne": "1 naturel, raté",
+      "crit": "Coup critique !",
+      "atWill": "À volonté, rien de dépensé",
+      "slotUsed": "Emplacement de niveau {level} utilisé, reste {n}",
+      "upcast": "Lancé avec un emplacement de niveau {level}, reste {n}",
+      "casts": "{name} lance {spell}",
+      "sections": {
+        "traits": "Traits",
+        "actions": "Actions",
+        "bonusActions": "Actions bonus",
+        "reactions": "Réactions",
+        "legendary": "Actions légendaires"
+      }
     }
   },
   "documents": {
