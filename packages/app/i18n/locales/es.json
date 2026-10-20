@@ -1481,7 +1481,13 @@
     "durationRounds": "Asaltos",
     "durationConcentration": "Concentración",
     "effectsExpired": "Efectos expirados",
-    "roll": "Tirar"
+    "roll": "Tirar",
+    "monsters": "Monstruos (referencia)",
+    "count": "Cantidad",
+    "monsterSearchHint": "Escribe al menos 2 letras para buscar monstruos",
+    "fromParty": "PG {hp}/{max} · CA {ac} (del grupo)",
+    "acHint": "Clase de armadura: haz clic para cambiarla",
+    "statBlock": "Estadísticas"
   },
   "documents": {
     "title": "Documentos",

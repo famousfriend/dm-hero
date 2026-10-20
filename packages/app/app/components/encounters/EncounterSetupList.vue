@@ -3,9 +3,9 @@
     <v-list v-if="participants.length > 0" lines="one" density="compact">
       <v-list-item v-for="p in participants" :key="p.id">
         <template #prepend>
-          <v-avatar :color="p.entity_type === 'Player' ? 'cyan-lighten-4' : 'blue-lighten-4'" size="36" class="mr-3">
+          <v-avatar :color="AVATAR[p.entity_type ?? '']?.color ?? 'blue-lighten-4'" size="36" class="mr-3">
             <v-img v-if="p.entity_image" :src="`/uploads/${p.entity_image}`" />
-            <v-icon v-else size="20">{{ p.entity_type === 'Player' ? 'mdi-account-star' : 'mdi-account' }}</v-icon>
+            <v-icon v-else size="20">{{ AVATAR[p.entity_type ?? '']?.icon ?? 'mdi-account' }}</v-icon>
           </v-avatar>
         </template>
 
@@ -19,6 +19,9 @@
             <!-- HP display -->
             <v-chip v-if="p.max_hp > 0" size="small" variant="tonal" prepend-icon="mdi-heart">
               {{ p.current_hp }}/{{ p.max_hp }}
+            </v-chip>
+            <v-chip v-if="p.armor_class != null" size="small" variant="tonal" prepend-icon="mdi-shield-outline">
+              {{ p.armor_class }}
             </v-chip>
 
             <!-- Initiative input -->
@@ -56,6 +59,12 @@ defineProps<{
   participants: EncounterParticipant[]
   showInitiative?: boolean
 }>()
+
+const AVATAR: Record<string, { icon: string, color: string }> = {
+  NPC: { icon: 'mdi-account', color: 'blue-lighten-4' },
+  Player: { icon: 'mdi-account-star', color: 'cyan-lighten-4' },
+  Monster: { icon: 'mdi-paw', color: 'red-lighten-4' },
+}
 
 const emit = defineEmits<{
   remove: [id: number]

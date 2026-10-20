@@ -1481,7 +1481,13 @@
     "durationRounds": "Rounds",
     "durationConcentration": "Concentration",
     "effectsExpired": "Effects expired",
-    "roll": "Roll"
+    "roll": "Roll",
+    "monsters": "Monsters (reference)",
+    "count": "Count",
+    "monsterSearchHint": "Type at least 2 letters to search the monster reference",
+    "fromParty": "HP {hp}/{max} · AC {ac} (from Party)",
+    "acHint": "Armor Class – click to change",
+    "statBlock": "Stat block"
   },
   "documents": {
     "title": "Documents",

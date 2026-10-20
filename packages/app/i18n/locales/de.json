@@ -1481,7 +1481,13 @@
     "durationRounds": "Runden",
     "durationConcentration": "Konzentration",
     "effectsExpired": "Effekte abgelaufen",
-    "roll": "Würfeln"
+    "roll": "Würfeln",
+    "monsters": "Monster (Nachschlagewerk)",
+    "count": "Anzahl",
+    "monsterSearchHint": "Mindestens 2 Buchstaben eingeben, um Monster zu suchen",
+    "fromParty": "TP {hp}/{max} · RK {ac} (aus Gruppe)",
+    "acHint": "Rüstungsklasse – zum Ändern klicken",
+    "statBlock": "Werteblock"
   },
   "documents": {
     "title": "Dokumente",

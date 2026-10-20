@@ -29,6 +29,9 @@
           <div v-if="participant.initiative != null" class="combat-tile__initiative">
             {{ participant.initiative }}
           </div>
+          <div v-if="participant.armor_class != null" class="combat-tile__ac" :title="$t('party.fields.ac')">
+            {{ participant.armor_class }}
+          </div>
           <v-btn
             icon="mdi-eye"
             variant="flat"
@@ -79,6 +82,40 @@
               <v-chip size="x-small" variant="tonal">{{ activeParticipant.entity_type }}</v-chip>
               <v-chip v-if="activeParticipant.initiative != null" size="x-small" variant="tonal" color="info" prepend-icon="mdi-lightning-bolt">
                 {{ activeParticipant.initiative }}
+              </v-chip>
+              <v-text-field
+                v-if="editingAc"
+                v-model.number="acInput"
+                type="number"
+                density="compact"
+                variant="outlined"
+                hide-details
+                autofocus
+                :label="$t('party.ac')"
+                class="ac-input"
+                @keydown.enter="saveAc"
+                @keydown.esc="editingAc = false"
+                @blur="saveAc"
+              />
+              <v-chip
+                v-else
+                size="x-small"
+                variant="tonal"
+                prepend-icon="mdi-shield-outline"
+                :title="$t('encounters.acHint')"
+                @click="editAc"
+              >
+                {{ $t('party.ac') }} {{ activeParticipant.armor_class ?? '–' }}
+              </v-chip>
+              <v-chip
+                v-if="activeParticipant.ref_uid"
+                size="x-small"
+                variant="tonal"
+                color="error"
+                prepend-icon="mdi-book-open-variant"
+                @click="codex.open(activeParticipant.ref_uid)"
+              >
+                {{ $t('encounters.statBlock') }}
               </v-chip>
               <v-chip v-if="activeParticipant.is_ko" size="x-small" color="error" prepend-icon="mdi-skull">{{ $t('encounters.ko') }}</v-chip>
             </div>
@@ -250,6 +287,7 @@ import type { EncounterEffect, EncounterParticipant } from '~~/types/encounter'
 
 const { t } = useI18n()
 const encounterStore = useEncounterStore()
+const codex = useCodexStore()
 
 const props = defineProps<{
   participants: EncounterParticipant[]
@@ -431,6 +469,24 @@ function effectIcon(e: EncounterEffect): string {
   return 'mdi-star-four-points'
 }
 
+// Armor class: click the chip to type it in
+const editingAc = ref(false)
+const acInput = ref<number | null>(null)
+
+function editAc() {
+  acInput.value = activeParticipant.value?.armor_class ?? null
+  editingAc.value = true
+}
+
+function saveAc() {
+  if (!editingAc.value) return
+  editingAc.value = false
+  const participant = activeParticipant.value
+  const value = Number(acInput.value)
+  if (!participant || acInput.value === null || Number.isNaN(value) || value === participant.armor_class) return
+  emit('updateParticipant', participant.id, { armor_class: Math.max(0, Math.trunc(value)) })
+}
+
 function confirmRemove(participant: EncounterParticipant) {
   removeTarget.value = participant
   showRemoveDialog.value = true
@@ -445,8 +501,13 @@ function doRemove() {
 }
 
 function openPreview(participant: EncounterParticipant) {
+  // Reference monsters have no entity: show their stat block instead
+  if (participant.ref_uid) {
+    codex.open(participant.ref_uid)
+    return
+  }
   previewEntityType.value = participant.entity_type === 'Player' ? 'player' : 'npc'
-  previewEntityId.value = participant.entity_id
+  previewEntityId.value = participant.entity_id ?? null
   showPreviewDialog.value = true
 }
 
@@ -454,6 +515,7 @@ function getEntityIcon(type?: string): string {
   const icons: Record<string, string> = {
     NPC: 'mdi-account',
     Player: 'mdi-account-star',
+    Monster: 'mdi-paw',
   }
   return icons[type || ''] || 'mdi-help'
 }
@@ -462,6 +524,7 @@ function getAvatarColor(type?: string): string {
   const colors: Record<string, string> = {
     NPC: 'blue-lighten-4',
     Player: 'cyan-lighten-4',
+    Monster: 'red-lighten-4',
   }
   return colors[type || ''] || 'grey-lighten-3'
 }
@@ -518,6 +581,27 @@ function getAvatarColor(type?: string): string {
   position: absolute;
   inset: 0;
   background: rgba(0, 0, 0, 0.5);
+}
+
+.combat-tile__ac {
+  position: absolute;
+  bottom: -6px;
+  right: -6px;
+  min-width: 22px;
+  height: 22px;
+  padding: 0 4px;
+  border-radius: 6px 6px 11px 11px;
+  background: rgb(var(--v-theme-surface-variant));
+  color: rgb(var(--v-theme-on-surface-variant));
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 22px;
+  text-align: center;
+  z-index: 2;
+}
+
+.ac-input {
+  max-width: 80px;
 }
 
 .combat-tile__initiative {

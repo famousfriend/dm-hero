@@ -1481,7 +1481,13 @@
     "durationRounds": "Rounds",
     "durationConcentration": "Concentration",
     "effectsExpired": "Effets expirés",
-    "roll": "Lancer"
+    "roll": "Lancer",
+    "monsters": "Monstres (référence)",
+    "count": "Nombre",
+    "monsterSearchHint": "Tapez au moins 2 lettres pour chercher un monstre",
+    "fromParty": "PV {hp}/{max} · CA {ac} (du groupe)",
+    "acHint": "Classe d'armure : cliquez pour modifier",
+    "statBlock": "Profil"
   },
   "documents": {
     "title": "Documents",

@@ -36,6 +36,58 @@
           <v-progress-circular indeterminate color="primary" />
         </div>
 
+        <!-- Monsters from the reference library -->
+        <template v-else-if="selectedType === 'Monster'">
+          <v-list v-if="monsters.length > 0" density="compact" style="max-height: 350px; overflow-y: auto;">
+            <v-list-item v-for="monster in monsters" :key="monster.uid">
+              <template #prepend>
+                <v-avatar color="red-lighten-4" size="36">
+                  <v-icon size="20">mdi-paw</v-icon>
+                </v-avatar>
+              </template>
+              <v-list-item-title>{{ monster.name }}</v-list-item-title>
+              <v-list-item-subtitle>{{ monster.summary }}</v-list-item-subtitle>
+              <template #append>
+                <div class="d-flex align-center ga-1">
+                  <v-text-field
+                    v-if="requireInitiative"
+                    v-model.number="monsterInitiative[monster.uid]"
+                    type="number"
+                    density="comfortable"
+                    variant="outlined"
+                    hide-details
+                    :label="$t('encounters.initiative')"
+                    style="width: 100px; font-size: 18px; font-weight: 700;"
+                    @keydown.enter="addMonster(monster)"
+                  />
+                  <v-text-field
+                    v-model.number="monsterCounts[monster.uid]"
+                    type="number"
+                    min="1"
+                    max="20"
+                    density="comfortable"
+                    variant="outlined"
+                    hide-details
+                    :label="$t('encounters.count')"
+                    style="width: 72px;"
+                  />
+                  <v-btn
+                    icon="mdi-plus"
+                    size="small"
+                    color="primary"
+                    variant="text"
+                    :disabled="requireInitiative && monsterInitiative[monster.uid] == null"
+                    @click="addMonster(monster)"
+                  />
+                </div>
+              </template>
+            </v-list-item>
+          </v-list>
+          <div v-else class="text-center py-6 text-medium-emphasis">
+            {{ searchQuery.trim().length < 2 ? $t('encounters.monsterSearchHint') : $t('common.noResults') }}
+          </div>
+        </template>
+
         <v-list v-else-if="entities.length > 0" density="compact" style="max-height: 350px; overflow-y: auto;">
           <v-list-item
             v-for="entity in entities"
@@ -50,7 +102,13 @@
 
             <v-list-item-title>{{ entity.name }}</v-list-item-title>
 
-            <v-list-item-subtitle v-if="entity.resources.length > 0">
+            <v-list-item-subtitle v-if="entity.party">
+              <span class="text-success">
+                <v-icon size="12" color="success">mdi-shield-account</v-icon>
+                {{ $t('encounters.fromParty', { hp: entity.party.hpCurrent, max: entity.party.hpMax, ac: entity.party.ac }) }}
+              </span>
+            </v-list-item-subtitle>
+            <v-list-item-subtitle v-else-if="entity.resources.length > 0">
               <!-- Auto-detected HP indicator -->
               <span v-if="entity.autoHpField" class="text-success">
                 <v-icon size="12" color="success">mdi-check-circle</v-icon>
@@ -122,6 +180,7 @@
 </template>
 
 <script setup lang="ts">
+import type { CodexEntrySummary } from '~~/types/codex'
 import type { EncounterParticipant } from '~~/types/encounter'
 
 const { t } = useI18n()
@@ -143,6 +202,8 @@ interface EncounterEntity {
   type_name: string
   resources: ResourceField[]
   autoHpField: string | null
+  /** HP/AC from the Party view (players with D&D Beyond or manual numbers) */
+  party: { hpCurrent: number, hpMax: number, ac: number } | null
 }
 
 const props = withDefaults(defineProps<{
@@ -167,6 +228,7 @@ const internalShow = computed({
 const entityTypes = [
   { title: t('npcs.title'), value: 'NPC' },
   { title: t('players.title'), value: 'Player' },
+  { title: t('encounters.monsters'), value: 'Monster' },
 ]
 
 const selectedType = ref('NPC')
@@ -174,6 +236,9 @@ const searchQuery = ref('')
 const loading = ref(false)
 const entities = ref<EncounterEntity[]>([])
 const initiativeInputs = ref<Record<number, number | undefined>>({})
+const monsters = ref<CodexEntrySummary[]>([])
+const monsterCounts = ref<Record<string, number | undefined>>({})
+const monsterInitiative = ref<Record<string, number | undefined>>({})
 
 let searchTimeout: ReturnType<typeof setTimeout> | null = null
 
@@ -187,11 +252,32 @@ watch(() => props.modelValue, (visible) => {
     selectedType.value = 'NPC'
     searchQuery.value = ''
     initiativeInputs.value = {}
+    monsterCounts.value = {}
+    monsterInitiative.value = {}
     loadEntities()
   }
 })
 
+async function loadMonsters(search?: string) {
+  const q = (search ?? searchQuery.value ?? '').trim()
+  if (q.length < 2) {
+    monsters.value = []
+    return
+  }
+  loading.value = true
+  try {
+    monsters.value = await $fetch<CodexEntrySummary[]>('/api/codex/search', { query: { q, kind: 'monster', limit: 25 } })
+  }
+  catch {
+    monsters.value = []
+  }
+  finally {
+    loading.value = false
+  }
+}
+
 async function loadEntities(search?: string) {
+  if (selectedType.value === 'Monster') return loadMonsters(search)
   if (!campaignStore.activeCampaignId) return
   loading.value = true
   try {
@@ -219,39 +305,48 @@ function getResource(entity: EncounterEntity, fieldName: string): ResourceField 
 }
 
 function onAddClick(entity: EncounterEntity) {
-  // Use auto-detected HP, or first resource, or nothing
+  // Party view numbers win for players; else auto-detected HP, first resource, or nothing
+  if (entity.party) {
+    addEntity(entity, { currentHp: entity.party.hpCurrent, maxHp: entity.party.hpMax, armorClass: entity.party.ac })
+    return
+  }
   const hpField = entity.autoHpField ?? entity.resources[0]?.name ?? null
   addWithResource(entity, hpField)
 }
 
-async function addWithResource(entity: EncounterEntity, hpFieldName: string | null) {
-  let currentHp = 0
-  let maxHp = 0
+function addWithResource(entity: EncounterEntity, hpFieldName: string | null) {
+  const resource = hpFieldName ? entity.resources.find(r => r.name === hpFieldName) : undefined
+  return addEntity(entity, { currentHp: resource?.current ?? 0, maxHp: resource?.max ?? 0 })
+}
 
-  if (hpFieldName) {
-    const resource = entity.resources.find(r => r.name === hpFieldName)
-    if (resource) {
-      currentHp = resource.current
-      maxHp = resource.max
-    }
-  }
-
+async function addEntity(entity: EncounterEntity, stats: { currentHp: number, maxHp: number, armorClass?: number }) {
   const initiative = props.requireInitiative ? initiativeInputs.value[entity.id] ?? null : null
-
-  const ok = await encounterStore.addParticipantsWithHp(props.encounterId, [{ entityId: entity.id, currentHp, maxHp }])
+  const before = new Set(encounterStore.participants.map(p => p.id))
+  const ok = await encounterStore.addParticipantsWithHp(props.encounterId, [{ entityId: entity.id, ...stats }])
   if (!ok) return
-
-  // Set initiative and re-sort into correct position
-  if (initiative != null) {
-    const newParticipant = encounterStore.participants.findLast(p => p.entity_id === entity.id)
-    if (newParticipant) {
-      await encounterStore.updateParticipant(props.encounterId, newParticipant.id, { initiative })
-      await encounterStore.sortByInitiative()
-    }
-  }
-
+  await applyInitiative(before, initiative)
   initiativeInputs.value[entity.id] = undefined
   snackbarStore.success(t('encounters.participantAdded'))
+}
+
+async function addMonster(monster: CodexEntrySummary) {
+  const count = Math.min(20, Math.max(1, Math.trunc(monsterCounts.value[monster.uid] ?? 1)))
+  const initiative = props.requireInitiative ? monsterInitiative.value[monster.uid] ?? null : null
+  const before = new Set(encounterStore.participants.map(p => p.id))
+  const ok = await encounterStore.addParticipantsWithHp(props.encounterId, [{ refUid: monster.uid, count }])
+  if (!ok) return
+  await applyInitiative(before, initiative)
+  monsterInitiative.value[monster.uid] = undefined
+  snackbarStore.success(t('encounters.participantAdded'))
+}
+
+/** Gives the newly added participants their initiative and re-sorts the turn order */
+async function applyInitiative(before: Set<number>, initiative: number | null) {
+  if (initiative == null) return
+  for (const p of encounterStore.participants.filter(p => !before.has(p.id))) {
+    await encounterStore.updateParticipant(props.encounterId, p.id, { initiative })
+  }
+  await encounterStore.sortByInitiative()
 }
 
 function close() {

@@ -1481,7 +1481,13 @@
     "durationRounds": "Round",
     "durationConcentration": "Concentrazione",
     "effectsExpired": "Effetti scaduti",
-    "roll": "Tira"
+    "roll": "Tira",
+    "monsters": "Mostri (riferimento)",
+    "count": "Numero",
+    "monsterSearchHint": "Scrivi almeno 2 lettere per cercare un mostro",
+    "fromParty": "PF {hp}/{max} · CA {ac} (dal gruppo)",
+    "acHint": "Classe armatura: clicca per cambiarla",
+    "statBlock": "Statistiche"
   },
   "documents": {
     "title": "Documenti",
