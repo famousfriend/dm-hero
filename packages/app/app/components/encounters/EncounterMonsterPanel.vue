@@ -86,6 +86,61 @@
     >
       <div class="text-body-medium font-weight-medium">{{ lastResult.title }}</div>
       <div v-if="lastResult.detail" class="text-body-small">{{ lastResult.detail }}</div>
+      <div v-if="(taleSpire.enabled.value && lastResult.rolls?.length) || (lastResult.entry && !entering)" class="d-flex flex-wrap ga-2 mt-2">
+        <v-btn
+          v-if="taleSpire.enabled.value && lastResult.rolls?.length"
+          size="small"
+          variant="flat"
+          color="primary"
+          prepend-icon="mdi-dice-d20"
+          @click="sendToTaleSpire(lastResult.rolls)"
+        >
+          {{ $t('encounters.taleSpire.roll') }}
+        </v-btn>
+        <v-btn
+          v-if="lastResult.entry && !entering"
+          size="small"
+          variant="text"
+          prepend-icon="mdi-keyboard-outline"
+          @click="startEntry"
+        >
+          {{ $t('encounters.monster.ownRoll') }}
+        </v-btn>
+      </div>
+      <!-- Rolled at the table (or in TaleSpire): type in what the dice showed -->
+      <div v-if="lastResult.entry && entering" class="d-flex align-center flex-wrap ga-2 mt-2">
+        <v-text-field
+          v-if="lastResult.entry.toHit !== null"
+          v-model.number="ownD20"
+          type="number"
+          :label="$t('encounters.monster.d20Rolled')"
+          :min="1"
+          :max="20"
+          :error="ownD20 != null && !validD20"
+          density="compact"
+          variant="outlined"
+          hide-details
+          autofocus
+          class="own-roll"
+          @keydown.enter="applyOwnRoll"
+        />
+        <v-text-field
+          v-if="lastResult.entry.damageDice"
+          v-model.number="ownDamage"
+          type="number"
+          :label="$t('encounters.monster.damageRolled')"
+          :min="0"
+          :autofocus="lastResult.entry.toHit === null"
+          density="compact"
+          variant="outlined"
+          hide-details
+          class="own-roll"
+          @keydown.enter="applyOwnRoll"
+        />
+        <v-btn size="small" color="primary" :disabled="!canApplyOwnRoll" @click="applyOwnRoll">
+          {{ $t('common.ok') }}
+        </v-btn>
+      </div>
     </v-alert>
 
     <!-- Spell slots and X/day spells left -->
@@ -122,6 +177,7 @@
 import type { CodexEntry } from '~~/types/codex'
 import { buildUid } from '~~/types/codex'
 import type { EncounterParticipant, EncounterResource } from '~~/types/encounter'
+import type { TaleSpireRoll } from '~/utils/taleSpire'
 import {
   abilityName,
   innateResourceName,
@@ -154,10 +210,31 @@ const encounterStore = useEncounterStore()
 const campaignStore = useCampaignStore()
 const snackbarStore = useSnackbarStore()
 const physicalDice = usePhysicalDice()
+const taleSpire = useTaleSpire()
+
+interface PickResult {
+  title: string
+  detail?: string
+  crit?: boolean
+  /** Dice for the TaleSpire tray */
+  rolls?: TaleSpireRoll[]
+  /** An attack whose dice can be typed in after rolling them for real */
+  entry?: { name: string, toHit: number | null, damageDice: string | null, save: string | null }
+}
 
 const block = ref<StatBlock | null>(null)
 const openPanels = ref<string[]>(['traits', 'actions'])
-const lastResult = ref<{ title: string, detail?: string, crit?: boolean } | null>(null)
+const lastResult = ref<PickResult | null>(null)
+const entering = ref(false)
+const ownD20 = ref<number | null>(null)
+const ownDamage = ref<number | null>(null)
+/** A new result always starts with empty boxes */
+function showResult(result: PickResult, enter = false) {
+  lastResult.value = result
+  entering.value = enter
+  ownD20.value = null
+  ownDamage.value = null
+}
 
 watch(() => [props.participant.id, props.participant.ref_uid] as const, async ([, uid]) => {
   block.value = null
@@ -256,15 +333,24 @@ async function useAction(action: StatBlockAction, section: ActionSection) {
   }
 
   const name = `${who}: ${action.name}`
-  if (physicalDice.value) {
-    lastResult.value = {
+  const rolls: TaleSpireRoll[] = []
+  if (action.toHit !== null) rolls.push({ name: action.name, dice: `1d20${signed(action.toHit)}` })
+  if (action.damageDice) rolls.push({ name: t('encounters.taleSpire.damage'), dice: action.damageDice })
+  const entry = action.toHit !== null || action.damageDice
+    ? { name, toHit: action.toHit, damageDice: action.damageDice, save: action.save }
+    : undefined
+  // Rolled at the table or in TaleSpire: say what to roll, the DM types in the result
+  if (physicalDice.value || taleSpire.enabled.value) {
+    showResult({
       title: name,
       detail: [
         action.toHit !== null ? t('encounters.monster.rollToHit', { bonus: signed(action.toHit) }) : '',
         action.save ? t('encounters.monster.save', { save: action.save }) : '',
         action.damageDice ? t('encounters.monster.rollDamage', { dice: action.damageDice }) : '',
       ].filter(Boolean).join(' · ') || plain(action.text),
-    }
+      rolls,
+      entry,
+    }, !!entry)
     return
   }
 
@@ -279,11 +365,55 @@ async function useAction(action: StatBlockAction, section: ActionSection) {
   }
   if (action.save) parts.push(t('encounters.monster.save', { save: action.save }))
   if (damage && d20 !== 1) parts.push(t('encounters.monster.damageRoll', { total: damage.total, dice: action.damageDice }))
-  lastResult.value = {
+  showResult({
     title: crit ? `${name} · ${t('encounters.monster.crit')}` : name,
     detail: parts.join(' · ') || plain(action.text),
     crit,
+    rolls,
+    entry,
+  })
+}
+
+const validD20 = computed(() => ownD20.value != null && Number.isInteger(ownD20.value) && ownD20.value >= 1 && ownD20.value <= 20)
+const validDamage = computed(() => ownDamage.value != null && Number.isInteger(ownDamage.value) && ownDamage.value >= 0)
+const canApplyOwnRoll = computed(() => {
+  const entry = lastResult.value?.entry
+  if (!entry) return false
+  if (entry.toHit !== null && !validD20.value) return false
+  // Damage may stay empty (a miss), but not hold nonsense
+  return ownDamage.value == null || validDamage.value || !entry.damageDice
+})
+
+function startEntry() {
+  entering.value = true
+}
+
+/** The real dice: d20 + bonus to hit, the damage as rolled */
+function applyOwnRoll() {
+  const result = lastResult.value
+  const entry = result?.entry
+  if (!result || !entry || !canApplyOwnRoll.value) return
+  const d20 = entry.toHit !== null ? ownD20.value! : null
+  const crit = d20 === 20
+  const parts: string[] = []
+  if (d20 !== null) {
+    parts.push(d20 === 1
+      ? t('encounters.monster.natOne')
+      : t('encounters.monster.attackRoll', { total: d20 + entry.toHit!, roll: d20 }))
   }
+  if (entry.save) parts.push(t('encounters.monster.save', { save: entry.save }))
+  if (validDamage.value && d20 !== 1) parts.push(t('encounters.monster.damageRoll', { total: ownDamage.value!, dice: entry.damageDice! }))
+  else if (crit && entry.damageDice) parts.push(t('encounters.monster.critDamage', { dice: entry.damageDice }))
+  showResult({
+    ...result,
+    title: crit ? `${entry.name} · ${t('encounters.monster.crit')}` : entry.name,
+    detail: parts.join(' · '),
+    crit,
+  })
+}
+
+async function sendToTaleSpire(rolls: TaleSpireRoll[]) {
+  if (!(await taleSpire.sendRolls(rolls))) snackbarStore.error(t('encounters.taleSpire.failed'))
 }
 
 // ---------------------------------------------------------------- spells
@@ -318,10 +448,11 @@ async function cast(casting: Spellcasting, group: SpellGroup, spell: string) {
       ? t('encounters.monster.slotUsed', { level: slot.level, n: slotsLeft(slot) })
       : t('encounters.monster.upcast', { level: slot.level, n: slotsLeft(slot) })
   }
-  lastResult.value = {
+  showResult({
     title: t('encounters.monster.casts', { name: who, spell }),
     detail: [detail, spellStats(casting)].filter(Boolean).join(' · '),
-  }
+    rolls: casting.attack !== null ? [{ name: spell, dice: `1d20${signed(casting.attack)}` }] : undefined,
+  })
 }
 
 function spellStats(casting: Spellcasting) {
@@ -349,5 +480,8 @@ function plain(text: string) {
 <style scoped>
 .monster-panel :deep(.v-expansion-panel-text__wrapper) {
   padding: 8px 16px 4px;
+}
+.own-roll {
+  max-width: 170px;
 }
 </style>

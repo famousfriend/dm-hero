@@ -1568,6 +1568,14 @@
       "enterResults": "Inserisci risultati",
       "total": "Totale"
     },
+    "taleSpire": {
+      "short": "TaleSpire",
+      "roll": "Tira in TaleSpire",
+      "rollHint": "Metti questi dadi nel vassoio dei dadi di TaleSpire",
+      "toggleHint": "Uso TaleSpire: mostra pulsanti che mettono i dadi nel vassoio di TaleSpire",
+      "damage": "Danni",
+      "failed": "Impossibile aprire TaleSpire. È installato?"
+    },
     "resources": {
       "title": "Capacità",
       "add": "Capacità",
@@ -1619,7 +1627,11 @@
         "bonusActions": "Azioni bonus",
         "reactions": "Reazioni",
         "legendary": "Azioni leggendarie"
-      }
+      },
+      "ownRoll": "Inserisci il mio tiro",
+      "d20Rolled": "d20 ottenuto",
+      "damageRolled": "Danni ottenuti",
+      "critDamage": "Critico: tira due volte i dadi danno {dice}"
     },
     "syncPlayers": "Sincronizza giocatori",
     "syncPlayersHint": "Porta PF e CA dei giocatori dalla vista del gruppo (e da D&D Beyond) in questo combattimento",
