@@ -108,7 +108,8 @@
   "playfulness": {
     "title": "Fantaisie",
     "description": "Petites animations aléatoires : un serpent qui jaillit d'un dossier, un kobold qui jette un œil. Rares, jamais agaçantes, désactivables.",
-    "folderAnimationsLabel": "Animations au survol des dossiers"
+    "folderAnimationsLabel": "Animations au survol des dossiers",
+    "autoOffHint": "Concerne aussi les dés et les effets d’arrière-plan du tableau de bord. Désactivé au départ sur les PC plus lents pour que l’app reste fluide."
   },
   "featureTooltips": {
     "newBadge": "Nouveau",

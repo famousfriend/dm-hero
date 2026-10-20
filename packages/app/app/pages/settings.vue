@@ -343,6 +343,9 @@
           density="comfortable"
           @update:model-value="setFolderAnimationsEnabled"
         />
+        <p class="text-medium-emphasis text-body-small mt-2 mb-0">
+          {{ $t('playfulness.autoOffHint') }}
+        </p>
       </v-card-text>
     </v-card>
 

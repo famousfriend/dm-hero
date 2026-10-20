@@ -127,21 +127,23 @@
       <v-row>
         <TransitionGroup tag="div" name="card-move-out" class="card-grid-contents">
           <v-col v-for="loreEntry in filteredLore" :key="loreEntry.id" cols="12" md="6" lg="4">
-            <LoreCard
-              :lore="loreEntry"
-              :is-highlighted="highlightedId === loreEntry.id"
-              @view="viewLore"
-              @edit="editLore"
-              @download="(lore) => downloadImage(`/uploads/${lore.image_url}`, lore.name)"
-              @archive="archiveEntity"
-              @delete="confirmDelete"
-              @chaos="openChaos"
-              @open-group="openGroupPreview"
-              @open-tab="openLoreTab"
-              @create-group="groupCreate.open"
-              @moved="onLoreMoved"
-              @move-error="onLoreMoveError"
-            />
+            <SharedLazyRender :eager="highlightedId === loreEntry.id">
+              <LoreCard
+                :lore="loreEntry"
+                :is-highlighted="highlightedId === loreEntry.id"
+                @view="viewLore"
+                @edit="editLore"
+                @download="(lore) => downloadImage(`/uploads/${lore.image_url}`, lore.name)"
+                @archive="archiveEntity"
+                @delete="confirmDelete"
+                @chaos="openChaos"
+                @open-group="openGroupPreview"
+                @open-tab="openLoreTab"
+                @create-group="groupCreate.open"
+                @moved="onLoreMoved"
+                @move-error="onLoreMoveError"
+              />
+            </SharedLazyRender>
           </v-col>
         </TransitionGroup>
       </v-row>

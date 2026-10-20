@@ -27,7 +27,8 @@
           <div class="d-flex align-center justify-space-between mb-2 position-relative">
             <!-- 3D Dice Animation (absolute, doesn't take layout space) -->
             <ClientOnly>
-              <DashboardDice notation="2d20" :width="260" :height="200" class="dice-overlay" />
+              <DashboardDice v-if="animationsEnabled" notation="2d20" :width="260" :height="200" class="dice-overlay" />
+              <v-icon v-else icon="mdi-dice-d20" size="96" color="primary" class="dice-overlay dice-still" />
             </ClientOnly>
             <!-- Title with left margin to make room for dice -->
             <div style="margin-left: 230px;" class="mb-6 mt-4">
@@ -328,6 +329,7 @@
 import type { CampaignMap } from '~~/types/map'
 import type { PinboardItem } from '~~/types/pinboard'
 import type { EntityPreviewType } from '../components/shared/EntityPreviewDialog.vue'
+import { useFolderAnimationSettings } from '~/composables/useFolderAnimations'
 import CampaignExportDialog from '~/components/campaigns/CampaignExportDialog.vue'
 import CampaignImportDialog from '~/components/campaigns/CampaignImportDialog.vue'
 import PlayerExportDialog from '~/components/campaigns/PlayerExportDialog.vue'
@@ -352,6 +354,8 @@ interface Weather {
 }
 
 const router = useRouter()
+// The 3D dice are a WebGL + physics engine: only with "Playfulness" on (off by default on slower PCs)
+const { enabled: animationsEnabled } = useFolderAnimationSettings()
 const { t } = useI18n()
 const campaignStore = useCampaignStore()
 const entitiesStore = useEntitiesStore()
@@ -704,6 +708,11 @@ watch(activeCampaignId, (newId) => {
 }
 
 /* Dice overlay - positioned absolute so it doesn't take layout space */
+.dice-still {
+  left: 64px;
+  opacity: 0.85;
+}
+
 .dice-overlay {
   position: absolute;
   left: 0;

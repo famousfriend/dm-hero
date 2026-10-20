@@ -465,6 +465,7 @@
 
   <!-- Image Preview Dialog -->
   <ImagePreviewDialog
+    v-if="showImagePreview"
     v-model="showImagePreview"
     :image-url="`/uploads/${npc.image_url}`"
     :title="npc.name"
@@ -475,6 +476,7 @@
 
   <!-- Quick Link Context Menu -->
   <QuickLinkContextMenu
+    v-if="quickLink.showContextMenu.value"
     v-model="quickLink.showContextMenu.value"
     v-bind="quickLink.contextMenuProps.value"
     @select="quickLink.handleQuickLinkSelect"
@@ -484,6 +486,7 @@
 
   <!-- Quick Link Entity Select Dialog -->
   <QuickLinkEntitySelectDialog
+    v-if="quickLink.showEntitySelectDialog.value"
     v-model="quickLink.showEntitySelectDialog.value"
     v-bind="quickLink.entitySelectDialogProps.value"
     @linked="quickLink.handleLinked"

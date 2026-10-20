@@ -1,6 +1,4 @@
 import { createVuetify } from 'vuetify'
-import * as components from 'vuetify/components'
-import * as directives from 'vuetify/directives'
 import { de, en, es, fr, it, zhHans } from 'vuetify/locale'
 import '@mdi/font/css/materialdesignicons.css'
 import 'vuetify/styles'
@@ -20,8 +18,6 @@ export default defineNuxtPlugin((nuxtApp) => {
     : DEFAULT_THEME
 
   const vuetify = createVuetify({
-    components,
-    directives,
     locale: {
       locale: 'de',
       fallback: 'en',

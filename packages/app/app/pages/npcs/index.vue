@@ -141,22 +141,24 @@
       <v-row>
         <TransitionGroup tag="div" name="card-move-out" class="card-grid-contents">
           <v-col v-for="npc in filteredNpcs" :key="npc.id" cols="12" md="6" lg="4">
-            <NpcCard
-              :npc="npc"
-              :is-highlighted="highlightedId === npc.id"
-              :races="races"
-              :classes="classes"
-              @view="viewNpc"
-              @edit="editNpc"
-              @download="(npc: NPC) => downloadImage(`/uploads/${npc.image_url}`, npc.name)"
-              @archive="archiveNpc"
-              @delete="deleteNpc"
-              @open-group="openGroupPreview"
-              @open-tab="openNpcTab"
-              @create-group="groupCreate.open"
-              @moved="onNpcMoved"
-              @move-error="onNpcMoveError"
-            />
+            <SharedLazyRender :eager="highlightedId === npc.id">
+              <NpcCard
+                :npc="npc"
+                :is-highlighted="highlightedId === npc.id"
+                :races="races"
+                :classes="classes"
+                @view="viewNpc"
+                @edit="editNpc"
+                @download="(npc: NPC) => downloadImage(`/uploads/${npc.image_url}`, npc.name)"
+                @archive="archiveNpc"
+                @delete="deleteNpc"
+                @open-group="openGroupPreview"
+                @open-tab="openNpcTab"
+                @create-group="groupCreate.open"
+                @moved="onNpcMoved"
+                @move-error="onNpcMoveError"
+              />
+            </SharedLazyRender>
           </v-col>
         </TransitionGroup>
       </v-row>

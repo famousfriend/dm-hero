@@ -108,7 +108,8 @@
   "playfulness": {
     "title": "Giocosità",
     "description": "Piccole animazioni casuali: un serpente che scatta fuori da una cartella, un coboldo che sbircia. Rare, mai fastidiose, disattivabili.",
-    "folderAnimationsLabel": "Animazioni al passaggio sulle cartelle"
+    "folderAnimationsLabel": "Animazioni al passaggio sulle cartelle",
+    "autoOffHint": "Vale anche per i dadi e gli effetti di sfondo della dashboard. Sui PC più lenti parte disattivato, così l’app resta fluida."
   },
   "featureTooltips": {
     "newBadge": "Nuovo",

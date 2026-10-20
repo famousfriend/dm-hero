@@ -126,21 +126,23 @@
       <v-row>
         <TransitionGroup tag="div" name="card-move-out" class="card-grid-contents">
           <v-col v-for="faction in filteredFactions" :key="faction.id" cols="12" md="6" lg="4">
-            <FactionCard
-              :faction="faction"
-              :is-highlighted="highlightedId === faction.id"
-              @view="viewFaction"
-              @edit="editFaction"
-              @download="(f) => downloadImage(`/uploads/${f.image_url}`, f.name)"
-              @archive="archiveEntity"
-              @delete="deleteFaction"
-              @chaos="openChaosGraph"
-              @open-group="openGroupPreview"
-              @open-tab="openFactionTab"
-              @create-group="groupCreate.open"
-              @moved="onFactionMoved"
-              @move-error="onFactionMoveError"
-            />
+            <SharedLazyRender :eager="highlightedId === faction.id">
+              <FactionCard
+                :faction="faction"
+                :is-highlighted="highlightedId === faction.id"
+                @view="viewFaction"
+                @edit="editFaction"
+                @download="(f) => downloadImage(`/uploads/${f.image_url}`, f.name)"
+                @archive="archiveEntity"
+                @delete="deleteFaction"
+                @chaos="openChaosGraph"
+                @open-group="openGroupPreview"
+                @open-tab="openFactionTab"
+                @create-group="groupCreate.open"
+                @moved="onFactionMoved"
+                @move-error="onFactionMoveError"
+              />
+            </SharedLazyRender>
           </v-col>
         </TransitionGroup>
       </v-row>

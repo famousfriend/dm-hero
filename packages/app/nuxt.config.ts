@@ -1,3 +1,4 @@
+import vuetify from 'vite-plugin-vuetify'
 import pkg from './package.json'
 
 // https://nuxt.com/docs/api/configuration/nuxt-config
@@ -108,6 +109,8 @@ export default defineNuxtConfig({
 function extendViteConfig(config: any) {
   const plugin = config.plugins?.find((p: unknown) => isPlugin(p, 'nuxt:environments'))
   if (plugin) plugin.enforce = 'pre'
+  // Only the Vuetify components the templates use end up in the bundle (with their CSS)
+  config.plugins?.push(vuetify({ autoImport: true }))
 }
 
 function isPlugin(plugin: unknown, name: string): plugin is { name: string, enforce?: string } {

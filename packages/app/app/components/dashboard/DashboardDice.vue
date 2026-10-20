@@ -23,11 +23,18 @@ const props = withDefaults(
 // Generate unique ID for container
 const containerId = `dice-box-${Math.random().toString(36).slice(2, 9)}`
 const diceBox = useDiceBox()
+let unmounted = false
 
 // Initialize and auto-roll on mount
 onMounted(async () => {
   // Destroy any existing instance when remounting (e.g., after navigation)
   diceBox.destroy()
+  // Let the dashboard finish drawing before the 3D engine starts
+  await new Promise<void>((resolve) => {
+    if ('requestIdleCallback' in window) window.requestIdleCallback(() => resolve(), { timeout: 1500 })
+    else setTimeout(resolve, 300)
+  })
+  if (unmounted) return
 
   try {
     await diceBox.init({
@@ -58,6 +65,7 @@ onMounted(async () => {
 
 // Cleanup on unmount
 onUnmounted(() => {
+  unmounted = true
   diceBox.destroy()
 })
 

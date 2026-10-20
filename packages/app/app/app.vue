@@ -169,6 +169,8 @@ if (import.meta.client) {
   }
 
   const pollImportSignal = async () => {
+    // Nothing to show while the window is minimised or hidden
+    if (document.hidden) return
     try {
       const sig = await $fetch<{ seq: number, action: 'import' | 'update' | null, campaignId: number | null, total: number }>(
         '/api/import/status',

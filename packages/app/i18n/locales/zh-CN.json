@@ -108,7 +108,8 @@
   "playfulness": {
     "title": "俏皮",
     "description": "小而随机的动画 - 一条蛇从文件夹中猛然窜出，一只狗头人在偷看。罕见，从不烦人，可切换。",
-    "folderAnimationsLabel": "文件夹悬停动画"
+    "folderAnimationsLabel": "文件夹悬停动画",
+    "autoOffHint": "也包括仪表盘上的骰子和背景特效。在较慢的电脑上默认关闭，让应用保持流畅。"
   },
   "featureTooltips": {
     "newBadge": "新",
