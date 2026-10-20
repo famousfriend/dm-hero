@@ -203,10 +203,18 @@ async function startCombat() {
 }
 
 async function onAdvanceTurn() {
-  const { expiredEffects } = await encounterStore.advanceTurn()
+  const { expiredEffects, recharges } = await encounterStore.advanceTurn()
   if (expiredEffects.length > 0) {
     expiredEffectNames.value = expiredEffects
     showExpiredDialog.value = true
+  }
+  // Start of a monster's turn: recharge rolls (or a reminder to roll a real d6)
+  if (recharges.length > 0) {
+    const lines = recharges.map((r) => {
+      if (r.roll === null) return t('encounters.resources.rollNow', { name: r.name })
+      return t(r.recharged ? 'encounters.resources.recharged' : 'encounters.resources.notRecharged', { name: r.name, roll: r.roll })
+    })
+    snackbarStore.info(lines.join(' · '), { timeout: 8000 })
   }
 }
 

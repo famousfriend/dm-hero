@@ -1529,6 +1529,36 @@
         "crit": "{name} rolled a natural 20 on a death save and is back with 1 HP",
         "critFail": "{name} rolled a natural 1 on a death save (two failures)"
       }
+    },
+    "dice": {
+      "physical": "Physical dice",
+      "physicalHint": "Roll your own dice and type the results in",
+      "enterResults": "Enter results",
+      "total": "Total"
+    },
+    "resources": {
+      "title": "Abilities",
+      "add": "Ability",
+      "name": "Name",
+      "uses": "Uses",
+      "rechargeOn": "Recharge on",
+      "none": "No limited-use abilities.",
+      "left": "{n} of {max} left",
+      "spent": "Used",
+      "ready": "Ready",
+      "use": "Use",
+      "restore": "Restore all uses",
+      "enterD6": "Enter d6",
+      "rollRecharge": "Roll recharge",
+      "rechargeRange": "Recharge {range}",
+      "recharged": "{name} recharged (rolled {roll})",
+      "notRecharged": "{name} did not recharge (rolled {roll})",
+      "rollNow": "Roll a d6 for {name}",
+      "kinds": {
+        "uses": "Limited uses",
+        "recharge": "Recharge",
+        "legendary": "Legendary actions"
+      }
     }
   },
   "documents": {

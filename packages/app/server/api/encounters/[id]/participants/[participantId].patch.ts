@@ -1,9 +1,11 @@
-import type { CombatAction } from '~~/types/encounter'
+import type { CombatAction, ResourceOp } from '~~/types/encounter'
 import { getDb } from '../../../../utils/db'
 import { getParticipant } from '../../../../utils/encounter-participants'
 import { CombatActionError, applyCombatAction } from '../../../../utils/encounter-actions'
+import { ResourceError, applyResourceOp } from '../../../../utils/encounter-resources'
 
 // PATCH { action: { type: 'damage' | 'heal' | 'tempHp' | 'deathSave', ... } }
+//    or { resource: { op: 'add' | 'set' | 'remove', ... } } (recharge, X/Day, legendary actions)
 //    or { current_hp?, max_hp?, temp_hp?, armor_class?, is_ko?, initiative?, notes?, sort_order? }
 // HP, temp HP, AC, KO and death-save changes go through the action log (undo).
 export default defineEventHandler(async (event) => {
@@ -38,10 +40,11 @@ export default defineEventHandler(async (event) => {
         : null
 
   try {
+    if (body.resource) applyResourceOp(db, participantId, body.resource as ResourceOp)
     return action ? applyCombatAction(db, encounterId, participantId, action) : getParticipant(db, encounterId, participantId)
   }
   catch (error) {
-    if (error instanceof CombatActionError) throw createError({ statusCode: 400, message: error.message })
+    if (error instanceof CombatActionError || error instanceof ResourceError) throw createError({ statusCode: 400, message: error.message })
     throw error
   }
 })

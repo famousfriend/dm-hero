@@ -224,6 +224,9 @@
           <div v-else class="text-body-small text-medium-emphasis">{{ $t('encounters.deathSaves.deadHint') }}</div>
         </div>
 
+        <!-- Recharge abilities, X/Day uses, legendary actions -->
+        <EncountersEncounterResourceList class="mb-3" :encounter-id="encounterId" :participant="activeParticipant" />
+
         <!-- Effects -->
         <div class="mb-3">
           <div class="d-flex align-center ga-2 mb-2">

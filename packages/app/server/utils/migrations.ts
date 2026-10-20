@@ -3104,6 +3104,28 @@ export const migrations: Migration[] = [
       console.log('✅ Migration 71: Death saves and encounter action log')
     },
   },
+  {
+    version: 72,
+    name: 'encounter limited-use abilities',
+    up: (db: Database.Database) => {
+      db.exec(`
+        -- Recharge abilities, X/Day uses and legendary actions of a fight participant
+        CREATE TABLE encounter_resources (
+          id INTEGER PRIMARY KEY AUTOINCREMENT,
+          participant_id INTEGER NOT NULL REFERENCES encounter_participants(id) ON DELETE CASCADE,
+          name TEXT NOT NULL,
+          kind TEXT NOT NULL CHECK (kind IN ('recharge', 'uses', 'legendary')),
+          max_uses INTEGER NOT NULL DEFAULT 1,
+          used INTEGER NOT NULL DEFAULT 0,
+          recharge_min INTEGER,
+          sort_order INTEGER NOT NULL DEFAULT 0
+        );
+        CREATE INDEX idx_encounter_resources_participant ON encounter_resources(participant_id);
+      `)
+
+      console.log('✅ Migration 72: Encounter limited-use abilities')
+    },
+  },
 ]
 
 export async function runMigrations(db: Database.Database) {
