@@ -38,6 +38,7 @@ import { isExportCompatible, isExportFromNewerVersion } from '~~/types/export'
 // Get app version from package.json
 import pkg from '~~/package.json'
 import { sanitizeMusicLinks } from '~~/server/utils/music-links'
+import { importCampaignExtras } from '~~/server/utils/campaign-export-extras'
 
 // Dynamic import for unzipper (ESM)
 let unzipper: typeof import('unzipper')
@@ -1708,6 +1709,10 @@ export default defineEventHandler(async (event) => {
         stats.statsImported++
       }
     }
+
+    // DM Command Center: party view, continuity, campaign rules edits
+    const extras = importCampaignExtras(db, campaignId, manifest, { entities: idMapping.entities, sessions: idMapping.sessions })
+    stats.skipped += extras.skipped
 
     // ==========================================================================
     // POST-PROCESSING: Transform entity links to new IDs

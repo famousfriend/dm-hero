@@ -195,6 +195,12 @@ export interface CampaignExportManifest {
   // Stat templates & entity stats
   statTemplates?: ExportStatTemplate[]
   entityStats?: ExportEntityStats[]
+  /** DM Command Center: party view (D&D Beyond link + manual values) per player entity */
+  partyStatus?: ExportPartyStatus[]
+  /** DM Command Center: continuity items (full export only) */
+  continuity?: ExportContinuityItem[]
+  /** DM Command Center: this campaign's edits of rules-library entries (full export only) */
+  campaignEdits?: ExportCampaignEdit[]
 
   // Tags — global (not campaign-scoped). All tags referenced by exported
   // entities are listed here once with their color so the importer can recreate
@@ -760,4 +766,38 @@ export interface IdMapping {
   maps: Map<string, number> // "map:1" -> 2
   audio: Map<string, number> // "audio:1" -> 1
   statTemplates: Map<string, number> // "stat-template:1" -> 42
+}
+
+/** Party view row of a player entity (DM Command Center) */
+export interface ExportPartyStatus {
+  entity: string
+  ddbCharacterId?: string
+  /** Last good D&D Beyond numbers and how they were worked out (JSON text) */
+  ddbStatsJson?: string
+  ddbExplainJson?: string
+  ddbFetchedAt?: string
+  /** Values the DM typed in, they win over D&D Beyond (JSON text) */
+  manualJson: string
+}
+
+/** Something that changed in a session and should not be forgotten (DM Command Center) */
+export interface ExportContinuityItem {
+  session?: string
+  kind: string
+  text: string
+  status: string
+  nextSession: boolean
+  createdAt: string
+  resolvedAt?: string
+  /** Linked entities (export ids) */
+  entities: string[]
+}
+
+/** A campaign's own version of a rules-library entry (DM Command Center) */
+export interface ExportCampaignEdit {
+  refUid: string
+  name?: string
+  summary?: string
+  bodyMd?: string
+  dataJson?: string
 }

@@ -42,6 +42,7 @@ import { EXPORT_FORMAT_VERSION } from '~~/types/export'
 // Get app version from package.json
 import pkg from '~~/package.json'
 import { parseMusicLinks } from '~~/server/utils/music-links'
+import { exportCampaignExtras } from '~~/server/utils/campaign-export-extras'
 
 interface FileToInclude {
   sourcePath: string
@@ -1131,6 +1132,14 @@ export default defineEventHandler(async (event) => {
     }
   }
 
+  // DM Command Center: party view, continuity, campaign rules edits
+  const extras = exportCampaignExtras(db, campaignId, {
+    mode: mode === 'partial' ? 'partial' : 'full',
+    entities: entityExportIdMap,
+    sessions: sessionExportIdMap,
+    transformLinks: transformEntityLinks,
+  })
+
   // ==========================================================================
   // BUILD MANIFEST
   // ==========================================================================
@@ -1169,6 +1178,9 @@ export default defineEventHandler(async (event) => {
     classes: exportClasses.length > 0 ? exportClasses : undefined,
     statTemplates: exportStatTemplates.length > 0 ? exportStatTemplates : undefined,
     entityStats: exportEntityStats.length > 0 ? exportEntityStats : undefined,
+    partyStatus: extras.partyStatus,
+    continuity: extras.continuity,
+    campaignEdits: extras.campaignEdits,
     tags: exportTags,
     folders: exportFolders.length > 0 ? exportFolders : undefined,
   }
