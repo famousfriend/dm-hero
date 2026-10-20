@@ -102,6 +102,7 @@
 
 <script setup lang="ts">
 import type { EncounterParticipant, EncounterResource, EncounterResourceKind } from '~~/types/encounter'
+import { isSpellResource } from '~/utils/statBlock'
 
 const props = defineProps<{
   encounterId: number
@@ -113,7 +114,8 @@ const encounterStore = useEncounterStore()
 const snackbarStore = useSnackbarStore()
 const physicalDice = usePhysicalDice()
 
-const resources = computed(() => props.participant.resources ?? [])
+// Spell slots and X/day spells are shown by the spell picker instead
+const resources = computed(() => (props.participant.resources ?? []).filter(r => !isSpellResource(r.name)))
 
 const showAdd = ref(false)
 const newName = ref('')

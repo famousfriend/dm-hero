@@ -1559,6 +1559,35 @@
         "recharge": "充能",
         "legendary": "传奇动作"
       }
+    },
+    "monster": {
+      "title": "攻击与法术",
+      "attack": "攻击",
+      "castSpell": "施放法术",
+      "readSpell": "查看法术",
+      "left": "剩余 {n}",
+      "slotsLeft": "剩余 {n}/{max}",
+      "levelShort": "{n}环",
+      "toHit": "命中 {n}",
+      "save": "{save} 豁免",
+      "spellDc": "法术豁免 DC {n}",
+      "rollToHit": "掷 d20 {bonus} 命中",
+      "rollDamage": "然后 {dice} 伤害",
+      "attackRoll": "命中 {total}（掷出 {roll}）",
+      "damageRoll": "{total} 伤害（{dice}）",
+      "natOne": "自然 1，未命中",
+      "crit": "重击！",
+      "atWill": "随意施放，不消耗",
+      "slotUsed": "已用 {level} 环法术位，剩余 {n}",
+      "upcast": "以 {level} 环法术位施放，剩余 {n}",
+      "casts": "{name} 施放 {spell}",
+      "sections": {
+        "traits": "特性",
+        "actions": "动作",
+        "bonusActions": "附赠动作",
+        "reactions": "反应",
+        "legendary": "传奇动作"
+      }
     }
   },
   "documents": {

@@ -1559,6 +1559,35 @@
         "recharge": "Aufladen",
         "legendary": "Legendäre Aktionen"
       }
+    },
+    "monster": {
+      "title": "Angriffe & Zauber",
+      "attack": "Angriff",
+      "castSpell": "Zauber wirken",
+      "readSpell": "Zauber lesen",
+      "left": "noch {n}",
+      "slotsLeft": "noch {n} von {max}",
+      "levelShort": "Grad {n}",
+      "toHit": "{n} zum Treffen",
+      "save": "Rettungswurf {save}",
+      "spellDc": "Zauberrettungswurf-SG {n}",
+      "rollToHit": "Würfle W20 {bonus} zum Treffen",
+      "rollDamage": "dann {dice} Schaden",
+      "attackRoll": "{total} zum Treffen (gewürfelt {roll})",
+      "damageRoll": "{total} Schaden ({dice})",
+      "natOne": "Natürliche 1, daneben",
+      "crit": "Kritischer Treffer!",
+      "atWill": "Beliebig oft, nichts verbraucht",
+      "slotUsed": "Platz Grad {level} verbraucht, noch {n}",
+      "upcast": "Mit Platz Grad {level} gewirkt, noch {n}",
+      "casts": "{name} wirkt {spell}",
+      "sections": {
+        "traits": "Merkmale",
+        "actions": "Aktionen",
+        "bonusActions": "Bonusaktionen",
+        "reactions": "Reaktionen",
+        "legendary": "Legendäre Aktionen"
+      }
     }
   },
   "documents": {

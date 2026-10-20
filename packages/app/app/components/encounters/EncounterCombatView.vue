@@ -30,7 +30,8 @@
             {{ participant.initiative }}
           </div>
           <div v-if="participant.armor_class != null" class="combat-tile__ac" :title="$t('party.fields.ac')">
-            {{ participant.armor_class }}
+            <v-icon class="combat-tile__ac-icon">mdi-shield</v-icon>
+            <span class="combat-tile__ac-value">{{ participant.armor_class }}</span>
           </div>
           <v-btn
             icon="mdi-eye"
@@ -99,12 +100,13 @@
               />
               <v-chip
                 v-else
-                size="x-small"
+                size="large"
                 variant="tonal"
-                prepend-icon="mdi-shield-outline"
+                class="ac-chip font-weight-bold"
                 :title="$t('encounters.acHint')"
                 @click="editAc"
               >
+                <v-icon start size="26">mdi-shield</v-icon>
                 {{ $t('party.ac') }} {{ activeParticipant.armor_class ?? '–' }}
               </v-chip>
               <v-chip
@@ -223,6 +225,14 @@
           </div>
           <div v-else class="text-body-small text-medium-emphasis">{{ $t('encounters.deathSaves.deadHint') }}</div>
         </div>
+
+        <!-- Codex monsters: abilities, attack and spell pickers -->
+        <EncountersEncounterMonsterPanel
+          v-if="activeParticipant.ref_uid"
+          class="mb-3"
+          :encounter-id="encounterId"
+          :participant="activeParticipant"
+        />
 
         <!-- Recharge abilities, X/Day uses, legendary actions -->
         <EncountersEncounterResourceList class="mb-3" :encounter-id="encounterId" :participant="activeParticipant" />
@@ -641,19 +651,34 @@ function getAvatarColor(type?: string): string {
 
 .combat-tile__ac {
   position: absolute;
-  bottom: -6px;
-  right: -6px;
-  min-width: 22px;
-  height: 22px;
-  padding: 0 4px;
-  border-radius: 6px 6px 11px 11px;
-  background: rgb(var(--v-theme-surface-variant));
-  color: rgb(var(--v-theme-on-surface-variant));
-  font-size: 11px;
-  font-weight: 700;
-  line-height: 22px;
-  text-align: center;
+  bottom: -10px;
+  right: -10px;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   z-index: 2;
+}
+
+.combat-tile__ac-icon {
+  position: absolute;
+  inset: 0;
+  font-size: 36px !important;
+  color: rgb(var(--v-theme-surface-variant));
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.5));
+}
+
+.combat-tile__ac-value {
+  position: relative;
+  margin-top: -2px;
+  font-size: 15px;
+  font-weight: 800;
+  color: rgb(var(--v-theme-on-surface-variant));
+}
+
+.ac-chip {
+  font-size: 18px;
 }
 
 .ac-input {

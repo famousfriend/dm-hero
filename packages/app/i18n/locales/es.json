@@ -1559,6 +1559,35 @@
         "recharge": "Recarga",
         "legendary": "Acciones legendarias"
       }
+    },
+    "monster": {
+      "title": "Ataques y conjuros",
+      "attack": "Atacar",
+      "castSpell": "Lanzar conjuro",
+      "readSpell": "Leer el conjuro",
+      "left": "quedan {n}",
+      "slotsLeft": "quedan {n} de {max}",
+      "levelShort": "Nv {n}",
+      "toHit": "{n} al ataque",
+      "save": "salvación {save}",
+      "spellDc": "CD de salvación de conjuros {n}",
+      "rollToHit": "Tira d20 {bonus} al ataque",
+      "rollDamage": "luego {dice} de daño",
+      "attackRoll": "{total} al ataque (sacó {roll})",
+      "damageRoll": "{total} de daño ({dice})",
+      "natOne": "1 natural, falla",
+      "crit": "¡Crítico!",
+      "atWill": "A voluntad, no gasta nada",
+      "slotUsed": "Espacio de nivel {level} usado, quedan {n}",
+      "upcast": "Lanzado con un espacio de nivel {level}, quedan {n}",
+      "casts": "{name} lanza {spell}",
+      "sections": {
+        "traits": "Rasgos",
+        "actions": "Acciones",
+        "bonusActions": "Acciones adicionales",
+        "reactions": "Reacciones",
+        "legendary": "Acciones legendarias"
+      }
     }
   },
   "documents": {

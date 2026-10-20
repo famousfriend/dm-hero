@@ -1559,6 +1559,35 @@
         "recharge": "Recharge",
         "legendary": "Legendary actions"
       }
+    },
+    "monster": {
+      "title": "Attacks & spells",
+      "attack": "Attack",
+      "castSpell": "Cast a spell",
+      "readSpell": "Read the spell",
+      "left": "{n} left",
+      "slotsLeft": "{n} of {max} left",
+      "levelShort": "Lvl {n}",
+      "toHit": "{n} to hit",
+      "save": "{save} save",
+      "spellDc": "Spell save DC {n}",
+      "rollToHit": "Roll d20 {bonus} to hit",
+      "rollDamage": "then {dice} damage",
+      "attackRoll": "{total} to hit (rolled {roll})",
+      "damageRoll": "{total} damage ({dice})",
+      "natOne": "Natural 1, a miss",
+      "crit": "Critical hit!",
+      "atWill": "At will, nothing spent",
+      "slotUsed": "Level {level} slot used, {n} left",
+      "upcast": "Cast with a level {level} slot, {n} left",
+      "casts": "{name} casts {spell}",
+      "sections": {
+        "traits": "Traits",
+        "actions": "Actions",
+        "bonusActions": "Bonus actions",
+        "reactions": "Reactions",
+        "legendary": "Legendary actions"
+      }
     }
   },
   "documents": {
