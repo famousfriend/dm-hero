@@ -167,7 +167,7 @@
     "exportHint": "Save your campaign as a .dmhero file",
     "importHint": "Load a campaign from a .dmhero file",
     "copyHint": "Copy entities to another campaign",
-    "dataManagement": "Data Management",
+    "dataManagement": "Save & Share",
     "categories": {
       "title": "Categories"
     },
