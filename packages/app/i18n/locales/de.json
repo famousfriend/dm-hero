@@ -239,7 +239,8 @@
       "markers": "Marker",
       "totalMarkers": "Marker gesamt"
     },
-    "playerExportHint": "Eine HTML-Datei für deine Spieler"
+    "playerExportHint": "Eine HTML-Datei für deine Spieler",
+    "notesImportHint": "Mach aus deinen Word- oder Textnotizen NSCs, Orte, Quests und Sitzungen"
   },
   "campaigns": {
     "title": "Kampagnen",
@@ -3390,5 +3391,38 @@
     "unsetDefault": "Nicht mehr als Standard verwenden",
     "defaultLabel": "Standard",
     "defaultHint": "★ Der Standard füllt alles aus, was du beim Anlegen eines neuen Eintrags leer lässt."
+  },
+  "notesImport": {
+    "title": "Meine Notizen importieren",
+    "intro": "Hol deine eigenen Notizen aus einer Word-Datei (.docx) oder Textdatei (.md, .txt), oder füge sie ein. Sie werden an ihren Überschriften geteilt, und du prüfst, was aus jedem Teil wird, bevor etwas gespeichert wird.",
+    "file": "Word- oder Textdatei",
+    "or": "oder",
+    "paste": "Notizen einfügen",
+    "pastePlaceholder": "# NSCs\n## Klarg\nGrottenschrat-Boss des Verstecks...",
+    "tip": "Am besten mit Überschriften: NSCs unter einer Überschrift wie \"NSCs\", Orte unter \"Orte\", Quests unter \"Quests\" und Sitzungen als \"Sitzung 1\". Fette Namen in einer Liste gehen auch. Für PDFs oder Notizen ohne Überschriften nutze {button}.",
+    "read": "Notizen lesen",
+    "readFailed": "Die Notizen konnten nicht gelesen werden. Ist es eine Word- (.docx) oder Textdatei?",
+    "nothingFound": "Keine Überschriften gefunden. Füge Überschriften hinzu oder nutze {button}, damit Claude sie sortiert.",
+    "untitled": "Name",
+    "exists": "Schon in dieser Kampagne",
+    "linkNames": "Im Text erwähnte Namen zu Links machen",
+    "backupNote": "Vor dem Import wird ein Backup erstellt, damit du den ganzen Import rückgängig machen kannst.",
+    "import": "{n} importieren",
+    "done": "{n} Einträge importiert",
+    "undoHint": "Nicht das Gewünschte? Rückgängig stellt die Kampagne genau wie vor diesem Import wieder her.",
+    "undo": "Import rückgängig",
+    "undone": "Import rückgängig gemacht",
+    "undoFailed": "Rückgängig fehlgeschlagen. Du kannst das Backup in den Einstellungen wiederherstellen.",
+    "failed": "Der Import brach mit einem Fehler ab. Nutze Rückgängig, um zurückzugehen.",
+    "kinds": {
+      "NPC": "NSC",
+      "Location": "Ort",
+      "Item": "Gegenstand",
+      "Faction": "Fraktion",
+      "Lore": "Lore",
+      "Quest": "Quest",
+      "Session": "Sitzung",
+      "skip": "Weglassen"
+    }
   }
 }

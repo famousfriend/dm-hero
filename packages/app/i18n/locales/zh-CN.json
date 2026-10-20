@@ -239,7 +239,8 @@
       "markers": "标记",
       "totalMarkers": "总分"
     },
-    "playerExportHint": "给玩家的一个 HTML 文件"
+    "playerExportHint": "给玩家的一个 HTML 文件",
+    "notesImportHint": "把你的 Word 或文本笔记变成 NPC、地点、任务和场次"
   },
   "campaigns": {
     "title": "战役",
@@ -3390,5 +3391,38 @@
     "unsetDefault": "取消默认",
     "defaultLabel": "默认",
     "defaultHint": "★ 默认模板会在你新建条目时填入留空的内容。"
+  },
+  "notesImport": {
+    "title": "导入我的笔记",
+    "intro": "从 Word 文件（.docx）或文本文件（.md、.txt）导入你自己的笔记，或直接粘贴。笔记会按标题拆分，保存前你可以检查每一部分会变成什么。",
+    "file": "Word 或文本文件",
+    "or": "或",
+    "paste": "粘贴你的笔记",
+    "pastePlaceholder": "# NPC\n## Klarg\n巢穴的熊地精首领...",
+    "tip": "有标题时效果最好：把 NPC 放在 \"NPCs\" 标题下，地点放在 \"Locations\" 下，任务放在 \"Quests\" 下，场次写成 \"Session 1\"。列表中的粗体名字也可以。PDF 或没有标题的笔记请使用{button}。",
+    "read": "读取我的笔记",
+    "readFailed": "无法读取笔记。这是 Word（.docx）或文本文件吗？",
+    "nothingFound": "没有找到标题。请给笔记加上标题，或使用{button}让 Claude 整理。",
+    "untitled": "名称",
+    "exists": "已在此战役中",
+    "linkNames": "把文中提到的名字变成链接",
+    "backupNote": "导入前会先备份，之后可以撤销整个导入。",
+    "import": "导入 {n} 项",
+    "done": "已导入 {n} 个条目",
+    "undoHint": "不是你想要的？撤销会把战役恢复到这次导入之前的样子。",
+    "undo": "撤销导入",
+    "undone": "导入已撤销",
+    "undoFailed": "撤销失败。你可以在设置中恢复备份。",
+    "failed": "导入因错误中止。使用撤销返回。",
+    "kinds": {
+      "NPC": "NPC",
+      "Location": "地点",
+      "Item": "物品",
+      "Faction": "阵营",
+      "Lore": "背景",
+      "Quest": "任务",
+      "Session": "场次",
+      "skip": "不导入"
+    }
   }
 }

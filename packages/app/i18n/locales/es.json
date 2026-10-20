@@ -239,7 +239,8 @@
       "markers": "marcadores",
       "totalMarkers": "marcadores en total"
     },
-    "playerExportHint": "Un archivo HTML para tus jugadores"
+    "playerExportHint": "Un archivo HTML para tus jugadores",
+    "notesImportHint": "Convierte tus notas de Word o texto en PNJs, lugares, misiones y sesiones"
   },
   "campaigns": {
     "title": "Campañas",
@@ -3390,5 +3391,38 @@
     "unsetDefault": "Dejar de usar por defecto",
     "defaultLabel": "Por defecto",
     "defaultHint": "★ La plantilla por defecto rellena lo que dejes vacío al crear una nueva entrada."
+  },
+  "notesImport": {
+    "title": "Importar mis notas",
+    "intro": "Trae tus propias notas desde un archivo de Word (.docx) o de texto (.md, .txt), o pégalas. Se dividen por sus títulos y revisas qué será cada parte antes de guardar nada.",
+    "file": "Archivo de Word o de texto",
+    "or": "o",
+    "paste": "Pega tus notas",
+    "pastePlaceholder": "# PNJs\n## Klarg\nJefe osgo de la guarida...",
+    "tip": "Funciona mejor con títulos: PNJs bajo un título como \"PNJs\", lugares bajo \"Lugares\", misiones bajo \"Misiones\" y sesiones como \"Session 1\". Los nombres en negrita en una lista también sirven. Para PDFs o notas sin títulos, usa {button}.",
+    "read": "Leer mis notas",
+    "readFailed": "No se pudieron leer las notas. ¿Es un archivo de Word (.docx) o de texto?",
+    "nothingFound": "No se encontraron títulos. Añade títulos a tus notas o usa {button} para que Claude las ordene.",
+    "untitled": "Nombre",
+    "exists": "Ya está en esta campaña",
+    "linkNames": "Convertir en enlaces los nombres mencionados en el texto",
+    "backupNote": "Se hace una copia de seguridad antes de importar, así puedes deshacer toda la importación.",
+    "import": "Importar {n}",
+    "done": "{n} entradas importadas",
+    "undoHint": "¿No es lo que querías? Deshacer deja la campaña exactamente como estaba antes de esta importación.",
+    "undo": "Deshacer importación",
+    "undone": "Importación deshecha",
+    "undoFailed": "No se pudo deshacer. Puedes restaurar la copia en Ajustes.",
+    "failed": "La importación se detuvo con un error. Usa Deshacer para volver.",
+    "kinds": {
+      "NPC": "PNJ",
+      "Location": "Lugar",
+      "Item": "Objeto",
+      "Faction": "Facción",
+      "Lore": "Trasfondo",
+      "Quest": "Misión",
+      "Session": "Sesión",
+      "skip": "Omitir"
+    }
   }
 }

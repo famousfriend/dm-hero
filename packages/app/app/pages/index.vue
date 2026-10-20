@@ -200,6 +200,21 @@
           </v-card>
         </v-col>
         <v-col cols="12" sm="6" md="4">
+          <v-card hover class="h-100" :disabled="!activeCampaignId" @click="showNotesImportDialog = true">
+            <v-card-text class="pa-4">
+              <div class="d-flex align-center">
+                <v-icon icon="mdi-file-import-outline" size="28" color="warning" class="mr-3" />
+                <div>
+                  <div class="text-title-medium font-weight-medium">{{ $t('notesImport.title') }}</div>
+                  <div class="text-body-medium text-medium-emphasis">
+                    {{ $t('dashboard.notesImportHint') }}
+                  </div>
+                </div>
+              </div>
+            </v-card-text>
+          </v-card>
+        </v-col>
+        <v-col cols="12" sm="6" md="4">
           <v-card hover class="h-100" @click="showImportDialog = true">
             <v-card-text class="pa-4">
               <div class="d-flex align-center">
@@ -287,6 +302,13 @@
       :campaign-name="activeCampaignName"
     />
 
+    <!-- Import my notes (Word/text) -->
+    <NotesImportDialog
+      v-if="activeCampaignId"
+      v-model="showNotesImportDialog"
+      :campaign-id="campaignStore.activeCampaignIdNumber!"
+    />
+
     <!-- Import Dialog -->
     <CampaignImportDialog
       v-model="showImportDialog"
@@ -309,6 +331,7 @@ import type { EntityPreviewType } from '../components/shared/EntityPreviewDialog
 import CampaignExportDialog from '~/components/campaigns/CampaignExportDialog.vue'
 import CampaignImportDialog from '~/components/campaigns/CampaignImportDialog.vue'
 import PlayerExportDialog from '~/components/campaigns/PlayerExportDialog.vue'
+import NotesImportDialog from '~/components/campaigns/NotesImportDialog.vue'
 import CopyToCampaignDialog from '~/components/entities/CopyToCampaignDialog.vue'
 
 interface Session {
@@ -358,6 +381,7 @@ const previewGroupId = ref<number | null>(null)
 // Export/Import/Copy dialogs
 const showExportDialog = ref(false)
 const showPlayerExportDialog = ref(false)
+const showNotesImportDialog = ref(false)
 const showImportDialog = ref(false)
 const showCopyDialog = ref(false)
 
