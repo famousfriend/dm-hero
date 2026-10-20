@@ -164,13 +164,13 @@ const updateSchema = z.object({
   tags: z.array(z.string()).optional().describe('REPLACES the entity\'s whole tag set (lowercase a-z + hyphens).'),
 })
 
-const server = new McpServer({ name: 'dm-hero', version: '1.1.0' })
+const server = new McpServer({ name: 'dm-hero', version: '1.2.0' })
 
 server.registerTool('what_can_i_do', {
   description: 'Call this when the user asks what you can do with DM Hero, or at the start of a bigger job (e.g. "import this one-shot PDF"). Returns a plain-language overview of every capability, how to ask for it, and the rules you follow (preview → confirm). Repeat it to the user in THEIR language.',
   inputSchema: {},
 }, async () => asText({
-  overview: 'I can turn adventure material (PDFs, notes, your descriptions) into a complete DM Hero campaign – and maintain it afterwards. Everything I do goes through DM Hero\'s local API on this machine; nothing leaves your computer.',
+  overview: 'I can turn adventure material (PDFs, notes, your descriptions) into a complete DM Hero campaign – and maintain it afterwards. Everything I do goes through DM Hero\'s local API on this machine; the app and its database stay on your computer (what you show me in this chat is read by your AI assistant, as in any chat).',
   capabilities: [
     { area: 'Campaigns', canDo: 'list campaigns, create a new campaign', askLike: '"Put this into my Curse of Strahd campaign" / "Create a campaign called Frostmaw"' },
     { area: 'Entities', canDo: 'create NPCs, locations, items, factions and lore entries – with race/class/type/rarity metadata, tags and folders; cross-link them in descriptions; link them with relations (owns, livesIn, knows, memberOf, …); edit or rename existing ones; archive or delete them', askLike: '"Create all NPCs and places from this PDF" / "Make Borin the owner of the Sword of Dawn" / "Archive everything from chapter 1"' },
@@ -179,7 +179,10 @@ server.registerTool('what_can_i_do', {
     { area: 'Sessions', canDo: 'list sessions, create a session with number, date, in-game date, summary and notes; update summaries/notes afterwards', askLike: '"Summarize what happened tonight into session 4" / "Create session 1 for the one-shot with the intro text as notes"' },
     { area: 'Groups', canDo: 'list groups, create groups (the party, a cult, the villains of a chapter) and add members', askLike: '"Group the three cultists as \'Cult of the Eye\'"' },
     { area: 'Maps', canDo: 'create maps from an image, place NPCs/items as markers and locations as areas (circles) on them', askLike: '"Add the region map from page 3 and place Eichwald and the ruins on it"' },
-    { area: 'Encounters', canDo: 'prepare combat encounters with participants (NPCs as monsters) and HP, optionally attached to a session', askLike: '"Prepare the ambush encounter with 4 goblins and the boss"' },
+    { area: 'Encounters', canDo: 'prepare combat encounters with library monsters (stats, attacks and spells included) or your own NPCs, optionally attached to a session', askLike: '"Prepare the ambush encounter with 4 goblins and the boss"' },
+    { area: 'Quests', canDo: 'list quests and create new ones with status, reward, quest giver and the NPCs/places/items involved', askLike: '"Make quests out of the hooks in chapter 2"' },
+    { area: 'Rules links', canDo: 'find spells, monsters, conditions, items and feats in the rules library and link them in any text, so they open with one click', askLike: '"Link every spell the wizard can cast"' },
+    { area: 'Your own notes', canDo: 'read your notes or a whole campaign (Word, PDF, text, pasted) and split it into NPCs, places, items, factions, lore, quests, sessions and encounters', askLike: '"Here are my campaign notes – sort them into DM Hero"' },
     { area: 'Reading', canDo: 'look up what already exists: search entities, read one entity in full (relations, documents, tags), list sessions/groups/maps/encounters', askLike: '"What do we know about the mayor?" / "Which sessions exist?"' },
   ],
   rules: [
@@ -190,8 +193,8 @@ server.registerTool('what_can_i_do', {
   ],
   typicalWorkflow: [
     '1. You hand me a source (PDF/text) and name the campaign.',
-    '2. I call get_contract, extract NPCs/locations/items/factions/lore, plan groups, maps and encounters, and show you the plan.',
-    '3. After your OK: import_entities (with cross-links), then images, documents, groups, map markers, encounters, and a session with the intro.',
+    '2. I call get_contract, extract NPCs/locations/items/factions/lore, quests, sessions, groups, maps and encounters, look up rules with search_rules, and show you the plan.',
+    '3. After your OK: import_entities (with cross-links and rules links), then quests, images, documents, groups, map markers, encounters, and sessions (past sessions get their summaries).',
     '4. I report what was created with ids, and you can ask me to adjust anything.',
   ],
 }))
@@ -657,16 +660,18 @@ server.registerTool('list_encounters', {
 })
 
 server.registerTool('create_encounter', {
-  description: 'Prepare a combat encounter: a name plus participants (existing NPC entity ids – create the monsters/enemies as NPCs first via import_entities). HP per participant is optional. Optionally attach it to a session.',
+  description: 'Prepare a combat encounter: a name plus participants. A participant is EITHER an existing NPC (entityId) OR a monster from the rules library (refUid from search_rules with kind "monster", e.g. 4 goblins = { refUid: "monster:goblin|mm", count: 4 } – HP, AC, attacks and spells come with it). Prefer library monsters for generic enemies; create named villains as NPCs. Optionally attach it to a session.',
   inputSchema: {
     campaignId: z.number().int().positive(),
     name: z.string().min(1),
     sessionId: z.number().int().positive().optional(),
     participants: z.array(z.object({
-      entityId: z.number().int().positive(),
+      entityId: z.number().int().positive().optional().describe('An existing NPC.'),
+      refUid: z.string().optional().describe('A rules-library monster uid from search_rules (kind "monster").'),
+      count: z.number().int().min(1).max(20).optional().describe('How many of this library monster (default 1).'),
       maxHp: z.number().int().positive().optional(),
       currentHp: z.number().int().nonnegative().optional(),
-    })).optional(),
+    }).refine(x => !!x.entityId !== !!x.refUid, 'Pass either entityId or refUid')).optional(),
   },
 }, async ({ campaignId, name, sessionId, participants }) => {
   const r = await callApi('/api/encounters', { method: 'POST', body: JSON.stringify({ campaignId, name, session_id: sessionId ?? null }) })
@@ -676,11 +681,58 @@ server.registerTool('create_encounter', {
   if (participants?.length) {
     const p = await callApi(`/api/encounters/${encounter.id}/participants`, {
       method: 'POST',
-      body: JSON.stringify({ participants: participants.map(x => ({ entityId: x.entityId, maxHp: x.maxHp, currentHp: x.currentHp ?? x.maxHp })) }),
+      body: JSON.stringify({ participants: participants.map(x => ({ entityId: x.entityId, refUid: x.refUid, count: x.count, maxHp: x.maxHp, currentHp: x.currentHp ?? x.maxHp })) }),
     })
     added = p.body
   }
   return asText({ encounter: r.body, participants: added })
+})
+
+// ---------------------------------------------------------------------------
+// Quests (DM Command Center M5) and rules references (Codex, M1/M3)
+// ---------------------------------------------------------------------------
+
+server.registerTool('list_quests', {
+  description: 'List the quests of a campaign (id, name, status, giver, involved entities). Check this before creating quests so you don\'t make duplicates.',
+  inputSchema: { campaignId: z.number().int().positive() },
+}, async ({ campaignId }) => {
+  const r = await callApi(`/api/quests?campaignId=${campaignId}`)
+  if (!r.ok || !Array.isArray(r.body)) return asText(r.body)
+  return asText((r.body as Array<{ id: number, name: string, status: string, giver: { id: number, name: string } | null, involved: Array<{ id: number, name: string }> }>)
+    .map(q => ({ id: q.id, name: q.name, status: q.status, giver: q.giver?.name ?? null, involved: q.involved.map(e => e.name) })))
+})
+
+server.registerTool('create_quest', {
+  description: 'Create a quest (plot hook, job, mission, personal goal). Link who gave it (giverId) and the NPCs, places, items or factions involved (involvedIds) – create those first with import_entities and use their ids. Show the user the quests you plan to create and wait for their OK, like with preview_import.',
+  inputSchema: {
+    campaignId: z.number().int().positive(),
+    name: z.string().min(1).describe('Short quest title, e.g. "Find Gundren\'s lost mine".'),
+    description: z.string().optional().describe('Markdown. May link entities ({{npc:12}}) and rules ({{codex:<uid>}} from search_rules).'),
+    status: z.enum(['open', 'active', 'done', 'failed']).optional().describe('Default open (known but not started).'),
+    reward: z.string().optional(),
+    giverId: z.number().int().positive().optional().describe('Entity id of the quest giver (usually an NPC).'),
+    involvedIds: z.array(z.number().int().positive()).optional().describe('Entity ids of NPCs, locations, items, factions, lore involved.'),
+  },
+}, async (payload) => {
+  const r = await callApi('/api/quests', { method: 'POST', body: JSON.stringify(payload) })
+  return asText(r.body)
+})
+
+server.registerTool('search_rules', {
+  description: 'Search DM Hero\'s rules library (SRD 5.1 spells, monsters, conditions, items, feats, rules, plus anything the user imported or wrote as homebrew) and get each entry\'s uid. Use it to (1) link rules inside any description or session note by writing {{codex:<uid>}}, e.g. "casts {{codex:spell:fireball|phb}}" – it shows as a clickable chip; (2) add library monsters to encounters (create_encounter refUid). Never invent uids; only use ones this tool returned.',
+  inputSchema: {
+    query: z.string().min(1).describe('Name to search, e.g. "fireball" or "goblin".'),
+    kind: z.enum(['spell', 'monster', 'condition', 'item', 'feat', 'rule']).optional(),
+    limit: z.number().int().positive().max(50).optional(),
+  },
+}, async ({ query, kind, limit }) => {
+  const params = new URLSearchParams({ q: query })
+  if (kind) params.set('kind', kind)
+  if (limit) params.set('limit', String(limit))
+  const r = await callApi(`/api/codex/search?${params.toString()}`)
+  if (!r.ok || !Array.isArray(r.body)) return asText(r.body)
+  return asText((r.body as Array<{ uid: string, kind: string, name: string, summary: string | null }>)
+    .map(e => ({ uid: e.uid, kind: e.kind, name: e.name, summary: e.summary, token: `{{codex:${e.uid}}}` })))
 })
 
 const transport = new StdioServerTransport()

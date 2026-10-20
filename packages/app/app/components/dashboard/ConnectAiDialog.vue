@@ -90,7 +90,14 @@
 </template>
 
 <script setup lang="ts">
-interface McpInfo { appUrl: string, mcpPath: string | null, mcpAvailable: boolean, isElectron: boolean }
+interface McpInfo {
+  appUrl: string
+  mcpPath: string | null
+  mcpAvailable: boolean
+  isElectron: boolean
+  /** The desktop app runs the MCP with its own executable, so no Node.js install is needed */
+  runtime?: { command: string, env: Record<string, string> }
+}
 
 const props = defineProps<{ show: boolean }>()
 const emit = defineEmits<{ 'update:show': [boolean] }>()
@@ -107,12 +114,21 @@ const fetchFailed = ref(false)
 const appUrl = computed(() => info.value?.appUrl ?? 'http://127.0.0.1:3456')
 const mcpPath = computed(() => info.value?.mcpPath ?? '/path/to/dm-hero/packages/mcp/dist/mcp.mjs')
 
-const claudeCodeCmd = computed(() =>
-  `claude mcp add --transport stdio dm-hero -- node ${mcpPath.value} ${appUrl.value}`,
-)
+const runtime = computed(() => info.value?.runtime ?? { command: 'node', env: {} })
+// Paths with spaces (C:\Users\...\DM Hero.exe) need quotes on the command line
+const quote = (value: string) => (/\s/.test(value) ? `"${value}"` : value)
+
+const claudeCodeCmd = computed(() => {
+  const env = Object.entries(runtime.value.env).map(([key, value]) => `-e ${key}=${value} `).join('')
+  return `claude mcp add --transport stdio ${env}dm-hero -- ${quote(runtime.value.command)} ${quote(mcpPath.value)} ${appUrl.value}`
+})
 const jsonConfig = computed(() => JSON.stringify({
   mcpServers: {
-    'dm-hero': { command: 'node', args: [mcpPath.value, appUrl.value] },
+    'dm-hero': {
+      command: runtime.value.command,
+      args: [mcpPath.value, appUrl.value],
+      ...(Object.keys(runtime.value.env).length ? { env: runtime.value.env } : {}),
+    },
   },
 }, null, 2))
 

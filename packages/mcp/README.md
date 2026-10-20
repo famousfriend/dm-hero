@@ -17,7 +17,9 @@ The AI never needs DM Hero's source. It talks only to the app's local HTTP API. 
 - `get_entity` — read one entity in full (metadata, relations, documents, tags) to check before changing.
 - `list_groups` / `create_group` / `add_group_members` — groups (the party, a cult, the villains of a chapter).
 - `list_maps` / `create_map` / `add_map_marker` / `add_map_area` — maps from an image file/URL, entities as markers, locations as circles (percent coordinates).
-- `list_encounters` / `create_encounter` — prepared combats with participants and HP, optionally attached to a session.
+- `list_encounters` / `create_encounter` — prepared combats with participants (NPCs, or rules-library monsters via `refUid` + `count`) and HP, optionally attached to a session.
+- `list_quests` / `create_quest` — quests with status, reward, quest giver and involved entities.
+- `search_rules` — find spells, monsters, conditions, items, feats and rules in the rules library; link them in any text as `{{codex:<uid>}}`.
 - `what_can_i_do` — plain-language overview of all capabilities, how to ask, and the preview → confirm rules; the AI can read it back to the user.
 
 Descriptions may cross-link entities of the same payload with `{{ref:npc:1}}` (or `{{ref:existing:12}}`); the import resolves them to real `{{npc:123}}` links. Previews warn about entities that already exist with the same name.
@@ -58,5 +60,7 @@ claude mcp add --transport stdio dm-hero -- \
 ```
 
 Then start a new agent session. Keep DM Hero running (it serves the API).
+
+**No Node.js install needed with the desktop app:** its "Connect your AI" dialog uses the app's own executable as the runtime (`"command": "<path>\\DM Hero.exe"` with `"env": { "ELECTRON_RUN_AS_NODE": "1" }`).
 
 > The packaged app has a **"Connect your AI"** dialog on the dashboard that shows these exact commands (with the right path and URL filled in) to copy-paste.
