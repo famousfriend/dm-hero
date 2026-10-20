@@ -1,0 +1,24 @@
+{
+  "manifestVersion": 1,
+  "name": "DM Command Center",
+  "summary": "The running fight from DM Command Center: turn order, HP, AC and attack rolls",
+  "entryPoint": "/index.html",
+  "descriptionFilePath": "/readme.md",
+  "api": {
+    "version": "0.1",
+    "subscriptions": {
+      "dice": {
+        "onRollResults": "handleRollResult"
+      }
+    }
+  },
+  "environment": {
+    "capabilities": [
+      "runInBackground"
+    ],
+    "extras": [
+      "fonts",
+      "colorStyles"
+    ]
+  }
+}

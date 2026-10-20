@@ -1560,7 +1560,8 @@
         "failure": "{name} a raté un jet contre la mort",
         "crit": "{name} a fait un 20 naturel et revient avec 1 PV",
         "critFail": "{name} a fait un 1 naturel (deux échecs)"
-      }
+      },
+      "roll": "{name} : {label}"
     },
     "dice": {
       "physical": "Dés physiques",
@@ -1996,6 +1997,22 @@
       "openFolder": "Ouvrir le dossier des journaux",
       "hint": "Les fichiers journaux aident au dépannage. 5 Mo max par fichier, 3 fichiers sont conservés.",
       "openFolderFailed": "Impossible d'ouvrir le dossier des journaux"
+    },
+    "taleSpire": {
+      "subtitle": "Utilise DM Command Center avec TaleSpire : lance les attaques des monstres dans ton plateau de dés TaleSpire et vois le combat en cours dans un panneau dans TaleSpire.",
+      "use": "J'utilise TaleSpire (afficher les boutons de dés en combat)",
+      "install": "Installer le panneau dans TaleSpire",
+      "pickFolder": "Choisir le dossier Symbiotes",
+      "notFound": "Le dossier de TaleSpire est introuvable. Dans TaleSpire, ouvre les Paramètres, puis Symbiotes, et clique sur 'Open Symbiotes Directory'. Clique ensuite ici sur 'Choisir le dossier Symbiotes' et choisis ce même dossier.",
+      "installed": "Installé. Maintenant dans TaleSpire :",
+      "steps": {
+        "s1": "Ouvre les Paramètres, puis Symbiotes, et active les Symbiotes (une seule fois).",
+        "s2": "Ouvre le panneau Symbiotes sur le bord droit de l'écran et choisis DM Command Center.",
+        "s3": "Lance un combat ici dans l'app. Il apparaît dans le panneau, et ses jets d'attaque arrivent dans le journal des actions."
+      },
+      "installHint": "Refais-le après une mise à jour de l'app. Garde l'app ouverte pendant la partie ; le panneau y lit le combat.",
+      "desktopOnly": "Le panneau s'installe depuis l'app de bureau.",
+      "failed": "Le panneau n'a pas pu être installé."
     }
   },
   "players": {

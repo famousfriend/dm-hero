@@ -27,7 +27,7 @@
         <div class="text-body-small flex-grow-1">
           <span class="text-medium-emphasis">{{ $t('encounters.round') }} {{ entry.round }} · </span>
           {{ describe(entry) }}
-          <span class="text-medium-emphasis"> → {{ entry.after.current_hp }}/{{ entry.after.max_hp }}</span>
+          <span v-if="entry.kind !== 'roll'" class="text-medium-emphasis"> → {{ entry.after.current_hp }}/{{ entry.after.max_hp }}</span>
           <span v-if="entry.undone" class="text-medium-emphasis"> ({{ $t('encounters.log.undone') }})</span>
         </div>
       </div>
@@ -48,10 +48,21 @@ const encounterStore = useEncounterStore()
 const snackbarStore = useSnackbarStore()
 
 const undoing = ref(false)
-const canUndo = computed(() => props.entries.some(e => !e.undone))
+// Dice rolls from TaleSpire only inform, there is nothing to undo
+const undoable = (e: EncounterLogEntry) => !e.undone && e.kind !== 'roll'
+const canUndo = computed(() => props.entries.some(undoable))
+
+// Rolls made in TaleSpire arrive on their own, so look for them while TaleSpire is on
+const taleSpire = useTaleSpire()
+let poll: ReturnType<typeof setInterval> | undefined
+watch(taleSpire.enabled, (on) => {
+  clearInterval(poll)
+  if (on) poll = setInterval(() => encounterStore.refreshLog(props.encounterId), 4000)
+}, { immediate: true })
+onBeforeUnmount(() => clearInterval(poll))
 
 async function onUndo() {
-  const entry = props.entries.find(e => !e.undone)
+  const entry = props.entries.find(undoable)
   if (!entry) return
   undoing.value = true
   const ok = await encounterStore.undoLastAction(props.encounterId)
@@ -97,6 +108,10 @@ function describe(entry: EncounterLogEntry): string {
     case 'deathSave':
       text = t(`encounters.log.deathSave.${d.result as string}`, { name })
       break
+    case 'roll':
+      // e.g. "Goblin: Scimitar – 17 to hit · 5 damage"
+      text = `${t('encounters.log.roll', { name, label: d.label as string })} – ${(d.detail as string) || amount}`
+      break
     default: {
       const changes = (Object.keys(FIELD_LABELS) as Array<keyof LoggedState>)
         .filter(f => entry.before[f] !== entry.after[f])
@@ -120,6 +135,7 @@ function kindIcon(entry: EncounterLogEntry) {
     case 'heal': return 'mdi-heart'
     case 'tempHp': return 'mdi-shield-plus'
     case 'deathSave': return 'mdi-dice-d20'
+    case 'roll': return 'mdi-dice-multiple'
     default: return 'mdi-pencil'
   }
 }
@@ -130,6 +146,7 @@ function kindColor(entry: EncounterLogEntry) {
     case 'heal': return 'success'
     case 'tempHp': return 'info'
     case 'deathSave': return 'warning'
+    case 'roll': return 'primary'
     default: return undefined
   }
 }

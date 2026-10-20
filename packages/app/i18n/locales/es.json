@@ -1560,7 +1560,8 @@
         "failure": "{name} falló una salvación contra muerte",
         "crit": "{name} sacó un 20 natural y vuelve con 1 PG",
         "critFail": "{name} sacó un 1 natural (dos fallos)"
-      }
+      },
+      "roll": "{name}: {label}"
     },
     "dice": {
       "physical": "Dados físicos",
@@ -1996,6 +1997,22 @@
       "openFolder": "Abrir carpeta de registros",
       "hint": "Los archivos de registro ayudan a resolver problemas. Máx. 5 MB por archivo, se conservan 3 archivos.",
       "openFolderFailed": "No se pudo abrir la carpeta de registros"
+    },
+    "taleSpire": {
+      "subtitle": "Usa DM Command Center junto con TaleSpire: tira los ataques de los monstruos en tu bandeja de dados de TaleSpire y ve el combate en curso en un panel dentro de TaleSpire.",
+      "use": "Uso TaleSpire (mostrar los botones de dados en los combates)",
+      "install": "Instalar el panel en TaleSpire",
+      "pickFolder": "Elegir la carpeta Symbiotes",
+      "notFound": "No se encontró la carpeta de TaleSpire. En TaleSpire, abre Ajustes, luego Symbiotes, y haz clic en 'Open Symbiotes Directory'. Después haz clic aquí en 'Elegir la carpeta Symbiotes' y elige esa misma carpeta.",
+      "installed": "Instalado. Ahora en TaleSpire:",
+      "steps": {
+        "s1": "Abre Ajustes, luego Symbiotes, y activa Symbiotes (solo una vez).",
+        "s2": "Abre el panel Symbiotes en el borde derecho de la pantalla y elige DM Command Center.",
+        "s3": "Empieza un combate aquí en la app. Aparece en el panel y sus tiradas de ataque llegan al registro de acciones."
+      },
+      "installHint": "Hazlo de nuevo tras actualizar la app. Deja la app abierta mientras juegas; el panel lee el combate de ella.",
+      "desktopOnly": "El panel se instala desde la app de escritorio.",
+      "failed": "No se pudo instalar el panel."
     }
   },
   "players": {

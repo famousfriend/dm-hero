@@ -45,6 +45,7 @@ export interface ElectronAPI {
   saveFileDialog: (options: SaveFileOptions) => Promise<SaveFileResult>
   openExternalUrl: (url: string) => Promise<{ success: boolean, error?: string }>
   openTaleSpireDice?: (url: string) => Promise<{ success: boolean, error?: string }>
+  installTaleSpirePanel?: (options: { url: string, key: string, folder?: string }) => Promise<{ success: boolean, notFound?: boolean, path?: string, error?: string }>
   selectFolderDialog: (options?: { title?: string, defaultPath?: string }) => Promise<{ success: boolean, canceled?: boolean, folderPath?: string }>
 
   // Auto-updater APIs

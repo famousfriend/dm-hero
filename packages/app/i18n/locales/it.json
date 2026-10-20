@@ -1560,7 +1560,8 @@
         "failure": "{name} ha fallito un tiro contro la morte",
         "crit": "{name} ha fatto 20 naturale ed è tornato con 1 PF",
         "critFail": "{name} ha fatto 1 naturale (due fallimenti)"
-      }
+      },
+      "roll": "{name}: {label}"
     },
     "dice": {
       "physical": "Dadi fisici",
@@ -1996,6 +1997,22 @@
       "openFolder": "Apri cartella dei log",
       "hint": "I file di log aiutano nella risoluzione dei problemi. Max 5 MB per file, vengono conservati 3 file.",
       "openFolderFailed": "Impossibile aprire la cartella dei log"
+    },
+    "taleSpire": {
+      "subtitle": "Usa DM Command Center insieme a TaleSpire: tira gli attacchi dei mostri nel vassoio dei dadi di TaleSpire e guarda il combattimento in corso in un pannello dentro TaleSpire.",
+      "use": "Uso TaleSpire (mostra i pulsanti dei dadi nei combattimenti)",
+      "install": "Installa il pannello in TaleSpire",
+      "pickFolder": "Scegli la cartella Symbiotes",
+      "notFound": "La cartella di TaleSpire non è stata trovata. In TaleSpire apri Impostazioni, poi Symbiotes, e fai clic su 'Open Symbiotes Directory'. Poi fai clic qui su 'Scegli la cartella Symbiotes' e scegli la stessa cartella.",
+      "installed": "Installato. Ora in TaleSpire:",
+      "steps": {
+        "s1": "Apri Impostazioni, poi Symbiotes, e attiva i Symbiotes (solo una volta).",
+        "s2": "Apri il pannello Symbiotes sul bordo destro dello schermo e scegli DM Command Center.",
+        "s3": "Avvia un combattimento qui nell'app. Compare nel pannello e i suoi tiri d'attacco finiscono nel registro azioni."
+      },
+      "installHint": "Ripetilo dopo aver aggiornato l'app. Tieni l'app aperta mentre giochi; il pannello legge il combattimento da lì.",
+      "desktopOnly": "Il pannello si installa dall'app desktop.",
+      "failed": "Impossibile installare il pannello."
     }
   },
   "players": {

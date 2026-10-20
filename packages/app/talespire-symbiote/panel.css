@@ -1,0 +1,33 @@
+:root {
+  --bg: var(--ts-background-primary, #1d1a17);
+  --card: var(--ts-background-secondary, #27231f);
+  --text: var(--ts-color-primary, #ece6dc);
+  --muted: var(--ts-color-secondary, #a99f92);
+  --accent: var(--ts-accent-primary, #e0a03c);
+}
+* { box-sizing: border-box; }
+body { margin: 0; padding: 10px; background: var(--bg); color: var(--text); font: 14px/1.4 var(--ts-font-family, Arial, sans-serif); }
+header { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; margin-bottom: 8px; }
+#title { font-weight: bold; font-size: 1.05rem; color: var(--accent); }
+.muted { color: var(--muted); font-size: 0.85rem; }
+.chat-toggle { font-size: 0.85rem; white-space: nowrap; cursor: pointer; }
+.message { display: none; padding: 8px; margin-bottom: 8px; border: 1px solid var(--accent); border-radius: 6px; }
+ol { list-style: none; margin: 0; padding: 0; }
+.turn { background: var(--card); border-radius: 6px; padding: 6px 8px; margin-bottom: 6px; border-left: 3px solid transparent; }
+.turn.current { border-left-color: var(--accent); }
+.turn.ko { opacity: 0.55; }
+.turn-head { display: flex; align-items: center; gap: 8px; cursor: pointer; }
+.init { min-width: 22px; text-align: center; color: var(--muted); }
+.name { flex: 1; font-weight: bold; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.turn.player .name { color: #8ec5ff; }
+.tag { font-size: 0.75rem; padding: 0 4px; border: 1px solid var(--muted); border-radius: 4px; }
+.ac, .hp { font-size: 0.85rem; white-space: nowrap; }
+.chevron { color: var(--muted); }
+.bar { height: 4px; background: rgba(255, 255, 255, 0.12); border-radius: 2px; margin-top: 4px; overflow: hidden; }
+.fill { height: 100%; background: #6aa84f; }
+.conditions { margin-top: 2px; }
+.actions { display: flex; flex-direction: column; gap: 4px; margin-top: 6px; }
+.actions button { display: flex; justify-content: space-between; gap: 8px; text-align: left; padding: 6px 8px; border: 1px solid var(--accent); border-radius: 6px; background: transparent; color: var(--text); cursor: pointer; font: inherit; }
+.actions button:hover { background: rgba(224, 160, 60, 0.15); }
+.action-name { font-weight: bold; }
+.last { margin-top: 8px; font-size: 0.9rem; }

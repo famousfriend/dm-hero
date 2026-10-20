@@ -172,6 +172,9 @@
     <!-- Backups (server-side snapshots, web and desktop) -->
     <BackupsCard />
 
+    <!-- TaleSpire: dice switch and the panel inside TaleSpire -->
+    <TaleSpireCard />
+
     <!-- Data Management Section (Electron only) -->
     <v-card v-if="isElectron" class="mt-6">
       <v-card-text>
@@ -352,6 +355,7 @@
 
 <script setup lang="ts">
 import BackupsCard from '~/components/settings/BackupsCard.vue'
+import TaleSpireCard from '~/components/settings/TaleSpireCard.vue'
 import { useAnnouncements } from '~/composables/useAnnouncements'
 import { useElectron } from '~/composables/useElectron'
 import { useFeatureTooltipSettings } from '~/composables/useFeatureTooltips'
