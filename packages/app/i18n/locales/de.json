@@ -80,7 +80,24 @@
     "appUrl": "App-Adresse",
     "afterConnectTitle": "Wichtig: neue KI-Sitzung starten",
     "afterConnect": "MCP-Server werden nur beim Sitzungsstart geladen. Starte nach dem Verbinden eine neue Sitzung - dann z.B. sagen: „Lies dieses PDF und lege die NPCs in DM Hero an.\"",
-    "loadFailed": "Verbindungsdaten konnten nicht geladen werden. Ist DM Hero erreichbar? Schließe den Dialog und versuche es erneut."
+    "loadFailed": "Verbindungsdaten konnten nicht geladen werden. Ist DM Hero erreichbar? Schließe den Dialog und versuche es erneut.",
+    "desktopSteps": {
+      "s1": "Installiere die Claude-Desktop-App von claude.ai/download und melde dich an. Ein kostenloses Konto reicht auch.",
+      "s2": "Kopiere diese Einstellungen:",
+      "s3": "Öffne in der Claude-App Einstellungen, dann Entwickler, dann Konfiguration bearbeiten. Öffne die Datei claude_desktop_config.json mit dem Editor.",
+      "s4": "Ist die Datei leer (oder enthält nur zwei geschweifte Klammern), ersetze alles durch das Kopierte. Steht schon anderer Text drin, füge beides in einen normalen Claude-Chat ein und bitte Claude, sie zusammenzuführen.",
+      "s5": "Speichere die Datei. Beende Claude komplett (Rechtsklick auf das Symbol neben der Uhr, dann Beenden) und starte es neu.",
+      "s6": "Frage in einem neuen Chat: \"Was kannst du mit DM Hero machen?\" Wenn Claude DM Hero benutzen möchte, wähle Immer erlauben."
+    },
+    "importNotes": {
+      "title": "Eigene Notizen übernehmen",
+      "s1": "Erstelle zuerst ein Backup (Einstellungen). Probiere es beim ersten Mal in einer neuen Testkampagne aus.",
+      "s2": "Hänge in einem neuen Claude-Chat deine Notizen an (Word, PDF, Text) oder füge sie ein und frage wie im Beispiel unten.",
+      "s3": "Claude zeigt dir zuerst einen Plan. Prüfe ihn und antworte dann \"Ja, mach es\".",
+      "s4": "Große Kampagne? Ein Kapitel pro Chat. Kostenlose Claude-Konten haben niedrigere Limits, also kleinere Stücke nehmen.",
+      "example": "Beispiel (kopieren und anpassen):",
+      "prompt": "Hier sind meine Kampagnennotizen. Übernimm sie in DM Hero in meine Kampagne \"{campaign}\". Erstelle NSCs, Orte, Gegenstände, Fraktionen und Lore, mache aus den Aufhängern Quests, lege pro Sitzung in meinen Notizen eine Sitzung mit kurzer Zusammenfassung an und verlinke Zauber, Monster und Zustände mit der Regelbibliothek. Zeig mir zuerst den Plan."
+    }
   },
   "aiImport": {
     "imported": "KI hat {count} Einträge in diese Kampagne importiert",

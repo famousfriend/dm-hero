@@ -200,6 +200,9 @@ async function startServer() {
       // stable MCP bin path (copied from resources/mcp/mcp.mjs to userData).
       DM_HERO_APP_URL: `http://127.0.0.1:${PROD_SERVER_PORT}`,
       DM_HERO_MCP_PATH: mcpPath,
+      // The app's own executable runs the MCP as plain Node (ELECTRON_RUN_AS_NODE),
+      // so connecting an AI doesn't need a separate Node.js install
+      DM_HERO_NODE_PATH: process.execPath,
     },
     cwd: outputDir,
     stdio: 'pipe',

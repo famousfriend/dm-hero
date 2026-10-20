@@ -80,7 +80,24 @@
     "appUrl": "Dirección de la app",
     "afterConnectTitle": "Importante: inicia una nueva sesión de IA",
     "afterConnect": "Los servidores MCP solo se cargan al iniciar la sesión. Tras conectar, abre una sesión nueva y di, por ejemplo: \"Lee este PDF y crea los PNJ en DM Hero\".",
-    "loadFailed": "No se pudieron cargar los datos de conexión. ¿DM Hero está accesible? Cierra el diálogo e inténtalo de nuevo."
+    "loadFailed": "No se pudieron cargar los datos de conexión. ¿DM Hero está accesible? Cierra el diálogo e inténtalo de nuevo.",
+    "desktopSteps": {
+      "s1": "Instala la app de escritorio de Claude desde claude.ai/download e inicia sesión. Una cuenta gratuita también sirve.",
+      "s2": "Copia esta configuración:",
+      "s3": "En la app de Claude abre Configuración, luego Desarrollador y luego Editar configuración. Abre el archivo claude_desktop_config.json con el Bloc de notas.",
+      "s4": "Si el archivo está vacío (o solo tiene dos llaves), reemplaza todo con lo que copiaste. Si ya tiene otro texto, pega ambos en un chat normal de Claude y pídele que los combine.",
+      "s5": "Guarda el archivo. Cierra Claude por completo (clic derecho en su icono junto al reloj y luego Salir) y vuelve a abrirlo.",
+      "s6": "En un chat nuevo pregunta: \"¿Qué puedes hacer con DM Hero?\" Cuando Claude pida usar DM Hero, elige Permitir siempre."
+    },
+    "importNotes": {
+      "title": "Trae tus propias notas",
+      "s1": "Haz primero una copia de seguridad (Configuración). La primera vez, pruébalo en una campaña de prueba nueva.",
+      "s2": "En un chat nuevo de Claude, adjunta tus notas (Word, PDF, texto) o pégalas, y pide algo como el ejemplo de abajo.",
+      "s3": "Claude te muestra primero un plan. Revísalo y responde \"Sí, hazlo\".",
+      "s4": "¿Campaña grande? Un capítulo por chat. Las cuentas gratuitas de Claude tienen límites más bajos, así que usa partes más pequeñas.",
+      "example": "Ejemplo (cópialo y adáptalo):",
+      "prompt": "Aquí están mis notas de campaña. Ponlas en DM Hero en mi campaña \"{campaign}\". Crea PNJ, lugares, objetos, facciones y lore, convierte los ganchos en misiones, crea una sesión por cada sesión de mis notas con un resumen breve y enlaza conjuros, monstruos y estados con la biblioteca de reglas. Muéstrame primero el plan."
+    }
   },
   "aiImport": {
     "imported": "La IA importó {count} entradas en esta campaña",

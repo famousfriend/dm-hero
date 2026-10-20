@@ -10,12 +10,13 @@
       :aria-label="copied ? $t('common.copied') : $t('common.copy')"
       @click="copy"
     />
-    <pre class="connect-cmd"><code>{{ text }}</code></pre>
+    <pre class="connect-cmd" :class="{ wrap }"><code>{{ text }}</code></pre>
   </div>
 </template>
 
 <script setup lang="ts">
-const props = defineProps<{ text: string }>()
+// wrap: long prose (an example request) instead of a command
+const props = defineProps<{ text: string, wrap?: boolean }>()
 const copied = ref(false)
 
 async function copy() {
@@ -55,6 +56,9 @@ async function copy() {
   overflow-x: auto;
   max-width: 100%;
   margin: 0;
+}
+.connect-cmd.wrap {
+  white-space: pre-wrap;
 }
 .connect-cmd code {
   background: none;

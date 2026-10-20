@@ -40,10 +40,18 @@ export default defineEventHandler((event) => {
     if (existsSync(devPath)) mcpPath = devPath
   }
 
+  // How to start the MCP: the desktop app's own executable in Node mode (no
+  // Node.js install needed), otherwise plain `node` (dev / web)
+  const nodePath = process.env.DM_HERO_NODE_PATH
+  const runtime = nodePath
+    ? { command: nodePath, env: { ELECTRON_RUN_AS_NODE: '1' } as Record<string, string> }
+    : { command: 'node', env: {} as Record<string, string> }
+
   return {
     appUrl,
     mcpPath,
     mcpAvailable: !!mcpPath && existsSync(mcpPath),
     isElectron,
+    runtime,
   }
 })
