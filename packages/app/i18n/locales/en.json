@@ -221,7 +221,8 @@
       "count": "maps",
       "markers": "markers",
       "totalMarkers": "total markers"
-    }
+    },
+    "playerExportHint": "One HTML file for your players"
   },
   "campaigns": {
     "title": "Campaigns",
@@ -317,6 +318,20 @@
       "keepExistingCalendarHint": "The calendar from the import will be ignored. Your months, seasons and events will be preserved.",
       "overwriteCalendar": "Overwrite calendar",
       "overwriteCalendarHint": "Your existing calendar will be deleted and replaced with the imported one. All existing events will be lost!"
+    },
+    "playerExport": {
+      "title": "Handout for players",
+      "hint": "Makes one HTML file your players can open in any browser, offline, or print. Only fields that can be shared at the game table are offered, and game table aliases are used instead of real names.",
+      "fileTitle": "Title",
+      "fields": "Fields to include",
+      "entries": "Entries",
+      "shared": "At game table",
+      "empty": "This campaign has no NPCs, locations, items, lore or factions yet.",
+      "safety": "Private fields (like NPC relationships), your notes and documents are never included.",
+      "count": "{n} entries picked",
+      "download": "Save HTML",
+      "done": "Handout saved",
+      "failed": "Could not make the handout"
     }
   },
   "npcs": {

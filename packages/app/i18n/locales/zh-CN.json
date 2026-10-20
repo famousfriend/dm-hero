@@ -221,7 +221,8 @@
       "count": "地图",
       "markers": "标记",
       "totalMarkers": "总分"
-    }
+    },
+    "playerExportHint": "给玩家的一个 HTML 文件"
   },
   "campaigns": {
     "title": "战役",
@@ -317,6 +318,20 @@
       "keepExistingCalendarHint": "导入的日历将被忽略。您的月份、季节和事件将被保留。",
       "overwriteCalendar": "覆盖日历",
       "overwriteCalendarHint": "您现有的日历将被删除并替换为导入的日历。所有现有事件都将丢失！"
+    },
+    "playerExport": {
+      "title": "玩家资料",
+      "hint": "生成一个 HTML 文件，玩家可以离线在任何浏览器中打开或打印。只提供可以在游戏桌上分享的字段，并使用游戏桌上的别名代替真实名称。",
+      "fileTitle": "标题",
+      "fields": "包含的字段",
+      "entries": "条目",
+      "shared": "已在游戏桌分享",
+      "empty": "此战役还没有 NPC、地点、物品、传说或派系。",
+      "safety": "私密字段（如 NPC 关系）、你的笔记和文档永远不会包含在内。",
+      "count": "已选择 {n} 个条目",
+      "download": "保存 HTML",
+      "done": "资料已保存",
+      "failed": "无法生成资料"
     }
   },
   "npcs": {

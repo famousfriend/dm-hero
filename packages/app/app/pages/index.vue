@@ -185,6 +185,21 @@
           </v-card>
         </v-col>
         <v-col cols="12" sm="6" md="4">
+          <v-card hover class="h-100" @click="showPlayerExportDialog = true">
+            <v-card-text class="pa-4">
+              <div class="d-flex align-center">
+                <v-icon icon="mdi-file-document-outline" size="28" color="success" class="mr-3" />
+                <div>
+                  <div class="text-title-medium font-weight-medium">{{ $t('campaigns.playerExport.title') }}</div>
+                  <div class="text-body-medium text-medium-emphasis">
+                    {{ $t('dashboard.playerExportHint') }}
+                  </div>
+                </div>
+              </div>
+            </v-card-text>
+          </v-card>
+        </v-col>
+        <v-col cols="12" sm="6" md="4">
           <v-card hover class="h-100" @click="showImportDialog = true">
             <v-card-text class="pa-4">
               <div class="d-flex align-center">
@@ -264,6 +279,14 @@
       :campaign-id="campaignStore.activeCampaignIdNumber!"
     />
 
+    <!-- Player handout (html) -->
+    <PlayerExportDialog
+      v-if="activeCampaignId"
+      v-model="showPlayerExportDialog"
+      :campaign-id="campaignStore.activeCampaignIdNumber!"
+      :campaign-name="activeCampaignName"
+    />
+
     <!-- Import Dialog -->
     <CampaignImportDialog
       v-model="showImportDialog"
@@ -285,6 +308,7 @@ import type { PinboardItem } from '~~/types/pinboard'
 import type { EntityPreviewType } from '../components/shared/EntityPreviewDialog.vue'
 import CampaignExportDialog from '~/components/campaigns/CampaignExportDialog.vue'
 import CampaignImportDialog from '~/components/campaigns/CampaignImportDialog.vue'
+import PlayerExportDialog from '~/components/campaigns/PlayerExportDialog.vue'
 import CopyToCampaignDialog from '~/components/entities/CopyToCampaignDialog.vue'
 
 interface Session {
@@ -333,6 +357,7 @@ const previewGroupId = ref<number | null>(null)
 
 // Export/Import/Copy dialogs
 const showExportDialog = ref(false)
+const showPlayerExportDialog = ref(false)
 const showImportDialog = ref(false)
 const showCopyDialog = ref(false)
 

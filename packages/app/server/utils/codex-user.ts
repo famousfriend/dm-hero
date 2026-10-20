@@ -1,6 +1,6 @@
 import type Database from 'better-sqlite3'
 import { CODEX_KINDS, CODEX_UID_REGEX, buildUid, slugify, type CodexEntry } from '../../types/codex'
-import { BOOKMARK_SOURCE, BookmarkError, deleteBookmark, getCodexEntry, saveBookmark } from './codex'
+import { BOOKMARK_SOURCE, BookmarkError, deleteBookmark, getCodexEntry, getCodexUsages, saveBookmark } from './codex'
 
 /*
  * The DM's own reference content (DM Command Center M9):
@@ -232,6 +232,7 @@ interface CodexUserRequest {
  * DELETE /api/codex/homebrew?uid=
  * PUT    /api/codex/campaign-edit { campaignId, uid, name, summary, body, hp, ac, cr }
  * DELETE /api/codex/campaign-edit?campaignId=&uid=        reset to the original
+ * GET    /api/codex/usages?uid=&campaignId=                 where an entry is linked
  */
 export function handleCodexUserRequest(db: Database.Database, request: CodexUserRequest): unknown {
   const { method, segments, query } = request
@@ -259,6 +260,9 @@ export function handleCodexUserRequest(db: Database.Database, request: CodexUser
       return saveCampaignEdit(db, body.campaignId, body.uid, body)
     case 'DELETE campaign-edit':
       return resetCampaignEdit(db, query.campaignId, query.uid)
+    case 'GET usages':
+      if (typeof query.uid !== 'string' || !query.uid || !query.campaignId) throw new CodexUserError(400, 'uid and campaignId are required')
+      return getCodexUsages(db, Number(query.campaignId), query.uid)
     default:
       throw new CodexUserError(404, 'Not found')
   }
