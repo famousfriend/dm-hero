@@ -1,7 +1,7 @@
 import { app, BrowserWindow, utilityProcess, ipcMain, dialog, shell, Menu, nativeImage } from 'electron'
 import pkg from 'electron-updater'
 import path from 'path'
-import { existsSync, mkdirSync, copyFileSync, writeFileSync, appendFileSync } from 'fs'
+import { existsSync, mkdirSync, copyFileSync, cpSync, writeFileSync, appendFileSync } from 'fs'
 import { fileURLToPath } from 'url'
 
 const { autoUpdater } = pkg
@@ -499,6 +499,36 @@ ipcMain.handle('open-talespire-dice', async (event, url) => {
   try {
     await shell.openExternal(url)
     return { success: true }
+  }
+  catch (error) {
+    return { success: false, error: error.message }
+  }
+})
+
+// TaleSpire panel ("symbiote"): copy it into TaleSpire's Symbiotes folder with
+// this app's address and key. Without a folder, TaleSpire's default one is used.
+ipcMain.handle('install-talespire-panel', async (event, { url, key, folder } = {}) => {
+  if (typeof url !== 'string' || !/^http:\/\/(127\.0\.0\.1|localhost):\d+$/.test(url) || typeof key !== 'string' || !/^[a-f0-9]{16,128}$/.test(key)) {
+    return { success: false, error: 'Bad panel settings' }
+  }
+  const source = app.isPackaged
+    ? path.join(process.resourcesPath, 'talespire-symbiote')
+    : path.join(__dirname, '..', 'talespire-symbiote')
+  let symbiotes = typeof folder === 'string' && folder ? folder : null
+  if (!symbiotes) {
+    const localLow = path.join(app.getPath('appData'), '..', 'LocalLow', 'BouncyRock Entertainment', 'TaleSpire')
+    if (!existsSync(localLow)) return { success: false, notFound: true }
+    symbiotes = path.join(localLow, 'Symbiotes')
+  }
+  try {
+    const target = path.join(symbiotes, 'DM Command Center')
+    mkdirSync(target, { recursive: true })
+    cpSync(source, target, { recursive: true })
+    writeFileSync(
+      path.join(target, 'config.js'),
+      `// Written by DM Command Center when it installs this panel\nwindow.DMCC_CONFIG = ${JSON.stringify({ url, key })}\n`,
+    )
+    return { success: true, path: target }
   }
   catch (error) {
     return { success: false, error: error.message }

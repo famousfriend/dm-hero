@@ -230,14 +230,14 @@ export function listCombatLog(db: Database.Database, encounterId: number, limit 
 }
 
 /**
- * Undoes the newest entry that isn't undone yet: the participant gets its
+ * Undoes the newest entry that isn't undone yet (dice rolls from TaleSpire only inform): the participant gets its
  * earlier state back. Returns false when there is nothing to undo.
  */
 export function undoLastCombatAction(db: Database.Database, encounterId: number): boolean {
   return db.transaction(() => {
     const entry = db.prepare(`
       SELECT id, participant_id, before_json FROM encounter_log
-      WHERE encounter_id = ? AND undone_at IS NULL ORDER BY id DESC LIMIT 1
+      WHERE encounter_id = ? AND undone_at IS NULL AND kind != 'roll' ORDER BY id DESC LIMIT 1
     `).get(encounterId) as { id: number, participant_id: number | null, before_json: string } | undefined
     if (!entry) return false
     // A removed participant has nothing to restore; the entry is still marked

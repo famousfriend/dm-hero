@@ -32,6 +32,9 @@ contextBridge.exposeInMainWorld('electronAPI', {
   // Hand a talespire://dice link to TaleSpire
   openTaleSpireDice: url => ipcRenderer.invoke('open-talespire-dice', url),
 
+  // Copy the TaleSpire panel into TaleSpire's Symbiotes folder
+  installTaleSpirePanel: options => ipcRenderer.invoke('install-talespire-panel', options),
+
   // ========================================
   // AUTO-UPDATER APIs
   // ========================================

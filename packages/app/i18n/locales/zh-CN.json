@@ -1560,7 +1560,8 @@
         "failure": "{name} 死亡豁免失败",
         "crit": "{name} 死亡豁免掷出天然 20，以 1 点生命值恢复",
         "critFail": "{name} 死亡豁免掷出天然 1（两次失败）"
-      }
+      },
+      "roll": "{name}：{label}"
     },
     "dice": {
       "physical": "实体骰子",
@@ -1996,6 +1997,22 @@
       "openFolder": "打开日志文件夹",
       "hint": "日志文件有助于排除故障。每个文件最大 5 MB，保留 3 个文件。",
       "openFolderFailed": "无法打开日志文件夹"
+    },
+    "taleSpire": {
+      "subtitle": "将 DM Command Center 与 TaleSpire 一起使用：把怪物攻击掷进 TaleSpire 骰盘，并在 TaleSpire 内的面板中查看进行中的战斗。",
+      "use": "我使用 TaleSpire（在战斗中显示骰子按钮）",
+      "install": "在 TaleSpire 中安装面板",
+      "pickFolder": "选择 Symbiotes 文件夹",
+      "notFound": "未找到 TaleSpire 的文件夹。在 TaleSpire 中打开设置，然后 Symbiotes，点击 'Open Symbiotes Directory'。然后在这里点击“选择 Symbiotes 文件夹”并选择同一个文件夹。",
+      "installed": "已安装。现在在 TaleSpire 中：",
+      "steps": {
+        "s1": "打开设置，然后 Symbiotes，开启 Symbiotes（只需一次）。",
+        "s2": "打开屏幕右侧的 Symbiotes 面板，选择 DM Command Center。",
+        "s3": "在本应用中开始一场战斗。它会显示在面板中，攻击掷骰会记录到行动日志。"
+      },
+      "installHint": "更新应用后请再执行一次。游戏时保持应用打开；面板从应用读取战斗。",
+      "desktopOnly": "面板只能在桌面应用中安装。",
+      "failed": "无法安装面板。"
     }
   },
   "players": {

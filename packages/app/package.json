@@ -73,6 +73,10 @@
         "to": "icon-256.png"
       },
       {
+        "from": "talespire-symbiote",
+        "to": "talespire-symbiote"
+      },
+      {
         "from": ".output",
         "to": ".output",
         "filter": [

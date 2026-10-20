@@ -1560,7 +1560,8 @@
         "failure": "{name} verfehlte einen Todesrettungswurf",
         "crit": "{name} würfelte eine natürliche 20 und ist mit 1 TP zurück",
         "critFail": "{name} würfelte eine natürliche 1 (zwei Fehlschläge)"
-      }
+      },
+      "roll": "{name}: {label}"
     },
     "dice": {
       "physical": "Echte Würfel",
@@ -1996,6 +1997,22 @@
       "openFolder": "Log-Ordner öffnen",
       "hint": "Log-Dateien helfen bei der Fehlersuche. Max. 5 MB pro Datei, 3 Dateien werden aufbewahrt.",
       "openFolderFailed": "Log-Ordner konnte nicht geöffnet werden"
+    },
+    "taleSpire": {
+      "subtitle": "Nutze DM Command Center zusammen mit TaleSpire: würfle Monsterangriffe in deine TaleSpire-Würfelschale und sieh den laufenden Kampf in einem Fenster in TaleSpire.",
+      "use": "Ich nutze TaleSpire (Würfelknöpfe in Kämpfen zeigen)",
+      "install": "Fenster in TaleSpire installieren",
+      "pickFolder": "Symbiotes-Ordner wählen",
+      "notFound": "TaleSpires Ordner wurde nicht gefunden. Öffne in TaleSpire die Einstellungen, dann Symbiotes, und klicke 'Open Symbiotes Directory'. Klicke dann hier auf 'Symbiotes-Ordner wählen' und wähle denselben Ordner.",
+      "installed": "Installiert. Jetzt in TaleSpire:",
+      "steps": {
+        "s1": "Einstellungen öffnen, dann Symbiotes, und Symbiotes einschalten (nur einmal).",
+        "s2": "Das Symbiotes-Fenster am rechten Bildschirmrand öffnen und DM Command Center wählen.",
+        "s3": "Hier in der App einen Kampf starten. Er erscheint im Fenster, und seine Angriffswürfe landen im Aktionsprotokoll."
+      },
+      "installHint": "Nach einem App-Update erneut ausführen. Lass die App beim Spielen offen; das Fenster liest den Kampf aus ihr.",
+      "desktopOnly": "Das Fenster lässt sich in der Desktop-App installieren.",
+      "failed": "Das Fenster konnte nicht installiert werden."
     }
   },
   "players": {

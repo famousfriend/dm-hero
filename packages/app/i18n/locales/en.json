@@ -1560,7 +1560,8 @@
         "failure": "{name} failed a death save",
         "crit": "{name} rolled a natural 20 on a death save and is back with 1 HP",
         "critFail": "{name} rolled a natural 1 on a death save (two failures)"
-      }
+      },
+      "roll": "{name}: {label}"
     },
     "dice": {
       "physical": "Physical dice",
@@ -1996,6 +1997,22 @@
       "openFolder": "Open Logs Folder",
       "hint": "Log files help with troubleshooting. Max 5 MB per file, 3 files are retained.",
       "openFolderFailed": "Could not open logs folder"
+    },
+    "taleSpire": {
+      "subtitle": "Use DM Command Center together with TaleSpire: roll monster attacks into your TaleSpire dice tray, and see the running fight in a panel inside TaleSpire.",
+      "use": "I use TaleSpire (show the dice buttons in fights)",
+      "install": "Install the panel in TaleSpire",
+      "pickFolder": "Choose the Symbiotes folder",
+      "notFound": "TaleSpire's folder wasn't found. In TaleSpire, open Settings, then Symbiotes, and click 'Open Symbiotes Directory'. Then click 'Choose the Symbiotes folder' here and pick that same folder.",
+      "installed": "Installed. Now in TaleSpire:",
+      "steps": {
+        "s1": "Open Settings, then Symbiotes, and turn Symbiotes on (only once).",
+        "s2": "Open the Symbiotes panel on the right edge of the screen and pick DM Command Center.",
+        "s3": "Start a fight here in the app. It shows up in the panel, and its attack rolls land in the action log."
+      },
+      "installHint": "Do this again after updating the app. Keep the app open while you play; the panel reads the fight from it.",
+      "desktopOnly": "Installing the panel works in the desktop app.",
+      "failed": "The panel could not be installed."
     }
   },
   "players": {

@@ -110,7 +110,8 @@ export interface EncounterLogEntry {
   participantId: number | null
   participantName: string
   round: number
-  kind: CombatAction['type']
+  /** 'roll': a dice roll made in TaleSpire, only shown (amount = total, details = label and detail) */
+  kind: CombatAction['type'] | 'roll'
   amount: number | null
   /** Why it came out this way: absorbed (temp HP), down, massive, dead, revived, stable, whileDown, kept, result */
   details: Record<string, unknown>

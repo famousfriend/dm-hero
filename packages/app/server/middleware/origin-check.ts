@@ -1,6 +1,8 @@
 import { getAllowedOrigins, isCrossSiteWrite } from '../utils/origin-check'
 
 export default defineEventHandler((event) => {
+  // The TaleSpire panel calls from TaleSpire's own browser; it is checked by its key instead
+  if (event.path.startsWith('/talespire-api/')) return
   const headers = event.node.req.headers
   const blocked = isCrossSiteWrite({
     method: event.method,
