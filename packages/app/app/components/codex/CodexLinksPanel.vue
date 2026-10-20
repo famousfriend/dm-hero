@@ -58,7 +58,13 @@
       <v-btn variant="text" prepend-icon="mdi-bookmark-plus-outline" @click="openBookmarkDialog">
         {{ $t('codex.addBookmark') }}
       </v-btn>
+      <v-btn variant="text" prepend-icon="mdi-flask-outline" @click="homebrewDialog = true">
+        {{ $t('codex.edit.newHomebrew') }}
+      </v-btn>
     </div>
+
+    <!-- Your own entry, linked here right away -->
+    <CodexEntryDialog v-model="homebrewDialog" mode="homebrew" :initial-name="query" @saved="add" />
 
     <!-- Link-only bookmark for content we can't bundle (PHB, XGE ...) -->
     <v-dialog v-model="bookmarkDialog" max-width="480">
@@ -126,6 +132,7 @@ const selected = ref<CodexEntrySummary | null>(null)
 const searching = ref(false)
 const adding = ref(false)
 
+const homebrewDialog = ref(false)
 const bookmarkDialog = ref(false)
 const savingBookmark = ref(false)
 const bookmarkError = ref('')
@@ -156,6 +163,7 @@ function kindIcon(kind: string): string {
 function sourceLabel(entry: CodexEntrySummary): string {
   // Bookmarks show their book; bundled entries their dataset (SRD51)
   if (entry.sourceCode === 'bookmark') return (parseUid(entry.uid)?.source ?? '').toUpperCase()
+  if (entry.sourceCode === 'hb') return t('codex.homebrew')
   return entry.sourceCode.toUpperCase()
 }
 

@@ -67,9 +67,15 @@ export function addParticipants(db: Database.Database, encounterId: number | str
     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
   `)
   const entityStmt = db.prepare('SELECT id, name FROM entities WHERE id = ? AND deleted_at IS NULL')
-  const monsterStmt = db.prepare(
-    'SELECT ref_uid, name, data_json, body_md FROM ref_entries WHERE ref_uid = ? AND kind = \'monster\' AND deleted_at IS NULL',
-  )
+  // With the campaign's own edits of the stat block (M9)
+  const monsterStmt = db.prepare(`
+    SELECT e.ref_uid, COALESCE(o.name, e.name) AS name, e.data_json, o.data_json AS edited_data,
+           COALESCE(o.body_md, e.body_md) AS body_md
+    FROM ref_entries e
+    LEFT JOIN ref_overrides o ON o.ref_uid = e.ref_uid
+      AND o.campaign_id = (SELECT campaign_id FROM encounters WHERE id = @encounterId)
+    WHERE e.ref_uid = @uid AND e.kind = 'monster' AND e.deleted_at IS NULL
+  `)
   const entityDupes = db.prepare('SELECT COUNT(*) as cnt FROM encounter_participants WHERE encounter_id = ? AND entity_id = ?')
   const monsterDupes = db.prepare('SELECT COUNT(*) as cnt FROM encounter_participants WHERE encounter_id = ? AND ref_uid = ?')
   const optionalNumber = (value: unknown) => (value === undefined || value === null || value === '' ? null : Number(value))
@@ -77,11 +83,12 @@ export function addParticipants(db: Database.Database, encounterId: number | str
   db.transaction(() => {
     for (const input of inputs) {
       if (input.refUid) {
-        const monster = monsterStmt.get(input.refUid) as { ref_uid: string, name: string, data_json: string | null, body_md: string | null } | undefined
+        const monster = monsterStmt.get({ uid: input.refUid, encounterId }) as
+          { ref_uid: string, name: string, data_json: string | null, edited_data: string | null, body_md: string | null } | undefined
         if (!monster) continue
         let data: MonsterData = {}
         try {
-          data = JSON.parse(monster.data_json ?? '{}')
+          data = { ...JSON.parse(monster.data_json ?? '{}'), ...JSON.parse(monster.edited_data ?? '{}') }
         }
         catch {
           // no stats: HP/AC stay empty

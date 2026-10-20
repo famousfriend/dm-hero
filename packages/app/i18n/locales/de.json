@@ -3031,7 +3031,31 @@
     "linkFailed": "Referenz konnte nicht gespeichert werden",
     "bookmark": "Lesezeichen",
     "bookmarkInfo": "Nur Link. Öffne ihn, um den vollen Text zu lesen.",
-    "deleteBookmark": "Lesezeichen löschen"
+    "deleteBookmark": "Lesezeichen löschen",
+    "homebrew": "Homebrew",
+    "edit": {
+      "name": "Name",
+      "summary": "Kurzbeschreibung",
+      "summaryPlaceholder": "z. B. Hervorrufung 3. Grades oder HG 2 Feenwesen",
+      "hp": "Trefferpunkte",
+      "ac": "Rüstungsklasse",
+      "cr": "Herausforderungsgrad",
+      "body": "Text",
+      "bodyHint": "Markdown geht: **fett**, *kursiv*, Listen und Tabellen. Schreibe Fähigkeiten als ***Name (Recharge 5-6).***, damit Kämpfe sie verfolgen.",
+      "newTitle": "Neuer Homebrew-Eintrag",
+      "homebrewTitle": "Homebrew-Eintrag bearbeiten",
+      "campaignTitle": "Für diese Kampagne bearbeiten",
+      "homebrewHint": "Dein eigener Zauber, dein Monster, Gegenstand oder deine Regel. Gilt in jeder Kampagne und erscheint in der Suche.",
+      "campaignHint": "Änderungen gelten nur für die offene Kampagne. Das Original bleibt erhalten und lässt sich jederzeit wiederherstellen.",
+      "exists": "Du hast schon einen Homebrew-Eintrag mit diesem Namen.",
+      "failed": "Speichern fehlgeschlagen. Prüfe Name und Zahlen.",
+      "editedChip": "In dieser Kampagne geändert",
+      "edit": "Bearbeiten",
+      "editForCampaign": "Für diese Kampagne bearbeiten",
+      "deleteHomebrew": "Homebrew-Eintrag löschen",
+      "reset": "Auf Original zurücksetzen",
+      "newHomebrew": "Neues Homebrew"
+    }
   },
   "party": {
     "title": "Gruppe",

@@ -3151,6 +3151,29 @@ export const migrations: Migration[] = [
       console.log('✅ Migration 73: Entity templates')
     },
   },
+  {
+    version: 74,
+    name: 'codex campaign edits',
+    up: (db: Database.Database) => {
+      db.exec(`
+        -- Campaign-specific changes to a reference entry ("in this world, Fireball
+        -- is blue"). The original ref_entries row is never modified; a NULL
+        -- column keeps the original value.
+        CREATE TABLE ref_overrides (
+          campaign_id INTEGER NOT NULL REFERENCES campaigns(id) ON DELETE CASCADE,
+          ref_uid TEXT NOT NULL,
+          name TEXT,
+          summary TEXT,
+          body_md TEXT,
+          data_json TEXT,
+          updated_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+          PRIMARY KEY (campaign_id, ref_uid)
+        );
+      `)
+
+      console.log('✅ Migration 74: Codex campaign edits')
+    },
+  },
 ]
 
 export async function runMigrations(db: Database.Database) {

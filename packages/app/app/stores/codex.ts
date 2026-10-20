@@ -48,6 +48,29 @@ export const useCodexStore = defineStore('codex', {
       this.close()
     },
 
+    /** Removes the open homebrew entry from search; links to it keep their name. */
+    async deleteHomebrew() {
+      const uid = this.currentUid
+      if (!uid) return
+      await $fetch('/api/codex/homebrew', { method: 'DELETE', query: { uid } })
+      this.close()
+    },
+
+    /** Back to the original text for the active campaign. */
+    async resetCampaignEdit() {
+      const uid = this.currentUid
+      const campaignId = useCampaignStore().activeCampaignIdNumber
+      if (!uid || !campaignId) return
+      this.showEdited(await $fetch<CodexEntry>('/api/codex/campaign-edit', { method: 'DELETE', query: { uid, campaignId } }))
+    },
+
+    /** Shows an entry just saved from the edit dialog. */
+    showEdited(entry: CodexEntry) {
+      if (entry.uid !== this.currentUid) return
+      this.entry = entry
+      this.names[entry.uid] = entry.name
+    },
+
     close() {
       this.isOpen = false
       this.history = []
@@ -58,8 +81,10 @@ export const useCodexStore = defineStore('codex', {
     async load(uid: string) {
       this.loading = true
       this.notFound = false
+      const campaignId = useCampaignStore().activeCampaignIdNumber
       try {
-        this.entry = await $fetch<CodexEntry>('/api/codex/entry', { query: { uid } })
+        // With the active campaign's own edits, if any
+        this.entry = await $fetch<CodexEntry>('/api/codex/entry', { query: { uid, campaignId: campaignId ?? undefined } })
         this.names[uid] = this.entry.name
       }
       catch {
@@ -67,7 +92,6 @@ export const useCodexStore = defineStore('codex', {
         this.notFound = true
       }
       try {
-        const campaignId = useCampaignStore().activeCampaignIdNumber
         this.usages = campaignId
           ? await $fetch<CodexUsage[]>('/api/codex/usages', { query: { uid, campaignId } })
           : []

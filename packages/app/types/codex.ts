@@ -36,6 +36,8 @@ export interface CodexEntry extends CodexEntrySummary {
   attribution: string | null
   /** Set when the entry was removed (bookmark deleted, dropped from a dataset) */
   deletedAt?: string | null
+  /** The open campaign changed this entry (name, text or monster numbers) */
+  editedInCampaign?: boolean
 }
 
 // Characters a slug may contain. Kept narrow on purpose: everything here is

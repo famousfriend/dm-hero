@@ -3031,7 +3031,31 @@
     "linkFailed": "Impossibile salvare il riferimento",
     "bookmark": "Segnalibro",
     "bookmarkInfo": "Solo link. Aprilo per leggere il testo completo.",
-    "deleteBookmark": "Elimina segnalibro"
+    "deleteBookmark": "Elimina segnalibro",
+    "homebrew": "Homebrew",
+    "edit": {
+      "name": "Nome",
+      "summary": "Descrizione breve",
+      "summaryPlaceholder": "es. invocazione di 3° livello o folletto GS 2",
+      "hp": "Punti ferita",
+      "ac": "Classe armatura",
+      "cr": "Grado di sfida",
+      "body": "Testo",
+      "bodyHint": "Il Markdown funziona: **grassetto**, *corsivo*, elenchi e tabelle. Scrivi le capacità come ***Nome (Recharge 5-6).*** così i combattimenti le seguono.",
+      "newTitle": "Nuova voce homebrew",
+      "homebrewTitle": "Modifica voce homebrew",
+      "campaignTitle": "Modifica per questa campagna",
+      "homebrewHint": "Il tuo incantesimo, mostro, oggetto o regola. Vale in ogni campagna e compare nella ricerca.",
+      "campaignHint": "Le modifiche valgono solo per la campagna aperta. L'originale resta com'è e puoi ripristinarlo quando vuoi.",
+      "exists": "Hai già una voce homebrew con questo nome.",
+      "failed": "Salvataggio non riuscito. Controlla nome e numeri.",
+      "editedChip": "Modificato in questa campagna",
+      "edit": "Modifica",
+      "editForCampaign": "Modifica per questa campagna",
+      "deleteHomebrew": "Elimina voce homebrew",
+      "reset": "Ripristina l'originale",
+      "newHomebrew": "Nuovo homebrew"
+    }
   },
   "party": {
     "title": "Gruppo",

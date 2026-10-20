@@ -16,6 +16,9 @@
     prepend-inner-icon="mdi-book-search-outline"
     @update:model-value="open"
   >
+    <template #append>
+      <v-btn icon="mdi-flask-outline" variant="text" size="small" :title="$t('codex.edit.newHomebrew')" @click="homebrewDialog = true" />
+    </template>
     <template #item="{ props: itemProps, internalItem }">
       <v-list-item v-bind="itemProps" :subtitle="internalItem.raw.summary || undefined">
         <template #append>
@@ -24,6 +27,7 @@
       </v-list-item>
     </template>
   </v-autocomplete>
+  <CodexEntryDialog v-model="homebrewDialog" mode="homebrew" :initial-name="query" @saved="open" />
 </template>
 
 <script setup lang="ts">
@@ -35,6 +39,7 @@ const query = ref('')
 const results = ref<CodexEntrySummary[]>([])
 const selected = ref<CodexEntrySummary | null>(null)
 const searching = ref(false)
+const homebrewDialog = ref(false)
 
 let timer: ReturnType<typeof setTimeout> | undefined
 watch(query, (value) => {
