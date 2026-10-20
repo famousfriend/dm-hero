@@ -239,7 +239,8 @@
       "markers": "segnalini",
       "totalMarkers": "segnalini totali"
     },
-    "playerExportHint": "Un file HTML per i tuoi giocatori"
+    "playerExportHint": "Un file HTML per i tuoi giocatori",
+    "notesImportHint": "Trasforma i tuoi appunti Word o di testo in PNG, luoghi, missioni e sessioni"
   },
   "campaigns": {
     "title": "Campagne",
@@ -3390,5 +3391,38 @@
     "unsetDefault": "Non usare più come predefinito",
     "defaultLabel": "Predefinito",
     "defaultHint": "★ Il predefinito compila ciò che lasci vuoto quando crei una nuova voce."
+  },
+  "notesImport": {
+    "title": "Importa i miei appunti",
+    "intro": "Porta i tuoi appunti da un file Word (.docx) o di testo (.md, .txt), oppure incollali. Vengono divisi ai titoli e controlli cosa diventa ogni parte prima che venga salvato qualcosa.",
+    "file": "File Word o di testo",
+    "or": "oppure",
+    "paste": "Incolla i tuoi appunti",
+    "pastePlaceholder": "# PNG\n## Klarg\nCapo bugbear del covo...",
+    "tip": "Funziona meglio con i titoli: i PNG sotto un titolo come \"PNG\", i luoghi sotto \"Luoghi\", le missioni sotto \"Missioni\" e le sessioni come \"Session 1\". Anche i nomi in grassetto in un elenco vanno bene. Per PDF o appunti senza titoli usa {button}.",
+    "read": "Leggi i miei appunti",
+    "readFailed": "Impossibile leggere gli appunti. È un file Word (.docx) o di testo?",
+    "nothingFound": "Nessun titolo trovato. Aggiungi titoli agli appunti o usa {button} per farli ordinare a Claude.",
+    "untitled": "Nome",
+    "exists": "Già in questa campagna",
+    "linkNames": "Trasforma in link i nomi citati nel testo",
+    "backupNote": "Prima dell'importazione viene fatto un backup, così puoi annullare tutta l'importazione.",
+    "import": "Importa {n}",
+    "done": "{n} voci importate",
+    "undoHint": "Non è quello che volevi? Annulla riporta la campagna esattamente com'era prima di questa importazione.",
+    "undo": "Annulla importazione",
+    "undone": "Importazione annullata",
+    "undoFailed": "Annullamento non riuscito. Puoi ripristinare il backup nelle Impostazioni.",
+    "failed": "L'importazione si è fermata per un errore. Usa Annulla per tornare indietro.",
+    "kinds": {
+      "NPC": "PNG",
+      "Location": "Luogo",
+      "Item": "Oggetto",
+      "Faction": "Fazione",
+      "Lore": "Lore",
+      "Quest": "Missione",
+      "Session": "Sessione",
+      "skip": "Escludi"
+    }
   }
 }

@@ -28,6 +28,8 @@ type ImportEntityType = typeof ENTITY_TYPES[number]
 const META_CONVERT: Partial<Record<ImportEntityType, 'npc' | 'item'>> = { NPC: 'npc', Item: 'item' }
 // Entity-link type keys as used in markdown ({{npc:123}})
 const LINK_KEY: Record<ImportEntityType, string> = { NPC: 'npc', Location: 'location', Item: 'item', Faction: 'faction', Lore: 'lore' }
+// Existing entries can also be quests and players
+const EXISTING_LINK_KEY: Record<string, string> = { ...LINK_KEY, Quest: 'quest', Player: 'player' }
 
 interface InEntity {
   ref?: string
@@ -245,7 +247,7 @@ export default defineEventHandler(async (event) => {
         const exId = parseExistingId(ref)
         if (exId !== null) {
           const row = existingTypeKey.get(exId) as { name: string } | undefined
-          const key = row ? LINK_KEY[row.name as ImportEntityType] : undefined
+          const key = row ? EXISTING_LINK_KEY[row.name] : undefined
           return key ? `{{${key}:${exId}}}` : null
         }
         const id = refToId.get(ref)
@@ -271,7 +273,8 @@ export default defineEventHandler(async (event) => {
 
     // Signal the app that an external (AI/MCP) import happened, so it can show
     // a snackbar + refresh. Only this endpoint records it — manual creates don't.
-    recordImport(campaignId, perType)
+    // The app's own "Import my notes" refreshes itself (?source=notes).
+    if (getQuery(event).source !== 'notes') recordImport(campaignId, perType)
 
     return {
       dryRun: false,

@@ -239,7 +239,8 @@
       "markers": "marqueurs",
       "totalMarkers": "marqueurs au total"
     },
-    "playerExportHint": "Un fichier HTML pour vos joueurs"
+    "playerExportHint": "Un fichier HTML pour vos joueurs",
+    "notesImportHint": "Transforme tes notes Word ou texte en PNJ, lieux, quêtes et séances"
   },
   "campaigns": {
     "title": "Campagnes",
@@ -3390,5 +3391,38 @@
     "unsetDefault": "Ne plus utiliser par défaut",
     "defaultLabel": "Par défaut",
     "defaultHint": "★ Le modèle par défaut remplit ce que vous laissez vide en créant une nouvelle entrée."
+  },
+  "notesImport": {
+    "title": "Importer mes notes",
+    "intro": "Importe tes propres notes depuis un fichier Word (.docx) ou texte (.md, .txt), ou colle-les. Elles sont découpées à leurs titres, et tu vérifies ce que devient chaque partie avant tout enregistrement.",
+    "file": "Fichier Word ou texte",
+    "or": "ou",
+    "paste": "Colle tes notes",
+    "pastePlaceholder": "# PNJ\n## Klarg\nChef gobelours du repaire...",
+    "tip": "Fonctionne mieux avec des titres : les PNJ sous un titre comme \"PNJ\", les lieux sous \"Lieux\", les quêtes sous \"Quêtes\" et les séances comme \"Session 1\". Les noms en gras dans une liste marchent aussi. Pour les PDF ou les notes sans titres, utilise {button}.",
+    "read": "Lire mes notes",
+    "readFailed": "Les notes n'ont pas pu être lues. Est-ce un fichier Word (.docx) ou texte ?",
+    "nothingFound": "Aucun titre trouvé. Ajoute des titres à tes notes ou utilise {button} pour que Claude les trie.",
+    "untitled": "Nom",
+    "exists": "Déjà dans cette campagne",
+    "linkNames": "Transformer les noms cités dans le texte en liens",
+    "backupNote": "Une sauvegarde est faite avant l'import, tu peux donc annuler tout l'import ensuite.",
+    "import": "Importer {n}",
+    "done": "{n} entrées importées",
+    "undoHint": "Pas ce que tu voulais ? Annuler remet la campagne exactement comme avant cet import.",
+    "undo": "Annuler l'import",
+    "undone": "Import annulé",
+    "undoFailed": "L'annulation a échoué. Tu peux restaurer la sauvegarde dans les Paramètres.",
+    "failed": "L'import s'est arrêté sur une erreur. Utilise Annuler pour revenir en arrière.",
+    "kinds": {
+      "NPC": "PNJ",
+      "Location": "Lieu",
+      "Item": "Objet",
+      "Faction": "Faction",
+      "Lore": "Lore",
+      "Quest": "Quête",
+      "Session": "Séance",
+      "skip": "Ignorer"
+    }
   }
 }

@@ -239,7 +239,8 @@
       "markers": "markers",
       "totalMarkers": "total markers"
     },
-    "playerExportHint": "One HTML file for your players"
+    "playerExportHint": "One HTML file for your players",
+    "notesImportHint": "Turn your own Word or text notes into NPCs, places, quests and sessions"
   },
   "campaigns": {
     "title": "Campaigns",
@@ -3390,5 +3391,38 @@
     "unsetDefault": "Stop using as default",
     "defaultLabel": "Default",
     "defaultHint": "★ The default fills in anything you leave empty when you create a new entry."
+  },
+  "notesImport": {
+    "title": "Import my notes",
+    "intro": "Bring in your own notes from a Word file (.docx) or a text file (.md, .txt), or paste them. They are split at their headings, and you check what each part becomes before anything is saved.",
+    "file": "Word or text file",
+    "or": "or",
+    "paste": "Paste your notes",
+    "pastePlaceholder": "# NPCs\n## Klarg\nBugbear boss of the hideout...",
+    "tip": "Works best with headings: put NPCs under a heading like \"NPCs\", places under \"Locations\", quests under \"Quests\" and sessions as \"Session 1\". Bold names in a list work too. For PDFs or notes without headings, use {button}.",
+    "read": "Read my notes",
+    "readFailed": "The notes could not be read. Is it a Word (.docx) or text file?",
+    "nothingFound": "No headings were found. Add headings to your notes, or use {button} to let Claude sort them.",
+    "untitled": "Name",
+    "exists": "Already in this campaign",
+    "linkNames": "Turn names mentioned in the text into links",
+    "backupNote": "A backup is made before importing, so you can undo the whole import afterwards.",
+    "import": "Import {n}",
+    "done": "{n} entries imported",
+    "undoHint": "Not what you wanted? Undo puts the campaign back exactly as it was before this import.",
+    "undo": "Undo import",
+    "undone": "Import undone",
+    "undoFailed": "Undo failed. You can restore the backup in Settings.",
+    "failed": "The import stopped with an error. Use Undo to go back.",
+    "kinds": {
+      "NPC": "NPC",
+      "Location": "Location",
+      "Item": "Item",
+      "Faction": "Faction",
+      "Lore": "Lore",
+      "Quest": "Quest",
+      "Session": "Session",
+      "skip": "Leave out"
+    }
   }
 }
