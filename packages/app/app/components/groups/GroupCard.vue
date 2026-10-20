@@ -4,6 +4,8 @@
     hover
     :class="['d-flex flex-column group-card', { 'highlighted-card': isHighlighted }]"
     style="height: 100%; cursor: pointer"
+    @mouseenter="armTooltips"
+    @focusin="armTooltips"
     @click="$emit('view', group)"
     @contextmenu.prevent="openContextMenu"
   >
@@ -50,7 +52,7 @@
     <!-- Entity Type Badges -->
     <v-card-text class="pt-0 pb-3" style="flex-grow: 0; margin-top: auto">
       <div class="d-flex flex-wrap" style="gap: 6px">
-        <v-tooltip v-for="(count, type) in sortedTypeCounts" :key="type" location="top">
+        <SharedLazyTooltip v-for="(count, type) in sortedTypeCounts" :key="type" location="top">
           <template #activator="{ props: tooltipProps }">
             <v-chip
               v-bind="tooltipProps"
@@ -65,7 +67,7 @@
             </v-chip>
           </template>
           <span>{{ $t(`entityTypes.${type}`) }}</span>
-        </v-tooltip>
+        </SharedLazyTooltip>
       </div>
     </v-card-text>
 
@@ -74,16 +76,16 @@
     <v-card-actions class="px-4 entity-actions">
       <v-btn icon="mdi-eye" size="small" variant="text" @click.stop="$emit('view', group)">
         <v-icon>mdi-eye</v-icon>
-        <v-tooltip activator="parent" location="bottom">{{ $t('common.view') }}</v-tooltip>
+        <SharedLazyTooltip activator="parent" location="bottom">{{ $t('common.view') }}</SharedLazyTooltip>
       </v-btn>
       <v-spacer />
       <v-btn icon="mdi-pencil" size="small" variant="text" @click.stop="$emit('edit', group)">
         <v-icon>mdi-pencil</v-icon>
-        <v-tooltip activator="parent" location="bottom">{{ $t('common.edit') }}</v-tooltip>
+        <SharedLazyTooltip activator="parent" location="bottom">{{ $t('common.edit') }}</SharedLazyTooltip>
       </v-btn>
       <v-btn icon="mdi-delete" size="small" variant="text" color="error" @click.stop="$emit('delete', group)">
         <v-icon>mdi-delete</v-icon>
-        <v-tooltip activator="parent" location="bottom">{{ $t('common.delete') }}</v-tooltip>
+        <SharedLazyTooltip activator="parent" location="bottom">{{ $t('common.delete') }}</SharedLazyTooltip>
       </v-btn>
     </v-card-actions>
   </v-card>
@@ -98,6 +100,8 @@
 
 <script setup lang="ts">
 import { getContrastColor, type EntityGroup, type GroupCounts } from '~~/types/group'
+
+const { armTooltips } = useLazyTooltips()
 
 interface Props {
   group: EntityGroup

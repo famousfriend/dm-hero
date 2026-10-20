@@ -5,6 +5,8 @@
     :variant="faction.archived_at ? 'outlined' : undefined"
     :class="['d-flex flex-column faction-card', { 'highlighted-card': isHighlighted }]"
     :style="{ height: '100%', cursor: 'pointer', opacity: faction.archived_at ? 0.6 : 1 }"
+    @mouseenter="armTooltips"
+    @focusin="armTooltips"
     @click="$emit('view', faction)"
     @contextmenu.prevent="quickLink.openContextMenu"
   >
@@ -110,7 +112,7 @@
       <!-- Count Badges (Members, Lore, Documents, Images) -->
       <div class="d-flex flex-wrap" style="gap: 6px">
         <!-- Members Count Badge -->
-        <v-tooltip location="top">
+        <SharedLazyTooltip location="top">
           <template #activator="{ props: tooltipProps }">
             <v-chip
               v-if="counts"
@@ -136,10 +138,10 @@
             </v-chip>
           </template>
           <span>{{ $t('factions.badgeTooltips.members') }}</span>
-        </v-tooltip>
+        </SharedLazyTooltip>
 
         <!-- Items Count Badge -->
-        <v-tooltip location="top">
+        <SharedLazyTooltip location="top">
           <template #activator="{ props: tooltipProps }">
             <v-chip
               v-if="counts"
@@ -165,10 +167,10 @@
             </v-chip>
           </template>
           <span>{{ $t('factions.badgeTooltips.items') }}</span>
-        </v-tooltip>
+        </SharedLazyTooltip>
 
         <!-- Locations Count Badge -->
-        <v-tooltip location="top">
+        <SharedLazyTooltip location="top">
           <template #activator="{ props: tooltipProps }">
             <v-chip
               v-if="counts"
@@ -194,10 +196,10 @@
             </v-chip>
           </template>
           <span>{{ $t('factions.badgeTooltips.locations') }}</span>
-        </v-tooltip>
+        </SharedLazyTooltip>
 
         <!-- Lore Count Badge -->
-        <v-tooltip location="top">
+        <SharedLazyTooltip location="top">
           <template #activator="{ props: tooltipProps }">
             <v-chip
               v-if="counts"
@@ -223,10 +225,10 @@
             </v-chip>
           </template>
           <span>{{ $t('factions.badgeTooltips.lore') }}</span>
-        </v-tooltip>
+        </SharedLazyTooltip>
 
         <!-- Players Count Badge -->
-        <v-tooltip location="top">
+        <SharedLazyTooltip location="top">
           <template #activator="{ props: tooltipProps }">
             <v-chip
               v-if="counts"
@@ -252,10 +254,10 @@
             </v-chip>
           </template>
           <span>{{ $t('factions.badgeTooltips.players') }}</span>
-        </v-tooltip>
+        </SharedLazyTooltip>
 
         <!-- Documents Count Badge -->
-        <v-tooltip location="top">
+        <SharedLazyTooltip location="top">
           <template #activator="{ props: tooltipProps }">
             <v-chip
               v-if="counts"
@@ -281,10 +283,10 @@
             </v-chip>
           </template>
           <span>{{ $t('factions.badgeTooltips.documents') }}</span>
-        </v-tooltip>
+        </SharedLazyTooltip>
 
         <!-- Images Count Badge -->
-        <v-tooltip location="top">
+        <SharedLazyTooltip location="top">
           <template #activator="{ props: tooltipProps }">
             <v-chip
               v-if="counts"
@@ -310,10 +312,10 @@
             </v-chip>
           </template>
           <span>{{ $t('factions.badgeTooltips.images') }}</span>
-        </v-tooltip>
+        </SharedLazyTooltip>
 
         <!-- Relations Count Badge -->
-        <v-tooltip location="top">
+        <SharedLazyTooltip location="top">
           <template #activator="{ props: tooltipProps }">
             <v-chip
               v-if="counts"
@@ -339,7 +341,7 @@
             </v-chip>
           </template>
           <span>{{ $t('factions.badgeTooltips.relations') }}</span>
-        </v-tooltip>
+        </SharedLazyTooltip>
       </div>
 
       <!-- Tags Row -->
@@ -353,16 +355,16 @@
     <v-card-actions class="px-4 entity-actions">
       <v-btn icon="mdi-eye" size="small" variant="text" @click.stop="$emit('view', faction)">
         <v-icon>mdi-eye</v-icon>
-        <v-tooltip activator="parent" location="bottom">
+        <SharedLazyTooltip activator="parent" location="bottom">
           {{ $t('common.view') }}
-        </v-tooltip>
+        </SharedLazyTooltip>
       </v-btn>
       <GameTableShareButton type="faction" :entity-id="faction.id" :name="faction.name" />
       <v-btn icon="mdi-graph" size="small" variant="text" color="primary" @click.stop="$emit('chaos', faction)">
         <v-icon>mdi-graph</v-icon>
-        <v-tooltip activator="parent" location="bottom">
+        <SharedLazyTooltip activator="parent" location="bottom">
           {{ $t('chaos.title') }}
-        </v-tooltip>
+        </SharedLazyTooltip>
       </v-btn>
       <v-btn
         icon="mdi-download"
@@ -372,9 +374,9 @@
         @click.stop="$emit('download', faction)"
       >
         <v-icon>mdi-download</v-icon>
-        <v-tooltip activator="parent" location="bottom">
+        <SharedLazyTooltip activator="parent" location="bottom">
           {{ $t('common.download') }}
-        </v-tooltip>
+        </SharedLazyTooltip>
       </v-btn>
       <v-spacer />
       <SharedEntityMoveMenu
@@ -389,9 +391,9 @@
       <SharedEntityCopyMenu :entity-id="faction.id" entity-type="faction" :name="faction.name" />
       <v-btn icon="mdi-pencil" size="small" variant="text" @click.stop="$emit('edit', faction)">
         <v-icon>mdi-pencil</v-icon>
-        <v-tooltip activator="parent" location="bottom">
+        <SharedLazyTooltip activator="parent" location="bottom">
           {{ $t('common.edit') }}
-        </v-tooltip>
+        </SharedLazyTooltip>
       </v-btn>
       <v-btn
         :icon="faction.archived_at ? 'mdi-package-up' : 'mdi-archive-arrow-down'"
@@ -401,9 +403,9 @@
         @click.stop="$emit('archive', faction)"
       >
         <v-icon>{{ faction.archived_at ? 'mdi-package-up' : 'mdi-archive-arrow-down' }}</v-icon>
-        <v-tooltip activator="parent" location="bottom">
+        <SharedLazyTooltip activator="parent" location="bottom">
           {{ faction.archived_at ? $t('common.unarchive') : $t('common.archive') }}
-        </v-tooltip>
+        </SharedLazyTooltip>
       </v-btn>
       <v-btn
         icon="mdi-delete"
@@ -413,9 +415,9 @@
         @click.stop="$emit('delete', faction)"
       >
         <v-icon>mdi-delete</v-icon>
-        <v-tooltip activator="parent" location="bottom">
+        <SharedLazyTooltip activator="parent" location="bottom">
           {{ $t('common.delete') }}
-        </v-tooltip>
+        </SharedLazyTooltip>
       </v-btn>
     </v-card-actions>
   </v-card>
@@ -456,6 +458,8 @@ import QuickLinkContextMenu from '~/components/shared/QuickLinkContextMenu.vue'
 import QuickLinkEntitySelectDialog from '~/components/shared/QuickLinkEntitySelectDialog.vue'
 
 import type { Faction, FactionCounts } from '../../../types/faction'
+
+const { armTooltips } = useLazyTooltips()
 
 interface Props {
   faction: Faction

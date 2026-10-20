@@ -143,7 +143,8 @@ function clamp(v: number, min: number, max: number) {
 }
 
 function measure() {
-  if (!wrapper.value) return
+  // Hidden bubbles cost nothing: no layout reads while the page scrolls
+  if (!wrapper.value || !shouldShow.value) return
   // Anchor on the first child (= the wrapped target), so the arrow points at it.
   const el = (wrapper.value.firstElementChild as HTMLElement) ?? wrapper.value
   const rect = el.getBoundingClientRect()
@@ -151,6 +152,9 @@ function measure() {
     anchor.value = null
     return
   }
+  // Same place as before (e.g. a target in the fixed sidebar): leave the bubble alone
+  const prev = anchor.value
+  if (prev && prev.top === rect.top && prev.left === rect.left && prev.width === rect.width && prev.height === rect.height) return
   anchor.value = rect
 
   // Measure bubble size if mounted, then pick best side.
@@ -177,6 +181,15 @@ function scheduleMeasure() {
   })
 }
 
+// Only a scroll that can move the target matters (not the page scrolling
+// beside a target in the fixed sidebar): reading positions forces a layout
+function onAnyScroll(event: Event) {
+  const target = event.target
+  if (!shouldShow.value || !wrapper.value) return
+  if (target instanceof Node && target !== document && !target.contains(wrapper.value)) return
+  scheduleMeasure()
+}
+
 function close() {
   if (dontShowAgain.value) dismissPermanent()
   else dismissForSession()
@@ -195,11 +208,11 @@ function onWrapperClick(e: MouseEvent) {
 onMounted(() => {
   nextTick(measure)
   window.addEventListener('resize', scheduleMeasure)
-  window.addEventListener('scroll', scheduleMeasure, true)
+  window.addEventListener('scroll', onAnyScroll, true)
 })
 onBeforeUnmount(() => {
   window.removeEventListener('resize', scheduleMeasure)
-  window.removeEventListener('scroll', scheduleMeasure, true)
+  window.removeEventListener('scroll', onAnyScroll, true)
   if (rafId !== null) cancelAnimationFrame(rafId)
 })
 watch(shouldShow, (v) => {

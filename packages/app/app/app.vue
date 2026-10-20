@@ -257,4 +257,12 @@ html {
   overflow-y: auto;
   overflow-x: hidden;
 }
+
+/* Hover highlights on clickable cards switch instantly instead of fading.
+   While scrolling, cards slide under the mouse one after another, and each
+   fade redrew the page on every frame. Click ripples still animate. */
+.v-card--hover,
+.v-card--hover :not(.v-ripple__animation) {
+  transition: none !important;
+}
 </style>
