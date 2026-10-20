@@ -44,7 +44,8 @@ const pinId = computed(() => {
 
 // Ensure pins are loaded when component mounts
 onMounted(async () => {
-  if (campaignId.value && pinboardStore.pins.length === 0) {
+  // Once per campaign, not once per card (an empty pinboard used to refetch for every card)
+  if (campaignId.value && pinboardStore.pins.length === 0 && pinboardStore.lastFetchedCampaignId !== Number(campaignId.value)) {
     await pinboardStore.fetchPins(Number(campaignId.value))
   }
 })

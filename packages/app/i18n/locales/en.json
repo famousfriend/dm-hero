@@ -108,7 +108,8 @@
   "playfulness": {
     "title": "Playfulness",
     "description": "Small, random animations - a snake snapping out of a folder, a kobold peeking. Rare, never annoying, switchable.",
-    "folderAnimationsLabel": "Folder hover animations"
+    "folderAnimationsLabel": "Folder hover animations",
+    "autoOffHint": "Also covers the dashboard dice and background effects. Starts switched off on slower PCs so the app stays smooth."
   },
   "featureTooltips": {
     "newBadge": "New",

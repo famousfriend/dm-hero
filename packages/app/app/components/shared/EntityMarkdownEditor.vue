@@ -278,7 +278,7 @@
 </template>
 
 <script setup lang="ts">
-import { MdEditor, NormalToolbar } from 'md-editor-v3'
+import { LazyMdEditor as MdEditor, LazyNormalToolbar as NormalToolbar } from '~/utils/mdEditor'
 import type { ToolbarNames } from 'md-editor-v3'
 import 'md-editor-v3/lib/style.css'
 import { useTheme } from 'vuetify'

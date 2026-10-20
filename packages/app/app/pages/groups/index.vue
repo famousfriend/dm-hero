@@ -46,16 +46,18 @@
       <!-- Group Cards -->
       <v-row>
         <v-col v-for="group in filteredGroups" :key="group.id" cols="12" md="6" lg="4">
-          <GroupCard
-            :group="group"
-            :counts="groupCounts[group.id]"
-            :is-highlighted="highlightedId === group.id"
-            @view="viewGroup"
-            @edit="editGroup"
-            @delete="deleteGroup"
-            @add-member="handleContextMenuAddMember"
-            @open-tab="openGroupTab"
-          />
+          <SharedLazyRender :eager="highlightedId === group.id">
+            <GroupCard
+              :group="group"
+              :counts="groupCounts[group.id]"
+              :is-highlighted="highlightedId === group.id"
+              @view="viewGroup"
+              @edit="editGroup"
+              @delete="deleteGroup"
+              @add-member="handleContextMenuAddMember"
+              @open-tab="openGroupTab"
+            />
+          </SharedLazyRender>
         </v-col>
       </v-row>
     </div>

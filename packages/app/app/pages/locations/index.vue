@@ -113,63 +113,66 @@
           </template>
 
           <template #append="{ internalItem }">
-            <div class="d-flex align-center ga-1">
-              <!-- Type chip -->
-              <v-chip
-                v-if="internalItem.raw.metadata?.type"
-                size="x-small"
-                color="primary"
-                variant="tonal"
-                class="mr-2"
-              >
-                {{ $t(`locations.types.${internalItem.raw.metadata.type}`, internalItem.raw.metadata.type) }}
-              </v-chip>
+            <!-- Row buttons are drawn once the row scrolls near the screen (big campaigns) -->
+            <SharedLazyRender :min-height="28" :eager="highlightedId === internalItem.raw.id">
+              <div class="d-flex align-center ga-1">
+                <!-- Type chip -->
+                <v-chip
+                  v-if="internalItem.raw.metadata?.type"
+                  size="x-small"
+                  color="primary"
+                  variant="tonal"
+                  class="mr-2"
+                >
+                  {{ $t(`locations.types.${internalItem.raw.metadata.type}`, internalItem.raw.metadata.type) }}
+                </v-chip>
 
-              <!-- Tag pinner inline with type-chip + actions -->
-              <SharedTagPinner :entity-id="internalItem.raw.id" class="mr-2" />
+                <!-- Tag pinner inline with type-chip + actions -->
+                <SharedTagPinner :entity-id="internalItem.raw.id" class="mr-2" />
 
-              <!-- Actions -->
-              <v-btn
-                icon="mdi-eye"
-                size="x-small"
-                variant="text"
-                @click.stop="viewLocation(internalItem.raw)"
-              />
-              <GameTableShareButton type="location" :entity-id="internalItem.raw.id" :name="internalItem.raw.name" size="x-small" />
-              <v-btn
-                icon="mdi-pencil"
-                size="x-small"
-                variant="text"
-                @click.stop="editLocation(internalItem.raw)"
-              />
-              <SharedEntityCopyMenu :entity-id="internalItem.raw.id" entity-type="location" :name="internalItem.raw.name" size="x-small" />
-              <v-btn
-                icon="mdi-graph"
-                size="x-small"
-                variant="text"
-                color="primary"
-                @click.stop="openChaosGraph(internalItem.raw)"
-              />
-              <v-btn
-                :icon="internalItem.raw.archived_at ? 'mdi-package-up' : 'mdi-archive-arrow-down'"
-                size="x-small"
-                variant="text"
-                :color="internalItem.raw.archived_at ? 'success' : 'warning'"
-                @click.stop="archiveLocation(internalItem.raw)"
-              >
-                <v-icon>{{ internalItem.raw.archived_at ? 'mdi-package-up' : 'mdi-archive-arrow-down' }}</v-icon>
-                <v-tooltip activator="parent" location="bottom">
-                  {{ internalItem.raw.archived_at ? $t('common.unarchive') : $t('common.archive') }}
-                </v-tooltip>
-              </v-btn>
-              <v-btn
-                icon="mdi-delete"
-                size="x-small"
-                variant="text"
-                color="error"
-                @click.stop="deleteLocation(internalItem.raw)"
-              />
-            </div>
+                <!-- Actions -->
+                <v-btn
+                  icon="mdi-eye"
+                  size="x-small"
+                  variant="text"
+                  @click.stop="viewLocation(internalItem.raw)"
+                />
+                <GameTableShareButton type="location" :entity-id="internalItem.raw.id" :name="internalItem.raw.name" size="x-small" />
+                <v-btn
+                  icon="mdi-pencil"
+                  size="x-small"
+                  variant="text"
+                  @click.stop="editLocation(internalItem.raw)"
+                />
+                <SharedEntityCopyMenu :entity-id="internalItem.raw.id" entity-type="location" :name="internalItem.raw.name" size="x-small" />
+                <v-btn
+                  icon="mdi-graph"
+                  size="x-small"
+                  variant="text"
+                  color="primary"
+                  @click.stop="openChaosGraph(internalItem.raw)"
+                />
+                <v-btn
+                  :icon="internalItem.raw.archived_at ? 'mdi-package-up' : 'mdi-archive-arrow-down'"
+                  size="x-small"
+                  variant="text"
+                  :color="internalItem.raw.archived_at ? 'success' : 'warning'"
+                  @click.stop="archiveLocation(internalItem.raw)"
+                >
+                  <v-icon>{{ internalItem.raw.archived_at ? 'mdi-package-up' : 'mdi-archive-arrow-down' }}</v-icon>
+                  <v-tooltip activator="parent" location="bottom">
+                    {{ internalItem.raw.archived_at ? $t('common.unarchive') : $t('common.archive') }}
+                  </v-tooltip>
+                </v-btn>
+                <v-btn
+                  icon="mdi-delete"
+                  size="x-small"
+                  variant="text"
+                  color="error"
+                  @click.stop="deleteLocation(internalItem.raw)"
+                />
+              </div>
+            </SharedLazyRender>
           </template>
         </v-treeview>
       </v-card>

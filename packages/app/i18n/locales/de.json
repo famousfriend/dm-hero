@@ -108,7 +108,8 @@
   "playfulness": {
     "title": "Spielereien",
     "description": "Kleine, zufällige Animationen - z.B. eine Schlange, die aus einem Ordner schnappt, oder ein Kobold, der lugt. Selten, nie nervig, aber abschaltbar.",
-    "folderAnimationsLabel": "Ordner-Animationen beim Hovern"
+    "folderAnimationsLabel": "Ordner-Animationen beim Hovern",
+    "autoOffHint": "Gilt auch für die Würfel und Hintergrundeffekte auf dem Dashboard. Auf langsameren PCs zunächst ausgeschaltet, damit die App flüssig bleibt."
   },
   "featureTooltips": {
     "newBadge": "Neu",

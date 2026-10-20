@@ -28,7 +28,9 @@ let hydratedFromStorage = false
 function readFromLocalStorage() {
   if (typeof localStorage === 'undefined') return
   try {
-    globallyEnabled.value = localStorage.getItem(SETTINGS_KEY) !== '1'
+    // '1' = switched off, '0' = switched on; never set = on, except on slower PCs
+    const stored = localStorage.getItem(SETTINGS_KEY)
+    globallyEnabled.value = stored === '1' ? false : stored === '0' ? true : !isLowPowerDevice()
   }
   catch {
     // ignore quota / privacy errors
@@ -62,6 +64,16 @@ export function easterEggForFolder(
 ): FolderEasterEgg {
   if (isValidEasterEgg(override)) return override
   return FOLDER_EASTER_EGGS[hashId(folderId) % FOLDER_EASTER_EGGS.length]!
+}
+
+/**
+ * Few CPU cores, little memory, or "reduce motion" switched on in Windows:
+ * decorative motion (dashboard dice, ambience, folder eggs) starts off there.
+ */
+export function isLowPowerDevice(): boolean {
+  if (typeof navigator === 'undefined') return false
+  const memory = (navigator as Navigator & { deviceMemory?: number }).deviceMemory
+  return prefersReducedMotion() || (navigator.hardwareConcurrency || 8) <= 4 || (memory !== undefined && memory <= 4)
 }
 
 function prefersReducedMotion(): boolean {
@@ -120,8 +132,7 @@ export function useFolderAnimationSettings() {
     globallyEnabled.value = value
     if (typeof localStorage === 'undefined') return
     try {
-      if (value) localStorage.removeItem(SETTINGS_KEY)
-      else localStorage.setItem(SETTINGS_KEY, '1')
+      localStorage.setItem(SETTINGS_KEY, value ? '0' : '1')
     }
     catch {
       // ignore

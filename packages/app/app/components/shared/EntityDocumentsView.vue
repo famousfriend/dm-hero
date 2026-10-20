@@ -103,7 +103,7 @@
 </template>
 
 <script setup lang="ts">
-import { MdPreview } from 'md-editor-v3'
+import { LazyMdPreview as MdPreview } from '~/utils/mdEditor'
 import 'md-editor-v3/lib/preview.css'
 import { useTheme } from 'vuetify'
 import EntityPreviewDialog from './EntityPreviewDialog.vue'

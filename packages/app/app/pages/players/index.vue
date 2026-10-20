@@ -60,19 +60,21 @@
       <!-- Player Cards -->
       <v-row>
         <v-col v-for="player in filteredPlayers" :key="player.id" cols="12" md="6" lg="4">
-          <PlayerCard
-            :player="player"
-            :is-highlighted="highlightedId === player.id"
-            @view="viewPlayer"
-            @edit="editPlayer"
-            @download="handleDownload"
-            @archive="archiveEntity"
-            @delete="confirmDelete"
-            @chaos="openChaos"
-            @open-group="openGroupPreview"
-            @open-tab="openPlayerTab"
-            @create-group="groupCreate.open"
-          />
+          <SharedLazyRender :eager="highlightedId === player.id">
+            <PlayerCard
+              :player="player"
+              :is-highlighted="highlightedId === player.id"
+              @view="viewPlayer"
+              @edit="editPlayer"
+              @download="handleDownload"
+              @archive="archiveEntity"
+              @delete="confirmDelete"
+              @chaos="openChaos"
+              @open-group="openGroupPreview"
+              @open-tab="openPlayerTab"
+              @create-group="groupCreate.open"
+            />
+          </SharedLazyRender>
         </v-col>
       </v-row>
     </div>

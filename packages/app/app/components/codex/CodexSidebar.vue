@@ -125,7 +125,7 @@
 </template>
 
 <script setup lang="ts">
-import { MdPreview } from 'md-editor-v3'
+import { LazyMdPreview as MdPreview } from '~/utils/mdEditor'
 import { useTheme } from 'vuetify'
 import { externalUrl as buildExternalUrl, parseUid } from '~~/types/codex'
 

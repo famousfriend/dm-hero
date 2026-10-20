@@ -126,21 +126,23 @@
       <v-row>
         <TransitionGroup tag="div" name="card-move-out" class="card-grid-contents">
           <v-col v-for="item in filteredItems" :key="item.id" cols="12" md="6" lg="4">
-            <ItemCard
-              :item="item"
-              :is-highlighted="highlightedId === item.id"
-              @view="viewItem"
-              @edit="editItem"
-              @download="(item) => downloadImage(`/uploads/${item.image_url}`, item.name)"
-              @archive="archiveEntity"
-              @delete="deleteItem"
-              @chaos="openChaosGraph"
-              @open-group="openGroupPreview"
-              @open-tab="openItemTab"
-              @create-group="groupCreate.open"
-              @moved="onItemMoved"
-              @move-error="onItemMoveError"
-            />
+            <SharedLazyRender :eager="highlightedId === item.id">
+              <ItemCard
+                :item="item"
+                :is-highlighted="highlightedId === item.id"
+                @view="viewItem"
+                @edit="editItem"
+                @download="(item) => downloadImage(`/uploads/${item.image_url}`, item.name)"
+                @archive="archiveEntity"
+                @delete="deleteItem"
+                @chaos="openChaosGraph"
+                @open-group="openGroupPreview"
+                @open-tab="openItemTab"
+                @create-group="groupCreate.open"
+                @moved="onItemMoved"
+                @move-error="onItemMoveError"
+              />
+            </SharedLazyRender>
           </v-col>
         </TransitionGroup>
       </v-row>

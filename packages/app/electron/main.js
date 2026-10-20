@@ -223,7 +223,8 @@ async function startServer() {
   })
 
   // Wait for server to be ready
-  await waitForServer(`http://127.0.0.1:${PROD_SERVER_PORT}`, 30000)
+  // A static file answers as soon as the server listens (no page render); slow PCs get 2 minutes
+  await waitForServer(`http://127.0.0.1:${PROD_SERVER_PORT}/favicon.png`, 120000)
   console.log('[Electron] Server is ready!')
 }
 
@@ -243,7 +244,7 @@ async function waitForServer(url, timeout = 30000) {
     catch {
       // Server not ready yet
     }
-    await new Promise(resolve => setTimeout(resolve, 500))
+    await new Promise(resolve => setTimeout(resolve, 100))
   }
 
   throw new Error(`Server did not start within ${timeout}ms`)

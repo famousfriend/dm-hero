@@ -108,7 +108,8 @@
   "playfulness": {
     "title": "Toques divertidos",
     "description": "Pequeñas animaciones aleatorias: una serpiente que salta de una carpeta, un kóbold que se asoma. Raras, nunca molestas, desactivables.",
-    "folderAnimationsLabel": "Animaciones al pasar sobre carpetas"
+    "folderAnimationsLabel": "Animaciones al pasar sobre carpetas",
+    "autoOffHint": "También incluye los dados y los efectos de fondo del panel. En PC más lentos empieza desactivado para que la app vaya fluida."
   },
   "featureTooltips": {
     "newBadge": "Nuevo",
