@@ -1,4 +1,5 @@
 import { getDb } from '../../utils/db'
+import { applyDefaultExtras, fillFromDefault } from '../../utils/entity-templates'
 
 export default defineEventHandler(async (event) => {
   const db = getDb()
@@ -32,6 +33,8 @@ export default defineEventHandler(async (event) => {
     })
   }
 
+  // The default template fills what was left empty (DM Command Center M8.2)
+  const filled = fillFromDefault(db, 'Faction', description, metadata)
   const result = db
     .prepare(
       `
@@ -43,10 +46,11 @@ export default defineEventHandler(async (event) => {
       entityType.id,
       campaignId,
       name,
-      description || null,
+      filled.description,
       location_id ?? null,
-      metadata ? JSON.stringify(metadata) : null,
+      filled.metadata ? JSON.stringify(filled.metadata) : null,
     )
+  applyDefaultExtras(db, filled.template, result.lastInsertRowid)
 
   const factionId = result.lastInsertRowid
 

@@ -3229,6 +3229,21 @@
   "duplicate": {
     "action": "Duplica",
     "copyName": "{name} (copia)",
-    "done": "Creato {name}"
+    "done": "Creato {name}",
+    "menu": "Copia"
+  },
+  "templates": {
+    "saveAs": "Salva come modello",
+    "saveHint": "Salva descrizione, dettagli, statistiche e tag per creare nuove voci da esso in qualsiasi campagna.",
+    "name": "Nome del modello",
+    "saved": "Modello {name} salvato",
+    "fromTemplate": "Da modello",
+    "none": "Ancora nessun modello. Usa il pulsante copia su una scheda e scegli \"Salva come modello\".",
+    "created": "{name} creato dal modello",
+    "deleted": "Modello {name} eliminato",
+    "setDefault": "Usa come predefinito",
+    "unsetDefault": "Non usare più come predefinito",
+    "defaultLabel": "Predefinito",
+    "defaultHint": "★ Il predefinito compila ciò che lasci vuoto quando crei una nuova voce."
   }
 }

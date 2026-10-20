@@ -2,6 +2,7 @@
   <v-container>
     <UiPageHeader :title="$t('npcs.title')" :subtitle="$t('npcs.subtitle')">
       <template #actions>
+        <SharedEntityTemplateMenu entity-type="npc" class="mr-2" />
         <v-btn
           color="primary"
           prepend-icon="mdi-plus"

@@ -2,6 +2,7 @@
   <v-container>
     <UiPageHeader :title="$t('factions.title')" :subtitle="$t('factions.subtitle')">
       <template #actions>
+        <SharedEntityTemplateMenu entity-type="faction" class="mr-2" />
         <v-btn color="primary" prepend-icon="mdi-plus" size="large" @click="openCreateDialog">
           {{ $t('factions.create') }}
         </v-btn>

@@ -2,6 +2,7 @@
   <v-container>
     <UiPageHeader :title="$t('lore.title')" :subtitle="$t('lore.subtitle')">
       <template #actions>
+        <SharedEntityTemplateMenu entity-type="lore" class="mr-2" />
         <v-btn color="primary" prepend-icon="mdi-plus" size="large" @click="openCreateDialog">
           {{ $t('lore.create') }}
         </v-btn>

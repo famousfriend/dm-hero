@@ -2,6 +2,7 @@
   <v-container>
     <UiPageHeader :title="$t('locations.title')" :subtitle="$t('locations.subtitle')">
       <template #actions>
+        <SharedEntityTemplateMenu entity-type="location" class="mr-2" />
         <v-btn
           color="primary"
           prepend-icon="mdi-plus"
@@ -141,7 +142,7 @@
                 variant="text"
                 @click.stop="editLocation(internalItem.raw)"
               />
-              <SharedEntityDuplicateButton :entity-id="internalItem.raw.id" entity-type="location" :name="internalItem.raw.name" size="x-small" />
+              <SharedEntityCopyMenu :entity-id="internalItem.raw.id" entity-type="location" :name="internalItem.raw.name" size="x-small" />
               <v-btn
                 icon="mdi-graph"
                 size="x-small"

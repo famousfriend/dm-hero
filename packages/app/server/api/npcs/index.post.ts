@@ -1,4 +1,5 @@
 import { getDb } from '../../utils/db'
+import { applyDefaultExtras, fillFromDefault } from '../../utils/entity-templates'
 import { convertMetadataToKeys, getLocaleFromEvent } from '../../utils/i18n-lookup'
 import type { NpcMetadata } from '../../../types/npc'
 
@@ -37,6 +38,8 @@ export default defineEventHandler(async (event) => {
   const locale = getLocaleFromEvent(event)
   const metadataWithKeys = await convertMetadataToKeys(metadata, 'npc', locale)
 
+  // The default template fills what was left empty (DM Command Center M8.2)
+  const filled = fillFromDefault(db, 'NPC', description, metadataWithKeys)
   const result = db
     .prepare(
       `
@@ -48,8 +51,8 @@ export default defineEventHandler(async (event) => {
       entityType.id,
       campaignId,
       name,
-      description || null,
-      metadataWithKeys ? JSON.stringify(metadataWithKeys) : null,
+      filled.description,
+      filled.metadata ? JSON.stringify(filled.metadata) : null,
       location_id || null,
     )
 
@@ -65,6 +68,7 @@ export default defineEventHandler(async (event) => {
     updated_at: string
     deleted_at: string | null
   }
+  applyDefaultExtras(db, filled.template, result.lastInsertRowid)
 
   const npc = db
     .prepare<unknown[], DbEntity>(

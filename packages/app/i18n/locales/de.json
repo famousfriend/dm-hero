@@ -3229,6 +3229,21 @@
   "duplicate": {
     "action": "Duplizieren",
     "copyName": "{name} (Kopie)",
-    "done": "{name} erstellt"
+    "done": "{name} erstellt",
+    "menu": "Kopieren"
+  },
+  "templates": {
+    "saveAs": "Als Vorlage speichern",
+    "saveHint": "Speichert Beschreibung, Details, Werte und Tags, damit du in jeder Kampagne neue Einträge daraus anlegen kannst.",
+    "name": "Name der Vorlage",
+    "saved": "Vorlage {name} gespeichert",
+    "fromTemplate": "Aus Vorlage",
+    "none": "Noch keine Vorlagen. Nutze den Kopieren-Knopf auf einer Karte und wähle „Als Vorlage speichern\".",
+    "created": "{name} aus der Vorlage erstellt",
+    "deleted": "Vorlage {name} gelöscht",
+    "setDefault": "Als Standard verwenden",
+    "unsetDefault": "Nicht mehr als Standard verwenden",
+    "defaultLabel": "Standard",
+    "defaultHint": "★ Der Standard füllt alles aus, was du beim Anlegen eines neuen Eintrags leer lässt."
   }
 }

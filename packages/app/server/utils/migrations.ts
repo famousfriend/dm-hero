@@ -3126,6 +3126,31 @@ export const migrations: Migration[] = [
       console.log('✅ Migration 72: Encounter limited-use abilities')
     },
   },
+  {
+    version: 73,
+    name: 'entity templates',
+    up: (db: Database.Database) => {
+      db.exec(`
+        -- Reusable starting points ("Town guard", "Tavern"), shared by all campaigns.
+        -- At most one default per entity type fills empty fields of new entries.
+        CREATE TABLE entity_templates (
+          id INTEGER PRIMARY KEY AUTOINCREMENT,
+          type_id INTEGER NOT NULL REFERENCES entity_types(id) ON DELETE CASCADE,
+          name TEXT NOT NULL,
+          description TEXT,
+          metadata TEXT,
+          stat_template_id INTEGER REFERENCES stat_templates(id) ON DELETE SET NULL,
+          stat_values_json TEXT,
+          tag_ids_json TEXT,
+          is_default INTEGER NOT NULL DEFAULT 0,
+          created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
+        );
+        CREATE INDEX idx_entity_templates_type ON entity_templates(type_id);
+      `)
+
+      console.log('✅ Migration 73: Entity templates')
+    },
+  },
 ]
 
 export async function runMigrations(db: Database.Database) {

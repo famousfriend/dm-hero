@@ -1,4 +1,5 @@
 import { getDb } from '../../utils/db'
+import { applyDefaultExtras, fillFromDefault } from '../../utils/entity-templates'
 
 export default defineEventHandler(async (event) => {
   const db = getDb()
@@ -29,6 +30,8 @@ export default defineEventHandler(async (event) => {
     })
   }
 
+  // The default template fills what was left empty (DM Command Center M8.2)
+  const filled = fillFromDefault(db, 'Location', description, metadata)
   const result = db
     .prepare(
       `
@@ -39,11 +42,12 @@ export default defineEventHandler(async (event) => {
     .run(
       entityType.id,
       name,
-      description || null,
-      metadata ? JSON.stringify(metadata) : null,
+      filled.description,
+      filled.metadata ? JSON.stringify(filled.metadata) : null,
       campaignId,
       parentLocationId || null,
     )
+  applyDefaultExtras(db, filled.template, result.lastInsertRowid)
 
   interface LocationRow {
     id: number

@@ -3229,6 +3229,21 @@
   "duplicate": {
     "action": "Duplicar",
     "copyName": "{name} (copia)",
-    "done": "Se creó {name}"
+    "done": "Se creó {name}",
+    "menu": "Copiar"
+  },
+  "templates": {
+    "saveAs": "Guardar como plantilla",
+    "saveHint": "Guarda la descripción, los detalles, las estadísticas y las etiquetas para crear nuevas entradas a partir de ella en cualquier campaña.",
+    "name": "Nombre de la plantilla",
+    "saved": "Plantilla {name} guardada",
+    "fromTemplate": "Desde plantilla",
+    "none": "Aún no hay plantillas. Usa el botón de copiar en una tarjeta y elige \"Guardar como plantilla\".",
+    "created": "{name} creado desde la plantilla",
+    "deleted": "Plantilla {name} eliminada",
+    "setDefault": "Usar por defecto",
+    "unsetDefault": "Dejar de usar por defecto",
+    "defaultLabel": "Por defecto",
+    "defaultHint": "★ La plantilla por defecto rellena lo que dejes vacío al crear una nueva entrada."
   }
 }
