@@ -3229,6 +3229,21 @@
   "duplicate": {
     "action": "Duplicate",
     "copyName": "{name} (copy)",
-    "done": "Created {name}"
+    "done": "Created {name}",
+    "menu": "Copy"
+  },
+  "templates": {
+    "saveAs": "Save as template",
+    "saveHint": "Saves the description, details, stats and tags so you can start new entries from it in any campaign.",
+    "name": "Template name",
+    "saved": "Saved template {name}",
+    "fromTemplate": "From template",
+    "none": "No templates yet. Use the copy button on a card and choose \"Save as template\".",
+    "created": "Created {name} from the template",
+    "deleted": "Deleted template {name}",
+    "setDefault": "Make default",
+    "unsetDefault": "Stop using as default",
+    "defaultLabel": "Default",
+    "defaultHint": "★ The default fills in anything you leave empty when you create a new entry."
   }
 }

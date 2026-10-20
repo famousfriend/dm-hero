@@ -3229,6 +3229,21 @@
   "duplicate": {
     "action": "复制",
     "copyName": "{name}（副本）",
-    "done": "已创建 {name}"
+    "done": "已创建 {name}",
+    "menu": "复制"
+  },
+  "templates": {
+    "saveAs": "另存为模板",
+    "saveHint": "保存描述、详情、属性和标签，以便在任何战役中以此创建新条目。",
+    "name": "模板名称",
+    "saved": "已保存模板 {name}",
+    "fromTemplate": "从模板创建",
+    "none": "还没有模板。在卡片上使用复制按钮并选择“另存为模板”。",
+    "created": "已从模板创建 {name}",
+    "deleted": "已删除模板 {name}",
+    "setDefault": "设为默认",
+    "unsetDefault": "取消默认",
+    "defaultLabel": "默认",
+    "defaultHint": "★ 默认模板会在你新建条目时填入留空的内容。"
   }
 }

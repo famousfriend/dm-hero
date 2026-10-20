@@ -1,4 +1,5 @@
 import { getDb } from '../../utils/db'
+import { applyDefaultExtras, fillFromDefault } from '../../utils/entity-templates'
 import { convertMetadataToKeys, getLocaleFromEvent } from '../../utils/i18n-lookup'
 import type { ItemMetadata } from '../../../types/item'
 
@@ -37,6 +38,8 @@ export default defineEventHandler(async (event) => {
   const locale = getLocaleFromEvent(event)
   const convertedMetadata = metadata ? await convertMetadataToKeys(metadata, 'item', locale) : null
 
+  // The default template fills what was left empty (DM Command Center M8.2)
+  const filled = fillFromDefault(db, 'Item', description, convertedMetadata)
   const result = db
     .prepare(
       `
@@ -48,9 +51,9 @@ export default defineEventHandler(async (event) => {
       entityType.id,
       campaignId,
       name,
-      description || null,
+      filled.description,
       location_id ?? null,
-      convertedMetadata ? JSON.stringify(convertedMetadata) : null,
+      filled.metadata ? JSON.stringify(filled.metadata) : null,
     )
 
   interface DbEntity {
@@ -64,6 +67,7 @@ export default defineEventHandler(async (event) => {
     updated_at: string
     deleted_at: string | null
   }
+  applyDefaultExtras(db, filled.template, result.lastInsertRowid)
 
   const item = db
     .prepare<unknown[], DbEntity>(

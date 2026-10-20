@@ -3229,6 +3229,21 @@
   "duplicate": {
     "action": "Dupliquer",
     "copyName": "{name} (copie)",
-    "done": "{name} créé"
+    "done": "{name} créé",
+    "menu": "Copier"
+  },
+  "templates": {
+    "saveAs": "Enregistrer comme modèle",
+    "saveHint": "Enregistre la description, les détails, les statistiques et les tags pour créer de nouvelles entrées à partir de ce modèle dans n'importe quelle campagne.",
+    "name": "Nom du modèle",
+    "saved": "Modèle {name} enregistré",
+    "fromTemplate": "Depuis un modèle",
+    "none": "Aucun modèle pour l'instant. Utilisez le bouton copier d'une carte et choisissez « Enregistrer comme modèle ».",
+    "created": "{name} créé depuis le modèle",
+    "deleted": "Modèle {name} supprimé",
+    "setDefault": "Utiliser par défaut",
+    "unsetDefault": "Ne plus utiliser par défaut",
+    "defaultLabel": "Par défaut",
+    "defaultHint": "★ Le modèle par défaut remplit ce que vous laissez vide en créant une nouvelle entrée."
   }
 }

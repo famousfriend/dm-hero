@@ -435,7 +435,7 @@
         @moved="onMoved"
         @move-error="onMoveError"
       />
-      <SharedEntityDuplicateButton :entity-id="npc.id" entity-type="npc" :name="npc.name" />
+      <SharedEntityCopyMenu :entity-id="npc.id" entity-type="npc" :name="npc.name" />
       <v-btn icon="mdi-pencil" size="small" variant="text" @click.stop="$emit('edit', npc)">
         <v-icon>mdi-pencil</v-icon>
         <v-tooltip activator="parent" location="bottom">
