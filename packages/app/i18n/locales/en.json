@@ -80,7 +80,24 @@
     "appUrl": "App address",
     "afterConnectTitle": "Important: start a new AI session",
     "afterConnect": "MCP servers load only at session start. After connecting, start a fresh session - then say e.g. \"Read this PDF and create the NPCs in DM Hero.\"",
-    "loadFailed": "Couldn't load the connection details. Is DM Hero reachable? Close the dialog and try again."
+    "loadFailed": "Couldn't load the connection details. Is DM Hero reachable? Close the dialog and try again.",
+    "desktopSteps": {
+      "s1": "Install the Claude desktop app from claude.ai/download and sign in. A free account works too.",
+      "s2": "Copy these settings:",
+      "s3": "In the Claude app open Settings, then Developer, then Edit Config. Open the file claude_desktop_config.json with Notepad.",
+      "s4": "If the file is empty (or only has two curly brackets), replace everything with what you copied. If it already has other text, paste both into a normal Claude chat and ask Claude to merge them.",
+      "s5": "Save the file. Fully quit Claude (right-click its icon next to the clock, then Quit) and start it again.",
+      "s6": "In a new chat, ask: \"What can you do with DM Hero?\" When Claude asks to use DM Hero, choose Always allow."
+    },
+    "importNotes": {
+      "title": "Bring in your own notes",
+      "s1": "Make a backup first (Settings). The first time, try it in a new test campaign.",
+      "s2": "In a new Claude chat, attach your notes (Word, PDF, text) or paste them, and ask like the example below.",
+      "s3": "Claude shows you a plan first. Check it, then answer \"Yes, do it\".",
+      "s4": "Big campaign? Do one chapter per chat. Free Claude accounts have lower limits, so use smaller pieces.",
+      "example": "Example request (copy, then change it to fit):",
+      "prompt": "Here are my campaign notes. Put them into DM Hero in my campaign \"{campaign}\". Make NPCs, locations, items, factions and lore, turn the plot hooks into quests, make one session per session in my notes with a short summary, and link spells, monsters and conditions to the rules library. Show me the plan first."
+    }
   },
   "aiImport": {
     "imported": "AI imported {count} entries into this campaign",

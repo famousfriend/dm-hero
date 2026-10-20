@@ -80,7 +80,24 @@
     "appUrl": "Adresse de l'application",
     "afterConnectTitle": "Important : démarrez une nouvelle session IA",
     "afterConnect": "Les serveurs MCP ne se chargent qu'au démarrage d'une session. Après la connexion, démarrez une nouvelle session, puis dites par ex. \"Lis ce PDF et crée les PNJ dans DM Hero.\"",
-    "loadFailed": "Impossible de charger les détails de connexion. DM Hero est-il accessible ? Fermez la fenêtre et réessayez."
+    "loadFailed": "Impossible de charger les détails de connexion. DM Hero est-il accessible ? Fermez la fenêtre et réessayez.",
+    "desktopSteps": {
+      "s1": "Installez l'app de bureau Claude depuis claude.ai/download et connectez-vous. Un compte gratuit fonctionne aussi.",
+      "s2": "Copiez ces réglages :",
+      "s3": "Dans l'app Claude, ouvrez Paramètres, puis Développeur, puis Modifier la configuration. Ouvrez le fichier claude_desktop_config.json avec le Bloc-notes.",
+      "s4": "Si le fichier est vide (ou ne contient que deux accolades), remplacez tout par ce que vous avez copié. S'il contient déjà autre chose, collez les deux dans une discussion Claude normale et demandez à Claude de les fusionner.",
+      "s5": "Enregistrez le fichier. Quittez complètement Claude (clic droit sur son icône près de l'horloge, puis Quitter) et relancez-le.",
+      "s6": "Dans une nouvelle discussion, demandez : \"Que peux-tu faire avec DM Hero ?\" Quand Claude demande à utiliser DM Hero, choisissez Toujours autoriser."
+    },
+    "importNotes": {
+      "title": "Importer vos propres notes",
+      "s1": "Faites d'abord une sauvegarde (Paramètres). La première fois, essayez dans une nouvelle campagne de test.",
+      "s2": "Dans une nouvelle discussion Claude, joignez vos notes (Word, PDF, texte) ou collez-les, et demandez comme dans l'exemple ci-dessous.",
+      "s3": "Claude vous montre d'abord un plan. Vérifiez-le, puis répondez \"Oui, vas-y\".",
+      "s4": "Grosse campagne ? Un chapitre par discussion. Les comptes Claude gratuits ont des limites plus basses, utilisez donc de plus petits morceaux.",
+      "example": "Exemple (copiez puis adaptez) :",
+      "prompt": "Voici mes notes de campagne. Mets-les dans DM Hero dans ma campagne \"{campaign}\". Crée les PNJ, lieux, objets, factions et lore, transforme les accroches en quêtes, crée une session pour chaque session de mes notes avec un court résumé, et relie les sorts, monstres et états à la bibliothèque de règles. Montre-moi d'abord le plan."
+    }
   },
   "aiImport": {
     "imported": "L'IA a importé {count} entrées dans cette campagne",

@@ -45,11 +45,13 @@
             </v-window-item>
 
             <v-window-item value="claude-desktop">
-              <p class="text-body-small mb-2">
-                {{ $t('connectAi.claudeDesktop') }}
-                <code>claude_desktop_config.json</code>
-              </p>
-              <DashboardConnectCopyBlock :text="jsonConfig" />
+              <!-- Step by step for people who never edited a config file -->
+              <ol class="connect-steps text-body-medium mb-3">
+                <li v-for="n in 6" :key="n">
+                  {{ $t(`connectAi.desktopSteps.s${n}`) }}
+                  <DashboardConnectCopyBlock v-if="n === 2" :text="jsonConfig" class="mt-2" />
+                </li>
+              </ol>
             </v-window-item>
 
             <v-window-item value="cursor">
@@ -63,6 +65,14 @@
           <div class="text-body-small text-medium-emphasis mt-3">
             <strong>{{ $t('connectAi.appUrl') }}:</strong> <code>{{ appUrl }}</code>
           </div>
+
+          <!-- What to do once connected: hand Claude your own notes -->
+          <div class="text-title-medium mt-6 mb-2">{{ $t('connectAi.importNotes.title') }}</div>
+          <ol class="connect-steps text-body-medium mb-3">
+            <li v-for="n in 4" :key="n">{{ $t(`connectAi.importNotes.s${n}`) }}</li>
+          </ol>
+          <p class="text-body-small mb-2">{{ $t('connectAi.importNotes.example') }}</p>
+          <DashboardConnectCopyBlock :text="examplePrompt" wrap />
 
           <v-alert
             type="info"
@@ -108,6 +118,9 @@ const dialog = computed({
 })
 
 const tab = ref('claude-code')
+const { t } = useI18n()
+const campaignName = useCookie<string | null>('activeCampaignName')
+const examplePrompt = computed(() => t('connectAi.importNotes.prompt', { campaign: campaignName.value || 'My campaign' }))
 const info = ref<McpInfo | null>(null)
 const fetchFailed = ref(false)
 
@@ -137,6 +150,8 @@ watch(() => props.show, async (open) => {
     try {
       info.value = await $fetch<McpInfo>('/api/import/mcp-info')
       fetchFailed.value = false
+      // Desktop app users most likely use the Claude desktop app
+      if (info.value.isElectron) tab.value = 'claude-desktop'
     }
     catch {
       // Don't fall back to placeholder commands (they'd be copyable but wrong) —
@@ -148,6 +163,13 @@ watch(() => props.show, async (open) => {
 </script>
 
 <style scoped>
+.connect-steps {
+  padding-left: 20px;
+}
+.connect-steps li {
+  margin-bottom: 6px;
+}
+
 /* The one-line build hint inside the "not built" alert. */
 .connect-cmd {
   background: #11151f;

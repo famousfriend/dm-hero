@@ -80,7 +80,24 @@
     "appUrl": "Indirizzo dell'app",
     "afterConnectTitle": "Importante: avvia una nuova sessione IA",
     "afterConnect": "I server MCP vengono caricati solo all'avvio della sessione. Dopo il collegamento avvia una nuova sessione e poi di' ad esempio: \"Leggi questo PDF e crea i PNG in DM Hero.\"",
-    "loadFailed": "Impossibile caricare i dettagli di connessione. DM Hero è raggiungibile? Chiudi la finestra e riprova."
+    "loadFailed": "Impossibile caricare i dettagli di connessione. DM Hero è raggiungibile? Chiudi la finestra e riprova.",
+    "desktopSteps": {
+      "s1": "Installa l'app desktop di Claude da claude.ai/download e accedi. Va bene anche un account gratuito.",
+      "s2": "Copia queste impostazioni:",
+      "s3": "Nell'app Claude apri Impostazioni, poi Sviluppatore, poi Modifica configurazione. Apri il file claude_desktop_config.json con il Blocco note.",
+      "s4": "Se il file è vuoto (o contiene solo due parentesi graffe), sostituisci tutto con ciò che hai copiato. Se contiene già altro testo, incolla entrambi in una normale chat di Claude e chiedi a Claude di unirli.",
+      "s5": "Salva il file. Chiudi completamente Claude (clic destro sulla sua icona vicino all'orologio, poi Esci) e riavvialo.",
+      "s6": "In una nuova chat chiedi: \"Cosa puoi fare con DM Hero?\" Quando Claude chiede di usare DM Hero, scegli Consenti sempre."
+    },
+    "importNotes": {
+      "title": "Porta le tue note",
+      "s1": "Fai prima un backup (Impostazioni). La prima volta prova in una nuova campagna di prova.",
+      "s2": "In una nuova chat di Claude allega le tue note (Word, PDF, testo) o incollale, e chiedi come nell'esempio qui sotto.",
+      "s3": "Claude ti mostra prima un piano. Controllalo, poi rispondi \"Sì, procedi\".",
+      "s4": "Campagna grande? Un capitolo per chat. Gli account Claude gratuiti hanno limiti più bassi, quindi usa parti più piccole.",
+      "example": "Esempio (copia e adatta):",
+      "prompt": "Ecco le mie note di campagna. Inseriscile in DM Hero nella mia campagna \"{campaign}\". Crea PNG, luoghi, oggetti, fazioni e lore, trasforma gli spunti in missioni, crea una sessione per ogni sessione delle mie note con un breve riassunto e collega incantesimi, mostri e condizioni alla biblioteca delle regole. Mostrami prima il piano."
+    }
   },
   "aiImport": {
     "imported": "L'IA ha importato {count} voci in questa campagna",
