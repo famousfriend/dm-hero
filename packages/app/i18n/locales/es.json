@@ -3225,5 +3225,10 @@
     "lookupPlaceholder": "Busca un conjuro, monstruo, estado…",
     "currentSession": "Sesión",
     "noSessions": "Aún no hay sesiones."
+  },
+  "duplicate": {
+    "action": "Duplicar",
+    "copyName": "{name} (copia)",
+    "done": "Se creó {name}"
   }
 }

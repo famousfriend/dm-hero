@@ -74,6 +74,7 @@
 
           <v-card-actions>
             <v-spacer />
+            <v-btn icon="mdi-content-copy" size="small" :title="$t('duplicate.action')" @click.stop="duplicate(encounter)" />
             <v-btn icon="mdi-delete" size="small" @click.stop="startDelete(encounter)" />
           </v-card-actions>
         </v-card>
@@ -198,6 +199,12 @@ async function createEncounter() {
 const showDeleteDialog = ref(false)
 const deletingEncounter = ref<Encounter | null>(null)
 const deleting = ref(false)
+
+async function duplicate(encounter: Encounter) {
+  const copy = await encounterStore.duplicateEncounter(encounter, t('duplicate.copyName', { name: encounter.name }))
+  if (copy) snackbarStore.success(t('duplicate.done', { name: copy.name }))
+  else snackbarStore.error(t('common.error'))
+}
 
 function startDelete(encounter: Encounter) {
   deletingEncounter.value = encounter

@@ -3225,5 +3225,10 @@
     "lookupPlaceholder": "Chercher un sort, un monstre, un état…",
     "currentSession": "Séance",
     "noSessions": "Aucune séance pour l'instant."
+  },
+  "duplicate": {
+    "action": "Dupliquer",
+    "copyName": "{name} (copie)",
+    "done": "{name} créé"
   }
 }

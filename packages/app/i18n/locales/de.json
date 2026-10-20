@@ -3225,5 +3225,10 @@
     "lookupPlaceholder": "Zauber, Monster, Zustand nachschlagen…",
     "currentSession": "Sitzung",
     "noSessions": "Noch keine Sitzungen."
+  },
+  "duplicate": {
+    "action": "Duplizieren",
+    "copyName": "{name} (Kopie)",
+    "done": "{name} erstellt"
   }
 }

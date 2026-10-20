@@ -346,6 +346,7 @@
         @moved="onMoved"
         @move-error="onMoveError"
       />
+      <SharedEntityDuplicateButton :entity-id="lore.id" entity-type="lore" :name="lore.name" />
       <v-btn icon="mdi-pencil" size="small" variant="text" @click.stop="$emit('edit', lore)">
         <v-icon>mdi-pencil</v-icon>
         <v-tooltip activator="parent" location="bottom">

@@ -1,10 +1,22 @@
 import { getDb } from '../../utils/db'
+import { DuplicateError, duplicateEncounter } from '../../utils/entity-duplicate'
 
 export default defineEventHandler(async (event) => {
   const db = getDb()
   const body = await readBody(event)
 
-  const { campaignId, name, session_id } = body
+  const { campaignId, name, session_id, duplicateOf } = body
+
+  // { duplicateOf: id, name? }: copy a fight to run again (participants, abilities, references)
+  if (duplicateOf) {
+    try {
+      return db.prepare('SELECT * FROM encounters WHERE id = ?').get(duplicateEncounter(db, Number(duplicateOf), name))
+    }
+    catch (error) {
+      if (error instanceof DuplicateError) throw createError({ statusCode: 404, message: 'Encounter not found' })
+      throw error
+    }
+  }
 
   if (!campaignId || !name) {
     throw createError({
