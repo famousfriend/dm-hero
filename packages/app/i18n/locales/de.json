@@ -1620,7 +1620,12 @@
         "reactions": "Reaktionen",
         "legendary": "Legendäre Aktionen"
       }
-    }
+    },
+    "syncPlayers": "Spieler abgleichen",
+    "syncPlayersHint": "TP und RK der Spieler aus der Gruppenansicht (und D&D Beyond) in diesen Kampf übernehmen",
+    "syncPlayersDone": "{n} Spieler aus der Gruppenansicht aktualisiert",
+    "syncPlayersSame": "Die Spieler sind schon aktuell",
+    "syncPlayersFailed": "D&D Beyond war nicht erreichbar für: {names}. Die letzten bekannten Werte wurden verwendet."
   },
   "documents": {
     "title": "Dokumente",
