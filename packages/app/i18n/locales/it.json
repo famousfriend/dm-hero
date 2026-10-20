@@ -3084,6 +3084,32 @@
       "deleteHomebrew": "Elimina voce homebrew",
       "reset": "Ripristina l'originale",
       "newHomebrew": "Nuovo homebrew"
+    },
+    "sources": {
+      "tab": "Biblioteca delle regole",
+      "hint": "Tutto ciò che il pannello di consultazione può mostrare. Importa i tuoi file JSON: homebrew o file di dati nel formato 5e.tools, o file nel formato di questa app. Il testo importato resta su questo computer.",
+      "import": "Importa file JSON",
+      "importTitle": "Importa file di regole",
+      "importHint": "Da \"{file}\". Vengono importati incantesimi, mostri, oggetti, talenti e condizioni; il resto viene escluso.",
+      "importButton": "Importa",
+      "name": "Nome",
+      "code": "Codice",
+      "codeHint": "Breve, lettere e cifre",
+      "entries": "Voci",
+      "remove": "Rimuovi importazione",
+      "removeConfirm": "Rimuovere \"{name}\" e le sue {n} voci? Le note che le citano continuano a mostrarne i nomi.",
+      "removed": "\"{name}\" rimosso",
+      "imported": "{n} voci importate da \"{name}\".",
+      "skipped": "{n} non leggibili.",
+      "ignored": "Non importato: {kinds}.",
+      "notJson": "Questo file non è JSON valido.",
+      "failed": "Importazione non riuscita.",
+      "bookmarks": "Segnalibri",
+      "origins": {
+        "bundled": "Incluso",
+        "import": "Importato da te",
+        "user": "Tuoi"
+      }
     }
   },
   "party": {
