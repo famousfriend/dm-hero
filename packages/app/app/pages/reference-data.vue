@@ -23,6 +23,10 @@
         <v-icon start> mdi-tag-multiple </v-icon>
         {{ $t('tags.manage.title') }}
       </v-tab>
+      <v-tab value="rules-library">
+        <v-icon start> mdi-book-open-page-variant </v-icon>
+        {{ $t('codex.sources.tab') }}
+      </v-tab>
     </v-tabs>
 
     <v-tabs-window v-model="tab">
@@ -196,6 +200,11 @@
       <!-- Tags Tab -->
       <v-tabs-window-item value="tags">
         <ReferenceDataTagsManager class="mt-2" />
+      </v-tabs-window-item>
+
+      <!-- Rules library: bundled SRD, homebrew, bookmarks and the DM's own imports -->
+      <v-tabs-window-item value="rules-library">
+        <CodexSourcesPanel />
       </v-tabs-window-item>
     </v-tabs-window>
 

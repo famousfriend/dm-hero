@@ -35,7 +35,11 @@ export interface CodexDataset {
  * dataset hash matches, otherwise entries are upserted by ref_uid (existing ids,
  * and therefore links and FTS rows, are kept).
  */
-export function seedCodex(db: Database.Database, dataset: CodexDataset = srdDataset as CodexDataset): void {
+export function seedCodex(
+  db: Database.Database,
+  dataset: CodexDataset = srdDataset as CodexDataset,
+  origin: 'bundled' | 'import' = 'bundled',
+): void {
   const version = createHash('sha1').update(JSON.stringify(dataset)).digest('hex').slice(0, 12)
   const existing = db
     .prepare('SELECT id, version FROM ref_sources WHERE code = ?')
@@ -50,9 +54,9 @@ export function seedCodex(db: Database.Database, dataset: CodexDataset = srdData
         db
           .prepare(
             `INSERT INTO ref_sources (code, title, license, attribution, origin, version)
-             VALUES (?, ?, ?, ?, 'bundled', ?)`,
+             VALUES (?, ?, ?, ?, ?, ?)`,
           )
-          .run(code, title, license, attribution, version).lastInsertRowid,
+          .run(code, title, license, attribution, origin, version).lastInsertRowid,
       )
     }
     else {

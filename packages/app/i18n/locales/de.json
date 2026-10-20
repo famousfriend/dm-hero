@@ -3084,6 +3084,32 @@
       "deleteHomebrew": "Homebrew-Eintrag löschen",
       "reset": "Auf Original zurücksetzen",
       "newHomebrew": "Neues Homebrew"
+    },
+    "sources": {
+      "tab": "Regelbibliothek",
+      "hint": "Alles, was das Nachschlage-Panel zeigen kann. Importiere eigene JSON-Dateien: Homebrew oder Datendateien im 5e.tools-Format oder Dateien im Format dieser App. Importierte Texte bleiben auf diesem Computer.",
+      "import": "JSON-Datei importieren",
+      "importTitle": "Regeldatei importieren",
+      "importHint": "Aus „{file}“. Zauber, Monster, Gegenstände, Talente und Zustände werden importiert; alles andere bleibt weg.",
+      "importButton": "Importieren",
+      "name": "Name",
+      "code": "Kürzel",
+      "codeHint": "Kurz, Buchstaben und Ziffern",
+      "entries": "Einträge",
+      "remove": "Import entfernen",
+      "removeConfirm": "„{name}“ mit {n} Einträgen entfernen? Notizen, die sie erwähnen, zeigen weiter ihre Namen.",
+      "removed": "„{name}“ entfernt",
+      "imported": "{n} Einträge aus „{name}“ importiert.",
+      "skipped": "{n} konnten nicht gelesen werden.",
+      "ignored": "Nicht importiert: {kinds}.",
+      "notJson": "Diese Datei ist kein gültiges JSON.",
+      "failed": "Import fehlgeschlagen.",
+      "bookmarks": "Lesezeichen",
+      "origins": {
+        "bundled": "Enthalten",
+        "import": "Von dir importiert",
+        "user": "Eigene"
+      }
     }
   },
   "party": {

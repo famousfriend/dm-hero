@@ -3084,6 +3084,32 @@
       "deleteHomebrew": "删除自制条目",
       "reset": "恢复原文",
       "newHomebrew": "新建自制"
+    },
+    "sources": {
+      "tab": "规则库",
+      "hint": "参考面板可显示的全部内容。导入你自己的 JSON 文件：5e.tools 格式的自制或数据文件，或本应用格式的文件。导入的文本只保存在这台电脑上。",
+      "import": "导入 JSON 文件",
+      "importTitle": "导入规则文件",
+      "importHint": "来自“{file}”。将导入法术、怪物、物品、专长和状态；其他内容不导入。",
+      "importButton": "导入",
+      "name": "名称",
+      "code": "代码",
+      "codeHint": "简短，字母和数字",
+      "entries": "条目",
+      "remove": "移除导入",
+      "removeConfirm": "移除“{name}”及其 {n} 个条目？提到它们的笔记仍会显示名称。",
+      "removed": "已移除“{name}”",
+      "imported": "已从“{name}”导入 {n} 个条目。",
+      "skipped": "{n} 个无法读取。",
+      "ignored": "未导入：{kinds}。",
+      "notJson": "此文件不是有效的 JSON。",
+      "failed": "无法导入此文件。",
+      "bookmarks": "书签",
+      "origins": {
+        "bundled": "内置",
+        "import": "你导入的",
+        "user": "你的"
+      }
     }
   },
   "party": {

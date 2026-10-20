@@ -3084,6 +3084,32 @@
       "deleteHomebrew": "Delete homebrew entry",
       "reset": "Reset to the original",
       "newHomebrew": "New homebrew"
+    },
+    "sources": {
+      "tab": "Rules library",
+      "hint": "Everything the reference panel can show. Import your own JSON files: homebrew or data files in the 5e.tools format, or files exported in this app's format. Imported text stays on this computer.",
+      "import": "Import JSON file",
+      "importTitle": "Import rules file",
+      "importHint": "From \"{file}\". Spells, monsters, items, feats and conditions are imported; anything else in the file is left out.",
+      "importButton": "Import",
+      "name": "Name",
+      "code": "Code",
+      "codeHint": "Short, letters and digits",
+      "entries": "Entries",
+      "remove": "Remove import",
+      "removeConfirm": "Remove \"{name}\" and its {n} entries? Notes that mention them keep showing their names.",
+      "removed": "\"{name}\" removed",
+      "imported": "{n} entries imported from \"{name}\".",
+      "skipped": "{n} could not be read.",
+      "ignored": "Not imported: {kinds}.",
+      "notJson": "This file is not valid JSON.",
+      "failed": "Could not import this file.",
+      "bookmarks": "Bookmarks",
+      "origins": {
+        "bundled": "Included",
+        "import": "Imported by you",
+        "user": "Yours"
+      }
     }
   },
   "party": {
