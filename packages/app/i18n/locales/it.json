@@ -1529,6 +1529,36 @@
         "crit": "{name} ha fatto 20 naturale ed è tornato con 1 PF",
         "critFail": "{name} ha fatto 1 naturale (due fallimenti)"
       }
+    },
+    "dice": {
+      "physical": "Dadi fisici",
+      "physicalHint": "Tira i tuoi dadi e inserisci i risultati",
+      "enterResults": "Inserisci risultati",
+      "total": "Totale"
+    },
+    "resources": {
+      "title": "Capacità",
+      "add": "Capacità",
+      "name": "Nome",
+      "uses": "Usi",
+      "rechargeOn": "Ricarica con",
+      "none": "Nessuna capacità a uso limitato.",
+      "left": "{n} di {max} rimasti",
+      "spent": "Usata",
+      "ready": "Pronta",
+      "use": "Usa",
+      "restore": "Ripristina tutti gli usi",
+      "enterD6": "Inserisci d6",
+      "rollRecharge": "Tira ricarica",
+      "rechargeRange": "Ricarica {range}",
+      "recharged": "{name} ricaricata (tirato {roll})",
+      "notRecharged": "{name} non ricaricata (tirato {roll})",
+      "rollNow": "Tira un d6 per {name}",
+      "kinds": {
+        "uses": "Usi limitati",
+        "recharge": "Ricarica",
+        "legendary": "Azioni leggendarie"
+      }
     }
   },
   "documents": {

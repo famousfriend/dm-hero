@@ -1,4 +1,5 @@
 import type Database from 'better-sqlite3'
+import { addResources, listResources, parseMonsterResources } from './encounter-resources'
 
 /**
  * Encounter participants: campaign entities (NPCs, players ...) or monsters
@@ -35,15 +36,22 @@ export function listParticipants(db: Database.Database, encounterId: number | st
   const participants = db
     .prepare(`SELECT ${PARTICIPANT_COLUMNS} WHERE ep.encounter_id = ? ORDER BY ep.sort_order ASC`)
     .all(encounterId) as Record<string, unknown>[]
-  const effectsStmt = db.prepare('SELECT * FROM encounter_effects WHERE participant_id = ?')
-  for (const p of participants) p.effects = effectsStmt.all(p.id)
+  for (const p of participants) attachDetails(db, p)
   return participants
 }
 
+/** Effects and limited-use abilities belong to the participant in every response */
+function attachDetails(db: Database.Database, participant: Record<string, unknown>) {
+  participant.effects = db.prepare('SELECT * FROM encounter_effects WHERE participant_id = ?').all(participant.id)
+  participant.resources = listResources(db, participant.id as number)
+}
+
 export function getParticipant(db: Database.Database, encounterId: number | string, participantId: number | string) {
-  return db
+  const participant = db
     .prepare(`SELECT ${PARTICIPANT_COLUMNS} WHERE ep.id = ? AND ep.encounter_id = ?`)
     .get(participantId, encounterId) as Record<string, unknown> | undefined
+  if (participant) attachDetails(db, participant)
+  return participant
 }
 
 /** Adds entities and/or Codex monsters at the end of the turn order; unknown ones are skipped. */
@@ -60,7 +68,7 @@ export function addParticipants(db: Database.Database, encounterId: number | str
   `)
   const entityStmt = db.prepare('SELECT id, name FROM entities WHERE id = ? AND deleted_at IS NULL')
   const monsterStmt = db.prepare(
-    'SELECT ref_uid, name, data_json FROM ref_entries WHERE ref_uid = ? AND kind = \'monster\' AND deleted_at IS NULL',
+    'SELECT ref_uid, name, data_json, body_md FROM ref_entries WHERE ref_uid = ? AND kind = \'monster\' AND deleted_at IS NULL',
   )
   const entityDupes = db.prepare('SELECT COUNT(*) as cnt FROM encounter_participants WHERE encounter_id = ? AND entity_id = ?')
   const monsterDupes = db.prepare('SELECT COUNT(*) as cnt FROM encounter_participants WHERE encounter_id = ? AND ref_uid = ?')
@@ -69,7 +77,7 @@ export function addParticipants(db: Database.Database, encounterId: number | str
   db.transaction(() => {
     for (const input of inputs) {
       if (input.refUid) {
-        const monster = monsterStmt.get(input.refUid) as { ref_uid: string, name: string, data_json: string | null } | undefined
+        const monster = monsterStmt.get(input.refUid) as { ref_uid: string, name: string, data_json: string | null, body_md: string | null } | undefined
         if (!monster) continue
         let data: MonsterData = {}
         try {
@@ -81,9 +89,12 @@ export function addParticipants(db: Database.Database, encounterId: number | str
         const maxHp = input.maxHp ?? data.hp ?? 0
         const armorClass = optionalNumber(input.armorClass) ?? data.ac ?? null
         const count = Math.min(20, Math.max(1, Math.trunc(input.count ?? 1)))
+        // Recharge abilities, X/Day uses and legendary actions from the stat block
+        const resources = parseMonsterResources(monster.body_md)
         for (let i = 0; i < count; i++) {
           const { cnt } = monsterDupes.get(encounterId, monster.ref_uid) as { cnt: number }
-          insert.run(encounterId, null, monster.ref_uid, monster.name, cnt, input.currentHp ?? maxHp, maxHp, armorClass, sortOrder++)
+          const { lastInsertRowid } = insert.run(encounterId, null, monster.ref_uid, monster.name, cnt, input.currentHp ?? maxHp, maxHp, armorClass, sortOrder++)
+          addResources(db, lastInsertRowid, resources)
         }
       }
       else if (input.entityId) {

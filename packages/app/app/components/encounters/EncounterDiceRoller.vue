@@ -42,10 +42,10 @@
         size="small"
         :disabled="!hasSelection"
         class="ml-2"
-        @click="roll"
+        @click="physicalDice ? startEntry() : roll()"
       >
-        <v-icon start size="16">mdi-dice-multiple</v-icon>
-        {{ $t('encounters.roll') }}
+        <v-icon start size="16">{{ physicalDice ? 'mdi-keyboard-outline' : 'mdi-dice-multiple' }}</v-icon>
+        {{ physicalDice ? $t('encounters.dice.enterResults') : $t('encounters.roll') }}
       </v-btn>
       <v-btn
         v-if="hasSelection || modifier !== 0"
@@ -55,6 +55,40 @@
         @click="clear"
       >
         <v-icon size="16">mdi-close</v-icon>
+      </v-btn>
+
+      <v-spacer />
+      <v-switch
+        v-model="physicalDice"
+        :label="$t('encounters.dice.physical')"
+        :title="$t('encounters.dice.physicalHint')"
+        color="primary"
+        density="compact"
+        hide-details
+        class="flex-grow-0"
+      />
+    </div>
+
+    <!-- Physical dice: type in what each die shows -->
+    <div v-if="entries.length" class="mt-2 d-flex align-center ga-2 flex-wrap">
+      <v-text-field
+        v-for="(entry, i) in entries"
+        :key="i"
+        v-model.number="entry.value"
+        type="number"
+        :label="`d${entry.die}`"
+        :min="1"
+        :max="entry.die"
+        :error="entry.value != null && !validEntry(entry)"
+        density="compact"
+        variant="outlined"
+        hide-details
+        :autofocus="i === 0"
+        class="dice-entry"
+        @keydown.enter="finishEntry"
+      />
+      <v-btn color="primary" size="small" :disabled="!entries.every(validEntry)" @click="finishEntry">
+        {{ $t('encounters.dice.total') }}
       </v-btn>
     </div>
 
@@ -77,6 +111,25 @@ const lastResult = ref<{ total: number, breakdown: string } | null>(null)
 
 const hasSelection = computed(() => dice.some(d => selected[d] > 0))
 
+const physicalDice = usePhysicalDice()
+const entries = ref<Array<{ die: Die, value: number | null }>>([])
+
+const validEntry = (e: { die: Die, value: number | null }) =>
+  e.value != null && Number.isInteger(e.value) && e.value >= 1 && e.value <= e.die
+
+function startEntry() {
+  entries.value = dice.flatMap(die => Array.from({ length: selected[die] }, () => ({ die, value: null })))
+  lastResult.value = null
+}
+
+function finishEntry() {
+  if (!entries.value.length || !entries.value.every(validEntry)) return
+  const rolls = {} as Record<Die, number[]>
+  for (const e of entries.value) (rolls[e.die] ??= []).push(e.value!)
+  showResult(rolls)
+  entries.value = []
+}
+
 function increment(die: Die) {
   if (selected[die] < 20) selected[die]++
 }
@@ -89,20 +142,27 @@ function clear() {
   for (const d of dice) selected[d] = 0
   modifier.value = 0
   lastResult.value = null
+  entries.value = []
 }
 
 function roll() {
+  const rolls = {} as Record<Die, number[]>
+  for (const die of dice) {
+    rolls[die] = Array.from({ length: selected[die] }, () => Math.floor(Math.random() * die) + 1)
+  }
+  showResult(rolls)
+}
+
+/** Total and breakdown, the same for app rolls and typed-in physical dice */
+function showResult(rollsByDie: Record<Die, number[]>) {
   const parts: string[] = []
   let total = 0
 
   for (const die of dice) {
-    const count = selected[die]
+    const rolls = rollsByDie[die] ?? []
+    const count = rolls.length
     if (!count) continue
 
-    const rolls: number[] = []
-    for (let i = 0; i < count; i++) {
-      rolls.push(Math.floor(Math.random() * die) + 1)
-    }
     const sum = rolls.reduce((a, b) => a + b, 0)
     total += sum
 
@@ -126,6 +186,9 @@ function roll() {
 <style scoped>
 .dice-roller {
   border: 1px solid rgba(var(--v-border-color), 0.12);
+}
+.dice-entry {
+  max-width: 76px;
 }
 .dice-btn {
   min-width: 44px !important;

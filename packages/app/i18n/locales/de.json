@@ -1529,6 +1529,36 @@
         "crit": "{name} würfelte eine natürliche 20 und ist mit 1 TP zurück",
         "critFail": "{name} würfelte eine natürliche 1 (zwei Fehlschläge)"
       }
+    },
+    "dice": {
+      "physical": "Echte Würfel",
+      "physicalHint": "Mit eigenen Würfeln würfeln und die Ergebnisse eintippen",
+      "enterResults": "Ergebnisse eingeben",
+      "total": "Summe"
+    },
+    "resources": {
+      "title": "Fähigkeiten",
+      "add": "Fähigkeit",
+      "name": "Name",
+      "uses": "Anwendungen",
+      "rechargeOn": "Aufladen bei",
+      "none": "Keine begrenzt nutzbaren Fähigkeiten.",
+      "left": "{n} von {max} übrig",
+      "spent": "Verbraucht",
+      "ready": "Bereit",
+      "use": "Nutzen",
+      "restore": "Alle Anwendungen zurücksetzen",
+      "enterD6": "W6 eingeben",
+      "rollRecharge": "Aufladen würfeln",
+      "rechargeRange": "Aufladen {range}",
+      "recharged": "{name} aufgeladen (gewürfelt: {roll})",
+      "notRecharged": "{name} nicht aufgeladen (gewürfelt: {roll})",
+      "rollNow": "W6 für {name} würfeln",
+      "kinds": {
+        "uses": "Begrenzte Anwendungen",
+        "recharge": "Aufladen",
+        "legendary": "Legendäre Aktionen"
+      }
     }
   },
   "documents": {

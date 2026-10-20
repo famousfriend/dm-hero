@@ -1529,6 +1529,36 @@
         "crit": "{name} a fait un 20 naturel et revient avec 1 PV",
         "critFail": "{name} a fait un 1 naturel (deux échecs)"
       }
+    },
+    "dice": {
+      "physical": "Dés physiques",
+      "physicalHint": "Lancez vos propres dés et saisissez les résultats",
+      "enterResults": "Saisir les résultats",
+      "total": "Total"
+    },
+    "resources": {
+      "title": "Capacités",
+      "add": "Capacité",
+      "name": "Nom",
+      "uses": "Utilisations",
+      "rechargeOn": "Recharge sur",
+      "none": "Aucune capacité à usage limité.",
+      "left": "{n} sur {max} restantes",
+      "spent": "Utilisée",
+      "ready": "Prête",
+      "use": "Utiliser",
+      "restore": "Restaurer toutes les utilisations",
+      "enterD6": "Saisir le d6",
+      "rollRecharge": "Lancer la recharge",
+      "rechargeRange": "Recharge {range}",
+      "recharged": "{name} rechargée (résultat {roll})",
+      "notRecharged": "{name} non rechargée (résultat {roll})",
+      "rollNow": "Lancez un d6 pour {name}",
+      "kinds": {
+        "uses": "Utilisations limitées",
+        "recharge": "Recharge",
+        "legendary": "Actions légendaires"
+      }
     }
   },
   "documents": {

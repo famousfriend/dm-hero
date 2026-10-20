@@ -1529,6 +1529,36 @@
         "crit": "{name} sacó un 20 natural y vuelve con 1 PG",
         "critFail": "{name} sacó un 1 natural (dos fallos)"
       }
+    },
+    "dice": {
+      "physical": "Dados físicos",
+      "physicalHint": "Tira tus propios dados y escribe los resultados",
+      "enterResults": "Introducir resultados",
+      "total": "Total"
+    },
+    "resources": {
+      "title": "Habilidades",
+      "add": "Habilidad",
+      "name": "Nombre",
+      "uses": "Usos",
+      "rechargeOn": "Recarga con",
+      "none": "Sin habilidades de uso limitado.",
+      "left": "Quedan {n} de {max}",
+      "spent": "Usada",
+      "ready": "Lista",
+      "use": "Usar",
+      "restore": "Restaurar todos los usos",
+      "enterD6": "Introducir d6",
+      "rollRecharge": "Tirar recarga",
+      "rechargeRange": "Recarga {range}",
+      "recharged": "{name} se recargó (sacó {roll})",
+      "notRecharged": "{name} no se recargó (sacó {roll})",
+      "rollNow": "Tira un d6 para {name}",
+      "kinds": {
+        "uses": "Usos limitados",
+        "recharge": "Recarga",
+        "legendary": "Acciones legendarias"
+      }
     }
   },
   "documents": {

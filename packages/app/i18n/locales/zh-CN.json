@@ -1529,6 +1529,36 @@
         "crit": "{name} 死亡豁免掷出天然 20，以 1 点生命值恢复",
         "critFail": "{name} 死亡豁免掷出天然 1（两次失败）"
       }
+    },
+    "dice": {
+      "physical": "实体骰子",
+      "physicalHint": "用自己的骰子投掷并输入结果",
+      "enterResults": "输入结果",
+      "total": "合计"
+    },
+    "resources": {
+      "title": "能力",
+      "add": "能力",
+      "name": "名称",
+      "uses": "次数",
+      "rechargeOn": "充能于",
+      "none": "没有限次能力。",
+      "left": "剩余 {n}/{max}",
+      "spent": "已用",
+      "ready": "可用",
+      "use": "使用",
+      "restore": "恢复所有次数",
+      "enterD6": "输入 d6",
+      "rollRecharge": "投充能",
+      "rechargeRange": "充能 {range}",
+      "recharged": "{name} 已充能（掷出 {roll}）",
+      "notRecharged": "{name} 未充能（掷出 {roll}）",
+      "rollNow": "为 {name} 投一个 d6",
+      "kinds": {
+        "uses": "限次使用",
+        "recharge": "充能",
+        "legendary": "传奇动作"
+      }
     }
   },
   "documents": {

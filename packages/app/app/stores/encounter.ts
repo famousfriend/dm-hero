@@ -1,5 +1,14 @@
 import { defineStore } from 'pinia'
-import type { CombatAction, Encounter, EncounterEffect, EncounterParticipant, EncounterStatus, EncounterWithParticipants } from '~~/types/encounter'
+import type { CombatAction, Encounter, EncounterEffect, EncounterParticipant, EncounterStatus, EncounterWithParticipants, ResourceOp } from '~~/types/encounter'
+
+/** What happened to a recharge ability at the start of its creature's turn (roll null: waiting for a physical die) */
+export interface RechargeResult {
+  participantId: number
+  resourceId: number
+  name: string
+  roll: number | null
+  recharged: boolean
+}
 
 export const useEncounterStore = defineStore('encounter', {
   state: () => ({
@@ -314,10 +323,10 @@ export const useEncounterStore = defineStore('encounter', {
       }
     },
 
-    async advanceTurn(): Promise<{ ok: boolean, expiredEffects: string[] }> {
-      if (!this.activeEncounter) return { ok: false, expiredEffects: [] }
+    async advanceTurn(): Promise<{ ok: boolean, expiredEffects: string[], recharges: RechargeResult[] }> {
+      if (!this.activeEncounter) return { ok: false, expiredEffects: [], recharges: [] }
       const count = this.activeEncounter.participants.length
-      if (count === 0) return { ok: false, expiredEffects: [] }
+      if (count === 0) return { ok: false, expiredEffects: [], recharges: [] }
 
       let nextIndex = this.activeEncounter.current_turn_index + 1
       let nextRound = this.activeEncounter.round
@@ -333,8 +342,53 @@ export const useEncounterStore = defineStore('encounter', {
         round: nextRound,
       })
       let expiredEffects: string[] = []
-      if (ok) expiredEffects = await this.tickEffects()
-      return { ok, expiredEffects }
+      let recharges: RechargeResult[] = []
+      if (ok) {
+        expiredEffects = await this.tickEffects()
+        recharges = await this.startOfTurnResources()
+      }
+      return { ok, expiredEffects, recharges }
+    },
+
+    /**
+     * Start of a creature's turn: legendary actions come back, and used recharge
+     * abilities get their d6 roll (left to the DM in physical-dice mode).
+     */
+    async startOfTurnResources(): Promise<RechargeResult[]> {
+      const p = this.currentTurnParticipant
+      if (!this.activeEncounter || !p?.resources?.length) return []
+      const encounterId = this.activeEncounter.id
+      const physical = usePhysicalDice().value
+      const results: RechargeResult[] = []
+      for (const r of [...p.resources]) {
+        if (r.used === 0) continue
+        if (r.kind === 'legendary') {
+          await this.updateResource(encounterId, p.id, { op: 'set', id: r.id, used: 0 })
+        }
+        else if (r.kind === 'recharge') {
+          const roll = physical ? null : Math.floor(Math.random() * 6) + 1
+          const recharged = roll !== null && rechargeSucceeds(roll, r.recharge_min)
+          if (recharged) await this.updateResource(encounterId, p.id, { op: 'set', id: r.id, used: 0 })
+          results.push({ participantId: p.id, resourceId: r.id, name: r.name, roll, recharged })
+        }
+      }
+      return results
+    },
+
+    /** Add, use/restore or remove a recharge ability, X/Day use or legendary actions */
+    async updateResource(encounterId: number, participantId: number, op: ResourceOp): Promise<boolean> {
+      try {
+        const updated = await $fetch<EncounterParticipant>(
+          `/api/encounters/${encounterId}/participants/${participantId}`,
+          { method: 'PATCH', body: { resource: op } },
+        )
+        this.replaceParticipant(updated)
+        return true
+      }
+      catch (error) {
+        console.error('Failed to update ability:', error)
+        return false
+      }
     },
 
     async prevTurn(): Promise<boolean> {

@@ -51,7 +51,33 @@ export interface EncounterParticipant {
   entity_type?: string
   entity_image?: string | null
   effects?: EncounterEffect[]
+  resources?: EncounterResource[]
 }
+
+/**
+ * recharge: one use, comes back on a d6 roll of recharge_min or higher at the start of the turn
+ * uses: X per day (or per rest); legendary: X per round, back at the start of the turn
+ */
+export type EncounterResourceKind = 'recharge' | 'uses' | 'legendary'
+
+export interface EncounterResource {
+  id: number
+  participant_id: number
+  name: string
+  kind: EncounterResourceKind
+  max_uses: number
+  used: number
+  recharge_min: number | null
+  sort_order: number
+}
+
+export type ResourceInput = Pick<EncounterResource, 'name' | 'kind'> & Partial<Pick<EncounterResource, 'max_uses' | 'recharge_min'>>
+
+/** Participant PATCH body `{ resource: ... }` */
+export type ResourceOp
+  = | ({ op: 'add' } & ResourceInput)
+    | { op: 'set', id: number, used: number }
+    | { op: 'remove', id: number }
 
 export interface EncounterWithParticipants extends Encounter {
   participants: EncounterParticipant[]
