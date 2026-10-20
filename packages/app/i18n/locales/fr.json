@@ -167,7 +167,7 @@
     "exportHint": "Enregistrez votre campagne dans un fichier .dmhero",
     "importHint": "Chargez une campagne depuis un fichier .dmhero",
     "copyHint": "Copier des entités vers une autre campagne",
-    "dataManagement": "Gestion des données",
+    "dataManagement": "Sauvegarder et partager",
     "categories": {
       "title": "Catégories"
     },
