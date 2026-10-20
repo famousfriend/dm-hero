@@ -111,13 +111,14 @@ export function useElectron() {
      * Save a file with a save dialog (Electron only)
      * Falls back to browser download if not in Electron
      */
-    async saveFile(blob: Blob, defaultFileName: string): Promise<{ success: boolean, error?: string }> {
+    async saveFile(blob: Blob, defaultFileName: string, filters?: SaveFileOptions['filters']): Promise<{ success: boolean, error?: string }> {
       if (electronAPI) {
-        // Electron: Show save dialog
+        // Electron: Show save dialog (default filter: .dmhero campaigns)
         const arrayBuffer = await blob.arrayBuffer()
         const result = await electronAPI.saveFileDialog({
           defaultFileName,
           fileData: arrayBuffer,
+          ...(filters ? { filters } : {}),
         })
         return result
       }

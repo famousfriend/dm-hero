@@ -221,7 +221,8 @@
       "count": "cartes",
       "markers": "marqueurs",
       "totalMarkers": "marqueurs au total"
-    }
+    },
+    "playerExportHint": "Un fichier HTML pour vos joueurs"
   },
   "campaigns": {
     "title": "Campagnes",
@@ -317,6 +318,20 @@
       "keepExistingCalendarHint": "Le calendrier de l'import sera ignoré. Vos mois, saisons et événements seront préservés.",
       "overwriteCalendar": "Écraser le calendrier",
       "overwriteCalendarHint": "Votre calendrier existant sera supprimé et remplacé par celui de l'import. Tous les événements existants seront perdus !"
+    },
+    "playerExport": {
+      "title": "Document pour les joueurs",
+      "hint": "Crée un fichier HTML que vos joueurs peuvent ouvrir hors ligne dans n'importe quel navigateur ou imprimer. Seuls les champs partageables à la table de jeu sont proposés, et les alias de la table remplacent les vrais noms.",
+      "fileTitle": "Titre",
+      "fields": "Champs à inclure",
+      "entries": "Entrées",
+      "shared": "À la table",
+      "empty": "Cette campagne n'a pas encore de PNJ, lieux, objets, lore ou factions.",
+      "safety": "Les champs privés (comme les relations des PNJ), vos notes et documents ne sont jamais inclus.",
+      "count": "{n} entrées choisies",
+      "download": "Enregistrer le HTML",
+      "done": "Document enregistré",
+      "failed": "Impossible de créer le document"
     }
   },
   "npcs": {

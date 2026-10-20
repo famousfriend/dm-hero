@@ -221,7 +221,8 @@
       "count": "Karten",
       "markers": "Marker",
       "totalMarkers": "Marker gesamt"
-    }
+    },
+    "playerExportHint": "Eine HTML-Datei für deine Spieler"
   },
   "campaigns": {
     "title": "Kampagnen",
@@ -317,6 +318,20 @@
       "keepExistingCalendarHint": "Der Kalender aus dem Import wird ignoriert. Deine Monate, Jahreszeiten und Events bleiben erhalten.",
       "overwriteCalendar": "Kalender überschreiben",
       "overwriteCalendarHint": "Dein bestehender Kalender wird gelöscht und durch den importierten ersetzt. Alle bestehenden Events gehen verloren!"
+    },
+    "playerExport": {
+      "title": "Handout für Spieler",
+      "hint": "Erstellt eine HTML-Datei, die deine Spieler offline in jedem Browser öffnen oder drucken können. Angeboten werden nur Felder, die am Spieltisch geteilt werden dürfen, und Aliasnamen vom Spieltisch ersetzen echte Namen.",
+      "fileTitle": "Titel",
+      "fields": "Felder",
+      "entries": "Einträge",
+      "shared": "Am Spieltisch",
+      "empty": "Diese Kampagne hat noch keine NSCs, Orte, Gegenstände, Lore oder Fraktionen.",
+      "safety": "Private Felder (wie NSC-Beziehungen), deine Notizen und Dokumente sind nie enthalten.",
+      "count": "{n} Einträge gewählt",
+      "download": "HTML speichern",
+      "done": "Handout gespeichert",
+      "failed": "Handout konnte nicht erstellt werden"
     }
   },
   "npcs": {

@@ -221,7 +221,8 @@
       "count": "mappe",
       "markers": "segnalini",
       "totalMarkers": "segnalini totali"
-    }
+    },
+    "playerExportHint": "Un file HTML per i tuoi giocatori"
   },
   "campaigns": {
     "title": "Campagne",
@@ -317,6 +318,20 @@
       "keepExistingCalendarHint": "Il calendario dell'importazione verrà ignorato. I tuoi mesi, stagioni ed eventi verranno conservati.",
       "overwriteCalendar": "Sovrascrivi calendario",
       "overwriteCalendarHint": "Il tuo calendario esistente verrà eliminato e sostituito con quello importato. Tutti gli eventi esistenti andranno persi!"
+    },
+    "playerExport": {
+      "title": "Dispensa per i giocatori",
+      "hint": "Crea un file HTML che i tuoi giocatori possono aprire offline in qualsiasi browser o stampare. Sono proposti solo i campi condivisibili al tavolo di gioco, e gli alias del tavolo sostituiscono i nomi reali.",
+      "fileTitle": "Titolo",
+      "fields": "Campi da includere",
+      "entries": "Voci",
+      "shared": "Al tavolo",
+      "empty": "Questa campagna non ha ancora PNG, luoghi, oggetti, lore o fazioni.",
+      "safety": "I campi privati (come le relazioni dei PNG), le tue note e i documenti non sono mai inclusi.",
+      "count": "{n} voci scelte",
+      "download": "Salva HTML",
+      "done": "Dispensa salvata",
+      "failed": "Impossibile creare la dispensa"
     }
   },
   "npcs": {

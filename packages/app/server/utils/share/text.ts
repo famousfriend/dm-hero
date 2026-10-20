@@ -1,4 +1,5 @@
 import type Database from 'better-sqlite3'
+import { codexTokenRegex, nameFromSlug } from '~~/types/codex'
 
 // Names of OTHER entities inside a share (links, "lies in", factions ...).
 // If that entity is shared under an alias, players see the alias - never the
@@ -22,9 +23,16 @@ export function sharedEntityName(db: Database.Database, tableId: number, entityI
 const NEW_FORMAT = /\{\{(\w+):(\d+)\}\}/g
 const LEGACY_FORMAT = /\[([^\]]+)\]\((\w+):(\d+)\)/g
 
+/** Rules reference {{codex:spell:fireball|phb}} -> "Fireball" (rules names are never secret) */
+function codexName(db: Database.Database, kind: string, slug: string, source: string): string {
+  const row = db.prepare('SELECT name FROM ref_entries WHERE ref_uid = ?').get(`${kind}:${slug}|${source}`) as { name: string } | undefined
+  return row?.name ?? nameFromSlug(slug)
+}
+
 /** {{npc:12}} / [Gandalf](npc:12) -> the name players may see. Links to deleted entities disappear. */
 export function resolveEntityLinks(db: Database.Database, tableId: number, text: string): string {
   return text
+    .replace(codexTokenRegex(), (_, kind: string, slug: string, source: string) => codexName(db, kind, slug, source))
     .replace(NEW_FORMAT, (_, _type: string, id: string) => sharedEntityName(db, tableId, Number(id)) ?? '')
     .replace(LEGACY_FORMAT, (_, name: string, _type: string, id: string) => sharedName(db, tableId, Number(id), name))
     .replace(/ {2,}/g, ' ')
