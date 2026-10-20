@@ -1481,7 +1481,13 @@
     "durationRounds": "回合",
     "durationConcentration": "浓度",
     "effectsExpired": "效果已过期",
-    "roll": "卷"
+    "roll": "卷",
+    "monsters": "怪物（参考资料）",
+    "count": "数量",
+    "monsterSearchHint": "输入至少 2 个字搜索怪物",
+    "fromParty": "HP {hp}/{max} · AC {ac}（来自队伍）",
+    "acHint": "护甲等级 – 点击修改",
+    "statBlock": "数据块"
   },
   "documents": {
     "title": "文件",

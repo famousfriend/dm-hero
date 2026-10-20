@@ -1,4 +1,5 @@
 import { getDb } from '../../utils/db'
+import { listParty } from '../../utils/party'
 
 interface EntityRow {
   id: number
@@ -41,7 +42,7 @@ export default defineEventHandler((event) => {
            es.values_json, es.template_id
     FROM entities e
     JOIN entity_types et ON et.id = e.type_id
-    JOIN entity_stats es ON es.entity_id = e.id
+    LEFT JOIN entity_stats es ON es.entity_id = e.id
     LEFT JOIN (
       SELECT entity_id, image_url
       FROM entity_images
@@ -50,6 +51,8 @@ export default defineEventHandler((event) => {
     WHERE e.campaign_id = ?
       AND e.deleted_at IS NULL
       AND et.name IN ('NPC', 'Player')
+      -- NPCs need stats for HP; players can also bring HP/AC from the Party view
+      AND (es.entity_id IS NOT NULL OR et.name = 'Player')
   `
   const params: unknown[] = [campaignId]
 
@@ -66,6 +69,13 @@ export default defineEventHandler((event) => {
   sql += ' ORDER BY e.name ASC'
 
   const entities = db.prepare<unknown[], EntityRow>(sql).all(...params)
+
+  // Party view numbers (D&D Beyond or manual) for players that have them
+  const party = new Map(
+    listParty(db, Number(campaignId))
+      .filter(m => m.ddb || Object.keys(m.manual).length)
+      .map(m => [m.entityId, { hpCurrent: m.effective.hpCurrent, hpMax: m.effective.hpMax, ac: m.effective.ac }]),
+  )
 
   // Get resource fields per template (cached)
   const templateResourcesCache = new Map<number, ResourceFieldRow[]>()
@@ -133,6 +143,7 @@ export default defineEventHandler((event) => {
       type_name: e.type_name,
       resources,
       autoHpField,
+      party: party.get(e.id) ?? null,
     }
   })
 })

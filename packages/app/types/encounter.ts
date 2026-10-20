@@ -31,13 +31,17 @@ export interface EncounterEffect {
 export interface EncounterParticipant {
   id: number
   encounter_id: number
-  entity_id: number
+  /** null for monsters from the reference library */
+  entity_id: number | null
+  /** Codex monster, e.g. "monster:goblin|mm" */
+  ref_uid: string | null
   display_name: string
   duplicate_index: number
   initiative: number | null
   current_hp: number
   max_hp: number
   temp_hp: number
+  armor_class: number | null
   sort_order: number
   is_ko: boolean
   notes: string | null

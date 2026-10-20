@@ -114,7 +114,10 @@ export const useEncounterStore = defineStore('encounter', {
 
     async addParticipantsWithHp(
       encounterId: number,
-      participants: { entityId: number, currentHp: number, maxHp: number }[],
+      participants: Array<
+        | { entityId: number, currentHp: number, maxHp: number, armorClass?: number }
+        | { refUid: string, count?: number }
+      >,
     ): Promise<boolean> {
       try {
         const data = await $fetch<EncounterWithParticipants>(`/api/encounters/${encounterId}/participants`, {
@@ -173,7 +176,7 @@ export const useEncounterStore = defineStore('encounter', {
     async updateParticipant(
       encounterId: number,
       participantId: number,
-      updates: Partial<Pick<EncounterParticipant, 'initiative' | 'current_hp' | 'max_hp' | 'temp_hp' | 'is_ko' | 'notes' | 'sort_order'>>,
+      updates: Partial<Pick<EncounterParticipant, 'initiative' | 'current_hp' | 'max_hp' | 'temp_hp' | 'armor_class' | 'is_ko' | 'notes' | 'sort_order'>>,
     ): Promise<boolean> {
       try {
         const updated = await $fetch<EncounterParticipant>(

@@ -3028,6 +3028,53 @@ export const migrations: Migration[] = [
       console.log('✅ Migration 69: Created continuity_items')
     },
   },
+  {
+    version: 70,
+    name: 'encounter_participants: reference monsters and armor class',
+    up: (db: Database.Database) => {
+      // Monsters from the reference library (Codex) join fights without an entity:
+      // entity_id becomes optional, ref_uid points at the Codex entry. SQLite can't
+      // drop NOT NULL, so the table is rebuilt. Dropping it would cascade-delete the
+      // effects, so they are kept aside and put back (same participant ids).
+      db.exec(`
+        CREATE TEMP TABLE encounter_effects_keep AS SELECT * FROM encounter_effects;
+
+        CREATE TABLE encounter_participants_new (
+          id INTEGER PRIMARY KEY AUTOINCREMENT,
+          encounter_id INTEGER NOT NULL,
+          entity_id INTEGER,
+          ref_uid TEXT,
+          display_name TEXT NOT NULL,
+          duplicate_index INTEGER NOT NULL DEFAULT 0,
+          initiative INTEGER,
+          current_hp INTEGER NOT NULL DEFAULT 0,
+          max_hp INTEGER NOT NULL DEFAULT 0,
+          temp_hp INTEGER NOT NULL DEFAULT 0,
+          armor_class INTEGER,
+          sort_order INTEGER NOT NULL DEFAULT 0,
+          is_ko INTEGER NOT NULL DEFAULT 0,
+          notes TEXT,
+          FOREIGN KEY (encounter_id) REFERENCES encounters(id) ON DELETE CASCADE,
+          FOREIGN KEY (entity_id) REFERENCES entities(id) ON DELETE CASCADE,
+          CHECK (entity_id IS NOT NULL OR ref_uid IS NOT NULL)
+        );
+
+        INSERT INTO encounter_participants_new
+          (id, encounter_id, entity_id, display_name, duplicate_index, initiative, current_hp, max_hp, temp_hp, sort_order, is_ko, notes)
+        SELECT id, encounter_id, entity_id, display_name, duplicate_index, initiative, current_hp, max_hp, temp_hp, sort_order, is_ko, notes
+        FROM encounter_participants;
+
+        DROP TABLE encounter_participants;
+        ALTER TABLE encounter_participants_new RENAME TO encounter_participants;
+        CREATE INDEX IF NOT EXISTS idx_encounter_participants_encounter_id ON encounter_participants(encounter_id);
+
+        INSERT INTO encounter_effects SELECT * FROM encounter_effects_keep;
+        DROP TABLE encounter_effects_keep;
+      `)
+
+      console.log('✅ Migration 70: Encounter participants can be reference monsters, with armor class')
+    },
+  },
 ]
 
 export async function runMigrations(db: Database.Database) {
