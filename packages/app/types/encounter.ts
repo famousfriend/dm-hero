@@ -42,6 +42,9 @@ export interface EncounterParticipant {
   max_hp: number
   temp_hp: number
   armor_class: number | null
+  /** Player characters at 0 HP: 3 successes = stable, 3 failures = dead */
+  death_save_successes: number
+  death_save_failures: number
   sort_order: number
   is_ko: boolean
   notes: string | null
@@ -52,4 +55,41 @@ export interface EncounterParticipant {
 
 export interface EncounterWithParticipants extends Encounter {
   participants: EncounterParticipant[]
+  /** Newest first */
+  log?: EncounterLogEntry[]
+}
+
+/** What the action log stores before and after each change, for undo */
+export interface LoggedState {
+  current_hp: number
+  max_hp: number
+  temp_hp: number
+  armor_class: number | null
+  is_ko: boolean
+  death_save_successes: number
+  death_save_failures: number
+}
+
+export type DeathSaveResult = 'success' | 'failure' | 'crit' | 'critFail'
+
+export type CombatAction
+  = | { type: 'damage', amount: number }
+    | { type: 'heal', amount: number }
+    | { type: 'tempHp', amount: number }
+    | { type: 'deathSave', result: DeathSaveResult }
+    | { type: 'set', fields: Partial<LoggedState> }
+
+export interface EncounterLogEntry {
+  id: number
+  participantId: number | null
+  participantName: string
+  round: number
+  kind: CombatAction['type']
+  amount: number | null
+  /** Why it came out this way: absorbed (temp HP), down, massive, dead, revived, stable, whileDown, kept, result */
+  details: Record<string, unknown>
+  before: LoggedState
+  after: LoggedState
+  createdAt: string
+  undone: boolean
 }

@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import type { Encounter, EncounterEffect, EncounterParticipant, EncounterStatus, EncounterWithParticipants } from '~~/types/encounter'
+import type { CombatAction, Encounter, EncounterEffect, EncounterParticipant, EncounterStatus, EncounterWithParticipants } from '~~/types/encounter'
 
 export const useEncounterStore = defineStore('encounter', {
   state: () => ({
@@ -103,7 +103,7 @@ export const useEncounterStore = defineStore('encounter', {
           method: 'POST',
           body: { entityIds },
         })
-        this.activeEncounter = data
+        this.activeEncounter = { ...data, log: this.activeEncounter?.log }
         return true
       }
       catch (error) {
@@ -124,7 +124,7 @@ export const useEncounterStore = defineStore('encounter', {
           method: 'POST',
           body: { participants },
         })
-        this.activeEncounter = data
+        this.activeEncounter = { ...data, log: this.activeEncounter?.log }
         return true
       }
       catch (error) {
@@ -183,17 +183,67 @@ export const useEncounterStore = defineStore('encounter', {
           `/api/encounters/${encounterId}/participants/${participantId}`,
           { method: 'PATCH', body: updates },
         )
-        if (this.activeEncounter) {
-          const idx = this.activeEncounter.participants.findIndex(p => p.id === participantId)
-          if (idx !== -1) {
-            this.activeEncounter.participants[idx] = updated
-          }
-        }
+        this.replaceParticipant(updated)
+        // HP, temp HP, max HP, AC and KO edits land in the action log
+        if (['current_hp', 'max_hp', 'temp_hp', 'armor_class', 'is_ko'].some(k => k in updates)) await this.refreshLog(encounterId)
         return true
       }
       catch (error) {
         console.error('Failed to update participant:', error)
         return false
+      }
+    },
+
+    /** Damage, heal, temp HP or a death save; the server applies the rules and logs it */
+    async applyAction(encounterId: number, participantId: number, action: CombatAction): Promise<boolean> {
+      try {
+        const updated = await $fetch<EncounterParticipant>(
+          `/api/encounters/${encounterId}/participants/${participantId}`,
+          { method: 'PATCH', body: { action } },
+        )
+        this.replaceParticipant(updated)
+        await this.refreshLog(encounterId)
+        return true
+      }
+      catch (error) {
+        console.error('Failed to apply combat action:', error)
+        return false
+      }
+    },
+
+    /** Takes back the newest action-log entry */
+    async undoLastAction(encounterId: number): Promise<boolean> {
+      try {
+        const data = await $fetch<EncounterWithParticipants & { undone: boolean }>(`/api/encounters/${encounterId}`, {
+          method: 'PATCH',
+          body: { undo: true },
+        })
+        if (this.activeEncounter?.id === encounterId) {
+          this.activeEncounter.participants = data.participants
+          this.activeEncounter.log = data.log
+        }
+        return data.undone
+      }
+      catch (error) {
+        console.error('Failed to undo:', error)
+        return false
+      }
+    },
+
+    replaceParticipant(updated: EncounterParticipant) {
+      if (!this.activeEncounter) return
+      const idx = this.activeEncounter.participants.findIndex(p => p.id === updated.id)
+      if (idx !== -1) this.activeEncounter.participants[idx] = updated
+    },
+
+    async refreshLog(encounterId: number) {
+      if (this.activeEncounter?.id !== encounterId) return
+      try {
+        const data = await $fetch<EncounterWithParticipants>(`/api/encounters/${encounterId}`)
+        if (this.activeEncounter?.id === encounterId) this.activeEncounter.log = data.log
+      }
+      catch {
+        // the log just stays as it was
       }
     },
 

@@ -91,6 +91,7 @@
           {{ $t('encounters.endCombat') }}
         </v-btn>
       </div>
+      <EncountersEncounterActionLog class="mt-4" :encounter-id="encounter.id" :entries="encounter.log ?? []" />
     </template>
 
     <!-- FINISHED: read-only summary -->
@@ -106,6 +107,7 @@
           {{ $t('encounters.restart') }}
         </v-btn>
       </div>
+      <EncountersEncounterActionLog v-if="encounter.log?.length" class="mt-4" :encounter-id="encounter.id" :entries="encounter.log" />
     </template>
 
     <ClientOnly>

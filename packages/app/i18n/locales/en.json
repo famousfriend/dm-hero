@@ -1487,7 +1487,49 @@
     "monsterSearchHint": "Type at least 2 letters to search the monster reference",
     "fromParty": "HP {hp}/{max} · AC {ac} (from Party)",
     "acHint": "Armor Class – click to change",
-    "statBlock": "Stat block"
+    "statBlock": "Stat block",
+    "tempHpHint": "Give temporary HP (the higher value is kept)",
+    "actionFailed": "That didn't work, please try again",
+    "deathSaves": {
+      "title": "Death saves",
+      "successes": "Successes",
+      "failures": "Failures",
+      "success": "Success",
+      "failure": "Failure",
+      "crit": "Nat 20",
+      "critFail": "Nat 1",
+      "stable": "Stable",
+      "dead": "Dead",
+      "deadHint": "Dead. Healing does not bring them back; use undo or the KO button if this was a mistake."
+    },
+    "log": {
+      "title": "Action log",
+      "undo": "Undo",
+      "empty": "Damage, healing and death saves show up here.",
+      "undone": "undone",
+      "undoneSnack": "Undone: {action}",
+      "maxHp": "Max HP",
+      "damage": "{name} took {amount} damage",
+      "absorbed": "{n} absorbed by temp HP",
+      "whileDown": "a failed death save",
+      "massive": "massive damage, killed outright",
+      "down": "dropped to 0 HP",
+      "heal": "{name} healed {amount}",
+      "revived": "back on their feet",
+      "tempHp": "{name} gained {amount} temp HP",
+      "kept": "kept {n}",
+      "stable": "stable",
+      "dead": "dead",
+      "set": "{name} edited: {changes}",
+      "koOn": "knocked out",
+      "koOff": "no longer knocked out",
+      "deathSave": {
+        "success": "{name} succeeded a death save",
+        "failure": "{name} failed a death save",
+        "crit": "{name} rolled a natural 20 on a death save and is back with 1 HP",
+        "critFail": "{name} rolled a natural 1 on a death save (two failures)"
+      }
+    }
   },
   "documents": {
     "title": "Documents",

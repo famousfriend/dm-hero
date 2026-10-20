@@ -1487,7 +1487,49 @@
     "monsterSearchHint": "Scrivi almeno 2 lettere per cercare un mostro",
     "fromParty": "PF {hp}/{max} · CA {ac} (dal gruppo)",
     "acHint": "Classe armatura: clicca per cambiarla",
-    "statBlock": "Statistiche"
+    "statBlock": "Statistiche",
+    "tempHpHint": "Dai PF temporanei (resta il valore più alto)",
+    "actionFailed": "Non ha funzionato, riprova",
+    "deathSaves": {
+      "title": "Tiri salvezza contro la morte",
+      "successes": "Successi",
+      "failures": "Fallimenti",
+      "success": "Successo",
+      "failure": "Fallimento",
+      "crit": "20 naturale",
+      "critFail": "1 naturale",
+      "stable": "Stabile",
+      "dead": "Morto",
+      "deadHint": "Morto. Le cure non lo riportano indietro; usa Annulla o il pulsante KO se è un errore."
+    },
+    "log": {
+      "title": "Registro azioni",
+      "undo": "Annulla",
+      "empty": "Danni, cure e tiri contro la morte compaiono qui.",
+      "undone": "annullato",
+      "undoneSnack": "Annullato: {action}",
+      "maxHp": "PF max",
+      "damage": "{name} ha subito {amount} danni",
+      "absorbed": "{n} assorbiti dai PF temporanei",
+      "whileDown": "un tiro contro la morte fallito",
+      "massive": "danno massiccio, morte istantanea",
+      "down": "sceso a 0 PF",
+      "heal": "{name} è stato curato di {amount}",
+      "revived": "di nuovo in piedi",
+      "tempHp": "{name} ha ottenuto {amount} PF temporanei",
+      "kept": "mantenuti {n}",
+      "stable": "stabile",
+      "dead": "morto",
+      "set": "{name} modificato: {changes}",
+      "koOn": "privo di sensi",
+      "koOff": "non più privo di sensi",
+      "deathSave": {
+        "success": "{name} ha superato un tiro contro la morte",
+        "failure": "{name} ha fallito un tiro contro la morte",
+        "crit": "{name} ha fatto 20 naturale ed è tornato con 1 PF",
+        "critFail": "{name} ha fatto 1 naturale (due fallimenti)"
+      }
+    }
   },
   "documents": {
     "title": "Documenti",

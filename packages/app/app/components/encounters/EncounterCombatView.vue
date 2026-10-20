@@ -24,7 +24,7 @@
             <v-icon :size="index === currentTurnIndex ? 40 : 28">{{ getEntityIcon(participant.entity_type) }}</v-icon>
           </v-avatar>
           <div v-if="participant.is_ko" class="combat-tile__ko-overlay rounded d-flex align-center justify-center">
-            <v-icon color="error" size="32">mdi-skull</v-icon>
+            <v-icon :color="downState(participant) === 'stable' ? 'success' : 'error'" size="32">{{ downIcon(participant) }}</v-icon>
           </div>
           <div v-if="participant.initiative != null" class="combat-tile__initiative">
             {{ participant.initiative }}
@@ -117,7 +117,9 @@
               >
                 {{ $t('encounters.statBlock') }}
               </v-chip>
-              <v-chip v-if="activeParticipant.is_ko" size="x-small" color="error" prepend-icon="mdi-skull">{{ $t('encounters.ko') }}</v-chip>
+              <v-chip v-if="activeParticipant.is_ko" size="x-small" :color="activeDownState === 'stable' ? 'success' : 'error'" :prepend-icon="downIcon(activeParticipant)">
+                {{ activeDownState ? $t(`encounters.deathSaves.${activeDownState}`) : $t('encounters.ko') }}
+              </v-chip>
             </div>
           </div>
         </div>
@@ -169,8 +171,11 @@
             <v-btn color="error" variant="tonal" prepend-icon="mdi-sword" :disabled="!hpAmount" @click="onDamage">
               {{ $t('encounters.damage') }}
             </v-btn>
-            <v-btn color="success" variant="tonal" prepend-icon="mdi-heart" :disabled="!hpAmount" @click="onHeal">
+            <v-btn color="success" variant="tonal" prepend-icon="mdi-heart" :disabled="!hpAmount || activeDownState === 'dead'" @click="onHeal">
               {{ $t('encounters.heal') }}
+            </v-btn>
+            <v-btn color="info" variant="tonal" prepend-icon="mdi-shield-plus" :disabled="!hpAmount" :title="$t('encounters.tempHpHint')" @click="onTempHp">
+              {{ $t('encounters.tempHp') }}
             </v-btn>
             <v-spacer />
             <v-btn
@@ -182,6 +187,41 @@
               {{ $t('encounters.ko') }}
             </v-btn>
           </div>
+        </div>
+
+        <!-- Death saves: a player character at 0 HP -->
+        <div v-if="showDeathSaves" class="death-saves mb-3 pa-3 rounded">
+          <div class="d-flex align-center ga-4 flex-wrap mb-2">
+            <span class="text-body-medium font-weight-medium">{{ $t('encounters.deathSaves.title') }}</span>
+            <div class="d-flex align-center ga-1" :title="$t('encounters.deathSaves.successes')">
+              <v-icon v-for="n in 3" :key="`s${n}`" size="20" color="success">
+                {{ n <= activeParticipant.death_save_successes ? 'mdi-checkbox-blank-circle' : 'mdi-checkbox-blank-circle-outline' }}
+              </v-icon>
+            </div>
+            <div class="d-flex align-center ga-1" :title="$t('encounters.deathSaves.failures')">
+              <v-icon v-for="n in 3" :key="`f${n}`" size="20" color="error">
+                {{ n <= activeParticipant.death_save_failures ? 'mdi-close-circle' : 'mdi-close-circle-outline' }}
+              </v-icon>
+            </div>
+            <v-chip v-if="activeDownState" size="small" :color="activeDownState === 'stable' ? 'success' : 'error'" :prepend-icon="downIcon(activeParticipant)">
+              {{ $t(`encounters.deathSaves.${activeDownState}`) }}
+            </v-chip>
+          </div>
+          <div v-if="activeDownState !== 'dead'" class="d-flex ga-2 flex-wrap">
+            <v-btn size="small" color="success" variant="tonal" :disabled="activeDownState === 'stable'" @click="onDeathSave('success')">
+              {{ $t('encounters.deathSaves.success') }}
+            </v-btn>
+            <v-btn size="small" color="error" variant="tonal" @click="onDeathSave('failure')">
+              {{ $t('encounters.deathSaves.failure') }}
+            </v-btn>
+            <v-btn size="small" color="success" variant="outlined" prepend-icon="mdi-dice-d20" @click="onDeathSave('crit')">
+              {{ $t('encounters.deathSaves.crit') }}
+            </v-btn>
+            <v-btn size="small" color="error" variant="outlined" prepend-icon="mdi-dice-d20-outline" @click="onDeathSave('critFail')">
+              {{ $t('encounters.deathSaves.critFail') }}
+            </v-btn>
+          </div>
+          <div v-else class="text-body-small text-medium-emphasis">{{ $t('encounters.deathSaves.deadHint') }}</div>
         </div>
 
         <!-- Effects -->
@@ -283,10 +323,11 @@
 </template>
 
 <script setup lang="ts">
-import type { EncounterEffect, EncounterParticipant } from '~~/types/encounter'
+import type { CombatAction, DeathSaveResult, EncounterEffect, EncounterParticipant } from '~~/types/encounter'
 
 const { t } = useI18n()
 const encounterStore = useEncounterStore()
+const snackbarStore = useSnackbarStore()
 const codex = useCodexStore()
 
 const props = defineProps<{
@@ -365,39 +406,46 @@ function hpColor(p: EncounterParticipant): string {
   return 'error'
 }
 
-function onDamage() {
-  if (!hpAmount.value || !activeParticipant.value) return
+// Damage, healing and temp HP: the server applies the rules (temp HP first,
+// knocked out at 0, death saves) and writes the action log
+async function act(action: CombatAction) {
   const p = activeParticipant.value
-  let remaining = hpAmount.value
-  let newTempHp = p.temp_hp
-  let newCurrentHp = p.current_hp
-
-  if (newTempHp > 0) {
-    if (remaining <= newTempHp) {
-      newTempHp -= remaining
-      remaining = 0
-    }
-    else {
-      remaining -= newTempHp
-      newTempHp = 0
-    }
-  }
-  newCurrentHp = Math.max(0, newCurrentHp - remaining)
-
-  emit('updateParticipant', p.id, {
-    current_hp: newCurrentHp,
-    temp_hp: newTempHp,
-    is_ko: newCurrentHp === 0 || p.is_ko,
-  })
-  hpAmount.value = undefined
+  if (!p) return
+  const ok = await encounterStore.applyAction(props.encounterId, p.id, action)
+  if (!ok) snackbarStore.error(t('encounters.actionFailed'))
 }
 
-function onHeal() {
-  if (!hpAmount.value || !activeParticipant.value) return
-  const p = activeParticipant.value
-  const newHp = Math.min(p.max_hp, p.current_hp + hpAmount.value)
-  emit('updateParticipant', p.id, { current_hp: newHp, is_ko: false })
+async function applyAmount(type: 'damage' | 'heal' | 'tempHp') {
+  const amount = Math.trunc(Number(hpAmount.value))
+  if (!amount || amount < 0) return
   hpAmount.value = undefined
+  await act({ type, amount })
+}
+
+const onDamage = () => applyAmount('damage')
+const onHeal = () => applyAmount('heal')
+const onTempHp = () => applyAmount('tempHp')
+const onDeathSave = (result: DeathSaveResult) => act({ type: 'deathSave', result })
+
+/** Only player characters make death saves (monsters and NPCs just drop) */
+const showDeathSaves = computed(() =>
+  activeParticipant.value?.entity_type === 'Player' && activeParticipant.value.current_hp === 0,
+)
+
+function downState(p: EncounterParticipant): 'dead' | 'stable' | null {
+  if (p.entity_type !== 'Player' || p.current_hp > 0) return null
+  if (p.death_save_failures >= 3) return 'dead'
+  if (p.death_save_successes >= 3) return 'stable'
+  return null
+}
+
+const activeDownState = computed(() => (activeParticipant.value ? downState(activeParticipant.value) : null))
+
+function downIcon(p: EncounterParticipant) {
+  const state = downState(p)
+  if (state === 'dead') return 'mdi-skull-crossbones'
+  if (state === 'stable') return 'mdi-heart-pulse'
+  return 'mdi-skull'
 }
 
 function onToggleKo() {
@@ -581,6 +629,11 @@ function getAvatarColor(type?: string): string {
   position: absolute;
   inset: 0;
   background: rgba(0, 0, 0, 0.5);
+}
+
+.death-saves {
+  border: 1px solid rgba(var(--v-theme-error), 0.4);
+  background: rgba(var(--v-theme-error), 0.05);
 }
 
 .combat-tile__ac {

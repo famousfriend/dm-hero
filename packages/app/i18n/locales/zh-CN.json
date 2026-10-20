@@ -1487,7 +1487,49 @@
     "monsterSearchHint": "输入至少 2 个字搜索怪物",
     "fromParty": "HP {hp}/{max} · AC {ac}（来自队伍）",
     "acHint": "护甲等级 – 点击修改",
-    "statBlock": "数据块"
+    "statBlock": "数据块",
+    "tempHpHint": "给予临时生命值（保留较高值）",
+    "actionFailed": "操作失败，请重试",
+    "deathSaves": {
+      "title": "死亡豁免",
+      "successes": "成功",
+      "failures": "失败",
+      "success": "成功",
+      "failure": "失败",
+      "crit": "天然 20",
+      "critFail": "天然 1",
+      "stable": "稳定",
+      "dead": "死亡",
+      "deadHint": "已死亡。治疗无法使其复活；如是误操作，请使用撤销或 KO 按钮。"
+    },
+    "log": {
+      "title": "行动记录",
+      "undo": "撤销",
+      "empty": "伤害、治疗和死亡豁免会显示在这里。",
+      "undone": "已撤销",
+      "undoneSnack": "已撤销：{action}",
+      "maxHp": "最大生命值",
+      "damage": "{name} 受到 {amount} 点伤害",
+      "absorbed": "{n} 点由临时生命值吸收",
+      "whileDown": "一次死亡豁免失败",
+      "massive": "巨额伤害，当场死亡",
+      "down": "降至 0 生命值",
+      "heal": "{name} 恢复 {amount} 点生命值",
+      "revived": "重新站起",
+      "tempHp": "{name} 获得 {amount} 点临时生命值",
+      "kept": "保留 {n}",
+      "stable": "稳定",
+      "dead": "死亡",
+      "set": "{name} 已编辑：{changes}",
+      "koOn": "昏迷",
+      "koOff": "不再昏迷",
+      "deathSave": {
+        "success": "{name} 死亡豁免成功",
+        "failure": "{name} 死亡豁免失败",
+        "crit": "{name} 死亡豁免掷出天然 20，以 1 点生命值恢复",
+        "critFail": "{name} 死亡豁免掷出天然 1（两次失败）"
+      }
+    }
   },
   "documents": {
     "title": "文件",

@@ -1487,7 +1487,49 @@
     "monsterSearchHint": "Escribe al menos 2 letras para buscar monstruos",
     "fromParty": "PG {hp}/{max} · CA {ac} (del grupo)",
     "acHint": "Clase de armadura: haz clic para cambiarla",
-    "statBlock": "Estadísticas"
+    "statBlock": "Estadísticas",
+    "tempHpHint": "Dar PG temporales (se mantiene el valor mayor)",
+    "actionFailed": "No funcionó, inténtalo de nuevo",
+    "deathSaves": {
+      "title": "Tiradas de salvación contra muerte",
+      "successes": "Éxitos",
+      "failures": "Fallos",
+      "success": "Éxito",
+      "failure": "Fallo",
+      "crit": "20 natural",
+      "critFail": "1 natural",
+      "stable": "Estable",
+      "dead": "Muerto",
+      "deadHint": "Muerto. La curación no lo trae de vuelta; usa deshacer o el botón KO si fue un error."
+    },
+    "log": {
+      "title": "Registro de acciones",
+      "undo": "Deshacer",
+      "empty": "El daño, la curación y las salvaciones contra muerte aparecen aquí.",
+      "undone": "deshecho",
+      "undoneSnack": "Deshecho: {action}",
+      "maxHp": "PG máx.",
+      "damage": "{name} recibió {amount} de daño",
+      "absorbed": "{n} absorbido por PG temporales",
+      "whileDown": "una salvación contra muerte fallida",
+      "massive": "daño masivo, muerte instantánea",
+      "down": "cayó a 0 PG",
+      "heal": "{name} se curó {amount}",
+      "revived": "de nuevo en pie",
+      "tempHp": "{name} ganó {amount} PG temporales",
+      "kept": "se mantienen {n}",
+      "stable": "estable",
+      "dead": "muerto",
+      "set": "{name} editado: {changes}",
+      "koOn": "inconsciente",
+      "koOff": "ya no está inconsciente",
+      "deathSave": {
+        "success": "{name} superó una salvación contra muerte",
+        "failure": "{name} falló una salvación contra muerte",
+        "crit": "{name} sacó un 20 natural y vuelve con 1 PG",
+        "critFail": "{name} sacó un 1 natural (dos fallos)"
+      }
+    }
   },
   "documents": {
     "title": "Documentos",
