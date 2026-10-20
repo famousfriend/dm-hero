@@ -31,6 +31,9 @@
               <v-chip v-if="isBookmark" size="small" variant="outlined" prepend-icon="mdi-bookmark-outline">
                 {{ $t('codex.bookmark') }}
               </v-chip>
+              <v-chip v-if="codex.entry.editedInCampaign" size="small" variant="tonal" color="primary" prepend-icon="mdi-pencil">
+                {{ $t('codex.edit.editedChip') }}
+              </v-chip>
             </div>
             <p v-if="isBookmark" class="text-body-medium text-medium-emphasis">{{ $t('codex.bookmarkInfo') }}</p>
             <ClientOnly>
@@ -85,6 +88,26 @@
           >
             {{ $t('codex.deleteBookmark') }}
           </v-btn>
+          <div v-if="canEdit" class="d-flex ga-2 mb-2">
+            <v-btn class="flex-grow-1" variant="tonal" prepend-icon="mdi-pencil" @click="editDialog = true">
+              {{ isHomebrew ? $t('codex.edit.edit') : $t('codex.edit.editForCampaign') }}
+            </v-btn>
+            <v-btn
+              v-if="isHomebrew"
+              icon="mdi-delete-outline"
+              variant="text"
+              color="error"
+              :title="$t('codex.edit.deleteHomebrew')"
+              @click="deleteHomebrew"
+            />
+            <v-btn
+              v-else-if="codex.entry?.editedInCampaign"
+              icon="mdi-restore"
+              variant="text"
+              :title="$t('codex.edit.reset')"
+              @click="resetEdit"
+            />
+          </div>
           <div v-if="codex.entry?.license" class="text-caption text-medium-emphasis">
             {{ codex.entry.sourceTitle }} · {{ codex.entry.license }}
             <span v-if="codex.entry.attribution" :title="codex.entry.attribution">ⓘ</span>
@@ -92,6 +115,12 @@
         </div>
       </v-card>
     </v-slide-x-reverse-transition>
+    <CodexEntryDialog
+      v-model="editDialog"
+      :mode="isHomebrew ? 'homebrew' : 'campaign'"
+      :entry="codex.entry"
+      @saved="codex.showEdited($event)"
+    />
   </Teleport>
 </template>
 
@@ -114,11 +143,22 @@ const externalUrl = computed(() =>
 )
 
 const isBookmark = computed(() => codex.entry?.sourceCode === 'bookmark')
+const isHomebrew = computed(() => codex.entry?.sourceCode === 'hb')
+const campaignStore = useCampaignStore()
+const editDialog = ref(false)
+
+// Homebrew is edited directly; anything else (but bookmarks) per campaign
+const canEdit = computed(() => {
+  const entry = codex.entry
+  if (!entry || entry.deletedAt || isBookmark.value) return false
+  return isHomebrew.value || !!campaignStore.activeCampaignIdNumber
+})
 
 // Bookmarks show their book (XGE); bundled entries their dataset (SRD51)
 const sourceLabel = computed(() => {
   const entry = codex.entry
   if (!entry) return ''
+  if (isHomebrew.value) return t('codex.homebrew')
   return (isBookmark.value ? parseUid(entry.uid)?.source ?? '' : entry.sourceCode).toUpperCase()
 })
 
@@ -135,6 +175,24 @@ async function deleteBookmark() {
   }
   catch {
     snackbar.error(t('codex.bookmarkFailed'))
+  }
+}
+
+async function deleteHomebrew() {
+  try {
+    await codex.deleteHomebrew()
+  }
+  catch {
+    snackbar.error(t('codex.edit.failed'))
+  }
+}
+
+async function resetEdit() {
+  try {
+    await codex.resetCampaignEdit()
+  }
+  catch {
+    snackbar.error(t('codex.edit.failed'))
   }
 }
 

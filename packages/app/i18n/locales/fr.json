@@ -3031,7 +3031,31 @@
     "linkFailed": "Impossible d'enregistrer la référence",
     "bookmark": "Signet",
     "bookmarkInfo": "Lien uniquement. Ouvrez-le pour lire le texte complet.",
-    "deleteBookmark": "Supprimer le signet"
+    "deleteBookmark": "Supprimer le signet",
+    "homebrew": "Homebrew",
+    "edit": {
+      "name": "Nom",
+      "summary": "Description courte",
+      "summaryPlaceholder": "p. ex. évocation de niveau 3 ou fée FP 2",
+      "hp": "Points de vie",
+      "ac": "Classe d'armure",
+      "cr": "Facteur de puissance",
+      "body": "Texte",
+      "bodyHint": "Le Markdown fonctionne : **gras**, *italique*, listes et tableaux. Écrivez les capacités sous la forme ***Nom (Recharge 5-6).*** pour que les combats les suivent.",
+      "newTitle": "Nouvelle entrée homebrew",
+      "homebrewTitle": "Modifier l'entrée homebrew",
+      "campaignTitle": "Modifier pour cette campagne",
+      "homebrewHint": "Votre propre sort, monstre, objet ou règle. Valable dans toutes les campagnes et visible dans la recherche.",
+      "campaignHint": "Les changements ne valent que pour la campagne ouverte. L'original reste intact et peut être rétabli à tout moment.",
+      "exists": "Vous avez déjà une entrée homebrew avec ce nom.",
+      "failed": "Enregistrement impossible. Vérifiez le nom et les nombres.",
+      "editedChip": "Modifié dans cette campagne",
+      "edit": "Modifier",
+      "editForCampaign": "Modifier pour cette campagne",
+      "deleteHomebrew": "Supprimer l'entrée homebrew",
+      "reset": "Rétablir l'original",
+      "newHomebrew": "Nouveau homebrew"
+    }
   },
   "party": {
     "title": "Groupe",

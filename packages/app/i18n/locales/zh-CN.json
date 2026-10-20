@@ -3031,7 +3031,31 @@
     "linkFailed": "无法保存参考",
     "bookmark": "书签",
     "bookmarkInfo": "仅链接。打开即可阅读全文。",
-    "deleteBookmark": "删除书签"
+    "deleteBookmark": "删除书签",
+    "homebrew": "自制",
+    "edit": {
+      "name": "名称",
+      "summary": "简短描述",
+      "summaryPlaceholder": "例如：3环塑能，或 CR 2 精类",
+      "hp": "生命值",
+      "ac": "护甲等级",
+      "cr": "挑战等级",
+      "body": "正文",
+      "bodyHint": "支持 Markdown：**粗体**、*斜体*、列表和表格。能力写成 ***名称 (Recharge 5-6).***，战斗中即可追踪。",
+      "newTitle": "新建自制条目",
+      "homebrewTitle": "编辑自制条目",
+      "campaignTitle": "仅为本战役编辑",
+      "homebrewHint": "你自己的法术、怪物、物品或规则。适用于所有战役，并会出现在搜索中。",
+      "campaignHint": "更改只对当前战役生效。原文保持不变，可随时恢复。",
+      "exists": "已有同名的自制条目。",
+      "failed": "无法保存。请检查名称和数字。",
+      "editedChip": "本战役已修改",
+      "edit": "编辑",
+      "editForCampaign": "仅为本战役编辑",
+      "deleteHomebrew": "删除自制条目",
+      "reset": "恢复原文",
+      "newHomebrew": "新建自制"
+    }
   },
   "party": {
     "title": "队伍",

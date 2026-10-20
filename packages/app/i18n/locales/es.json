@@ -3031,7 +3031,31 @@
     "linkFailed": "No se pudo guardar la referencia",
     "bookmark": "Marcador",
     "bookmarkInfo": "Solo enlace. Ábrelo para leer el texto completo.",
-    "deleteBookmark": "Eliminar marcador"
+    "deleteBookmark": "Eliminar marcador",
+    "homebrew": "Homebrew",
+    "edit": {
+      "name": "Nombre",
+      "summary": "Descripción breve",
+      "summaryPlaceholder": "p. ej. evocación de nivel 3 o feérico VD 2",
+      "hp": "Puntos de golpe",
+      "ac": "Clase de armadura",
+      "cr": "Valor de desafío",
+      "body": "Texto",
+      "bodyHint": "Admite Markdown: **negrita**, *cursiva*, listas y tablas. Escribe las habilidades como ***Nombre (Recharge 5-6).*** para que los combates las sigan.",
+      "newTitle": "Nueva entrada homebrew",
+      "homebrewTitle": "Editar entrada homebrew",
+      "campaignTitle": "Editar para esta campaña",
+      "homebrewHint": "Tu propio conjuro, monstruo, objeto o regla. Sirve en todas las campañas y aparece en la búsqueda.",
+      "campaignHint": "Los cambios solo afectan a la campaña abierta. El original no cambia y puedes restaurarlo cuando quieras.",
+      "exists": "Ya tienes una entrada homebrew con este nombre.",
+      "failed": "No se pudo guardar. Revisa el nombre y los números.",
+      "editedChip": "Cambiado en esta campaña",
+      "edit": "Editar",
+      "editForCampaign": "Editar para esta campaña",
+      "deleteHomebrew": "Eliminar entrada homebrew",
+      "reset": "Restaurar el original",
+      "newHomebrew": "Nuevo homebrew"
+    }
   },
   "party": {
     "title": "Grupo",

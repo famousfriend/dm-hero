@@ -3031,7 +3031,31 @@
     "linkFailed": "Could not save the reference",
     "bookmark": "Bookmark",
     "bookmarkInfo": "Link only. Open it to read the full text.",
-    "deleteBookmark": "Delete bookmark"
+    "deleteBookmark": "Delete bookmark",
+    "homebrew": "Homebrew",
+    "edit": {
+      "name": "Name",
+      "summary": "Short description",
+      "summaryPlaceholder": "e.g. 3rd-level evocation, or CR 2 fey",
+      "hp": "Hit points",
+      "ac": "Armor class",
+      "cr": "Challenge",
+      "body": "Text",
+      "bodyHint": "Markdown works: **bold**, *italic*, lists and tables. Write abilities as ***Name (Recharge 5-6).*** so fights track them.",
+      "newTitle": "New homebrew entry",
+      "homebrewTitle": "Edit homebrew entry",
+      "campaignTitle": "Edit for this campaign",
+      "homebrewHint": "Your own spell, monster, item or rule. It works in every campaign and appears in search.",
+      "campaignHint": "Changes apply only to the open campaign. The original stays as it is, and you can reset it any time.",
+      "exists": "You already have a homebrew entry with this name.",
+      "failed": "Could not save. Check the name and numbers.",
+      "editedChip": "Changed in this campaign",
+      "edit": "Edit",
+      "editForCampaign": "Edit for this campaign",
+      "deleteHomebrew": "Delete homebrew entry",
+      "reset": "Reset to the original",
+      "newHomebrew": "New homebrew"
+    }
   },
   "party": {
     "title": "Party",
