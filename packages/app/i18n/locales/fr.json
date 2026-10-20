@@ -1487,7 +1487,49 @@
     "monsterSearchHint": "Tapez au moins 2 lettres pour chercher un monstre",
     "fromParty": "PV {hp}/{max} · CA {ac} (du groupe)",
     "acHint": "Classe d'armure : cliquez pour modifier",
-    "statBlock": "Profil"
+    "statBlock": "Profil",
+    "tempHpHint": "Donner des PV temporaires (la valeur la plus haute est gardée)",
+    "actionFailed": "Cela n'a pas fonctionné, réessayez",
+    "deathSaves": {
+      "title": "Jets de sauvegarde contre la mort",
+      "successes": "Réussites",
+      "failures": "Échecs",
+      "success": "Réussite",
+      "failure": "Échec",
+      "crit": "20 naturel",
+      "critFail": "1 naturel",
+      "stable": "Stable",
+      "dead": "Mort",
+      "deadHint": "Mort. Les soins ne le ramènent pas ; utilisez Annuler ou le bouton KO en cas d'erreur."
+    },
+    "log": {
+      "title": "Journal des actions",
+      "undo": "Annuler",
+      "empty": "Les dégâts, soins et jets contre la mort apparaissent ici.",
+      "undone": "annulé",
+      "undoneSnack": "Annulé : {action}",
+      "maxHp": "PV max",
+      "damage": "{name} a subi {amount} dégâts",
+      "absorbed": "{n} absorbés par les PV temporaires",
+      "whileDown": "un jet contre la mort raté",
+      "massive": "dégâts massifs, mort sur le coup",
+      "down": "tombé à 0 PV",
+      "heal": "{name} a été soigné de {amount}",
+      "revived": "de nouveau debout",
+      "tempHp": "{name} a gagné {amount} PV temporaires",
+      "kept": "{n} conservés",
+      "stable": "stable",
+      "dead": "mort",
+      "set": "{name} modifié : {changes}",
+      "koOn": "inconscient",
+      "koOff": "n'est plus inconscient",
+      "deathSave": {
+        "success": "{name} a réussi un jet contre la mort",
+        "failure": "{name} a raté un jet contre la mort",
+        "crit": "{name} a fait un 20 naturel et revient avec 1 PV",
+        "critFail": "{name} a fait un 1 naturel (deux échecs)"
+      }
+    }
   },
   "documents": {
     "title": "Documents",

@@ -23,7 +23,8 @@ interface MonsterData {
 
 const PARTICIPANT_COLUMNS = `
   ep.id, ep.encounter_id, ep.entity_id, ep.ref_uid, ep.display_name, ep.duplicate_index,
-  ep.initiative, ep.current_hp, ep.max_hp, ep.temp_hp, ep.armor_class, ep.sort_order, ep.is_ko, ep.notes,
+  ep.initiative, ep.current_hp, ep.max_hp, ep.temp_hp, ep.armor_class, ep.death_save_successes, ep.death_save_failures,
+  ep.sort_order, ep.is_ko, ep.notes,
   COALESCE(et.name, CASE WHEN ep.ref_uid IS NOT NULL THEN 'Monster' END) as entity_type,
   e.image_url as entity_image
 FROM encounter_participants ep

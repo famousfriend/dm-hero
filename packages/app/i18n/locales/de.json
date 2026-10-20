@@ -1487,7 +1487,49 @@
     "monsterSearchHint": "Mindestens 2 Buchstaben eingeben, um Monster zu suchen",
     "fromParty": "TP {hp}/{max} · RK {ac} (aus Gruppe)",
     "acHint": "Rüstungsklasse – zum Ändern klicken",
-    "statBlock": "Werteblock"
+    "statBlock": "Werteblock",
+    "tempHpHint": "Temporäre TP geben (der höhere Wert bleibt)",
+    "actionFailed": "Das hat nicht geklappt, bitte erneut versuchen",
+    "deathSaves": {
+      "title": "Todesrettungswürfe",
+      "successes": "Erfolge",
+      "failures": "Fehlschläge",
+      "success": "Erfolg",
+      "failure": "Fehlschlag",
+      "crit": "Natürliche 20",
+      "critFail": "Natürliche 1",
+      "stable": "Stabil",
+      "dead": "Tot",
+      "deadHint": "Tot. Heilung bringt die Figur nicht zurück; bei einem Versehen Rückgängig oder den KO-Knopf nutzen."
+    },
+    "log": {
+      "title": "Aktionsprotokoll",
+      "undo": "Rückgängig",
+      "empty": "Schaden, Heilung und Todesrettungswürfe erscheinen hier.",
+      "undone": "rückgängig gemacht",
+      "undoneSnack": "Rückgängig: {action}",
+      "maxHp": "Max. TP",
+      "damage": "{name} erlitt {amount} Schaden",
+      "absorbed": "{n} von temporären TP abgefangen",
+      "whileDown": "ein fehlgeschlagener Todesrettungswurf",
+      "massive": "massiver Schaden, sofort tot",
+      "down": "auf 0 TP gefallen",
+      "heal": "{name} wurde um {amount} geheilt",
+      "revived": "wieder auf den Beinen",
+      "tempHp": "{name} erhielt {amount} temporäre TP",
+      "kept": "{n} behalten",
+      "stable": "stabil",
+      "dead": "tot",
+      "set": "{name} bearbeitet: {changes}",
+      "koOn": "bewusstlos",
+      "koOff": "nicht mehr bewusstlos",
+      "deathSave": {
+        "success": "{name} schaffte einen Todesrettungswurf",
+        "failure": "{name} verfehlte einen Todesrettungswurf",
+        "crit": "{name} würfelte eine natürliche 20 und ist mit 1 TP zurück",
+        "critFail": "{name} würfelte eine natürliche 1 (zwei Fehlschläge)"
+      }
+    }
   },
   "documents": {
     "title": "Dokumente",

@@ -1,5 +1,6 @@
 import { getDb } from '../../../utils/db'
 import { listParticipants } from '../../../utils/encounter-participants'
+import { listCombatLog } from '../../../utils/encounter-actions'
 
 export default defineEventHandler((event) => {
   const db = getDb()
@@ -33,5 +34,5 @@ export default defineEventHandler((event) => {
 
   const participants = listParticipants(db, id)
 
-  return { ...encounter, participants }
+  return { ...encounter, participants, log: listCombatLog(db, Number(id)) }
 })

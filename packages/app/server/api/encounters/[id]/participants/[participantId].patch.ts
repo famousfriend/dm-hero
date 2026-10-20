@@ -1,48 +1,47 @@
+import type { CombatAction } from '~~/types/encounter'
 import { getDb } from '../../../../utils/db'
 import { getParticipant } from '../../../../utils/encounter-participants'
+import { CombatActionError, applyCombatAction } from '../../../../utils/encounter-actions'
 
+// PATCH { action: { type: 'damage' | 'heal' | 'tempHp' | 'deathSave', ... } }
+//    or { current_hp?, max_hp?, temp_hp?, armor_class?, is_ko?, initiative?, notes?, sort_order? }
+// HP, temp HP, AC, KO and death-save changes go through the action log (undo).
 export default defineEventHandler(async (event) => {
   const db = getDb()
-  const encounterId = getRouterParam(event, 'id')
-  const participantId = getRouterParam(event, 'participantId')
-  const body = await readBody(event)
+  const encounterId = Number(getRouterParam(event, 'id'))
+  const participantId = Number(getRouterParam(event, 'participantId'))
+  const body = (await readBody(event)) ?? {}
 
   if (!encounterId || !participantId) {
     throw createError({ statusCode: 400, message: 'Encounter ID and Participant ID are required' })
   }
+  if (!getParticipant(db, encounterId, participantId)) {
+    throw createError({ statusCode: 404, message: 'Participant not found' })
+  }
 
   const { initiative, current_hp, max_hp, temp_hp, armor_class, is_ko, notes, sort_order } = body
 
+  // Turn-order and note fields: not part of the log
   db.prepare(`
     UPDATE encounter_participants
     SET
       initiative = COALESCE(?, initiative),
-      current_hp = COALESCE(?, current_hp),
-      max_hp = COALESCE(?, max_hp),
-      temp_hp = COALESCE(?, temp_hp),
-      armor_class = COALESCE(?, armor_class),
-      is_ko = COALESCE(?, is_ko),
       notes = COALESCE(?, notes),
       sort_order = COALESCE(?, sort_order)
     WHERE id = ? AND encounter_id = ?
-  `).run(
-    initiative ?? null,
-    current_hp ?? null,
-    max_hp ?? null,
-    temp_hp ?? null,
-    armor_class ?? null,
-    is_ko != null ? (is_ko ? 1 : 0) : null,
-    notes ?? null,
-    sort_order ?? null,
-    participantId,
-    encounterId,
-  )
+  `).run(initiative ?? null, notes ?? null, sort_order ?? null, participantId, encounterId)
 
-  const participant = getParticipant(db, encounterId, participantId)
+  const action: CombatAction | null = body.action
+    ? body.action
+    : [current_hp, max_hp, temp_hp, armor_class, is_ko].some(v => v !== undefined && v !== null)
+        ? { type: 'set', fields: { current_hp, max_hp, temp_hp, armor_class, is_ko } }
+        : null
 
-  if (!participant) {
-    throw createError({ statusCode: 404, message: 'Participant not found' })
+  try {
+    return action ? applyCombatAction(db, encounterId, participantId, action) : getParticipant(db, encounterId, participantId)
   }
-
-  return participant
+  catch (error) {
+    if (error instanceof CombatActionError) throw createError({ statusCode: 400, message: error.message })
+    throw error
+  }
 })

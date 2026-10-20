@@ -3075,6 +3075,35 @@ export const migrations: Migration[] = [
       console.log('✅ Migration 70: Encounter participants can be reference monsters, with armor class')
     },
   },
+  {
+    version: 71,
+    name: 'encounter death saves and action log',
+    up: (db: Database.Database) => {
+      db.exec(`
+        ALTER TABLE encounter_participants ADD COLUMN death_save_successes INTEGER NOT NULL DEFAULT 0;
+        ALTER TABLE encounter_participants ADD COLUMN death_save_failures INTEGER NOT NULL DEFAULT 0;
+
+        -- Every HP/KO/AC/death-save change with the state before and after, for undo
+        CREATE TABLE encounter_log (
+          id INTEGER PRIMARY KEY AUTOINCREMENT,
+          encounter_id INTEGER NOT NULL REFERENCES encounters(id) ON DELETE CASCADE,
+          participant_id INTEGER REFERENCES encounter_participants(id) ON DELETE SET NULL,
+          participant_name TEXT NOT NULL,
+          round INTEGER NOT NULL DEFAULT 0,
+          kind TEXT NOT NULL,
+          amount INTEGER,
+          details_json TEXT,
+          before_json TEXT NOT NULL,
+          after_json TEXT NOT NULL,
+          created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+          undone_at TEXT
+        );
+        CREATE INDEX idx_encounter_log_encounter ON encounter_log(encounter_id, id);
+      `)
+
+      console.log('✅ Migration 71: Death saves and encounter action log')
+    },
+  },
 ]
 
 export async function runMigrations(db: Database.Database) {
