@@ -3225,5 +3225,10 @@
     "lookupPlaceholder": "Cerca un incantesimo, mostro, condizione…",
     "currentSession": "Sessione",
     "noSessions": "Ancora nessuna sessione."
+  },
+  "duplicate": {
+    "action": "Duplica",
+    "copyName": "{name} (copia)",
+    "done": "Creato {name}"
   }
 }

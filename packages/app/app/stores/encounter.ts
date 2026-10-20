@@ -68,6 +68,22 @@ export const useEncounterStore = defineStore('encounter', {
       }
     },
 
+    /** Copies a fight to run again: same participants at full HP, back in setup */
+    async duplicateEncounter(encounter: Encounter, name: string): Promise<Encounter | null> {
+      try {
+        const copy = await $fetch<Encounter>('/api/encounters', {
+          method: 'POST',
+          body: { campaignId: encounter.campaign_id, name, duplicateOf: encounter.id },
+        })
+        await this.fetchEncounters(encounter.campaign_id, true)
+        return copy
+      }
+      catch (error) {
+        console.error('Failed to duplicate encounter:', error)
+        return null
+      }
+    },
+
     async deleteEncounter(id: number): Promise<boolean> {
       try {
         await $fetch(`/api/encounters/${id}`, {

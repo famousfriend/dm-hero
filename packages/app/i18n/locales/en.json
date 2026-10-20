@@ -3225,5 +3225,10 @@
     "lookupPlaceholder": "Look up a spell, monster, condition…",
     "currentSession": "Session",
     "noSessions": "No sessions yet."
+  },
+  "duplicate": {
+    "action": "Duplicate",
+    "copyName": "{name} (copy)",
+    "done": "Created {name}"
   }
 }

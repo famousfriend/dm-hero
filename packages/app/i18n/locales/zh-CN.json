@@ -3225,5 +3225,10 @@
     "lookupPlaceholder": "查询法术、怪物、状态…",
     "currentSession": "游戏",
     "noSessions": "还没有游戏记录。"
+  },
+  "duplicate": {
+    "action": "复制",
+    "copyName": "{name}（副本）",
+    "done": "已创建 {name}"
   }
 }

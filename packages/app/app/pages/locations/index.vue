@@ -141,6 +141,7 @@
                 variant="text"
                 @click.stop="editLocation(internalItem.raw)"
               />
+              <SharedEntityDuplicateButton :entity-id="internalItem.raw.id" entity-type="location" :name="internalItem.raw.name" size="x-small" />
               <v-btn
                 icon="mdi-graph"
                 size="x-small"
