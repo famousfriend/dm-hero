@@ -1568,6 +1568,14 @@
       "enterResults": "Enter results",
       "total": "Total"
     },
+    "taleSpire": {
+      "short": "TaleSpire",
+      "roll": "Roll in TaleSpire",
+      "rollHint": "Put these dice in your TaleSpire dice tray",
+      "toggleHint": "I use TaleSpire: show buttons that put the dice in your TaleSpire dice tray",
+      "damage": "Damage",
+      "failed": "Could not open TaleSpire. Is it installed?"
+    },
     "resources": {
       "title": "Abilities",
       "add": "Ability",
@@ -1619,7 +1627,11 @@
         "bonusActions": "Bonus actions",
         "reactions": "Reactions",
         "legendary": "Legendary actions"
-      }
+      },
+      "ownRoll": "Type in my roll",
+      "d20Rolled": "d20 rolled",
+      "damageRolled": "Damage rolled",
+      "critDamage": "Critical: roll the {dice} damage dice twice"
     },
     "syncPlayers": "Sync players",
     "syncPlayersHint": "Get the players' HP and AC from the Party view (and D&D Beyond) into this fight",

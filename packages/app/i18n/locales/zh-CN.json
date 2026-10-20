@@ -1568,6 +1568,14 @@
       "enterResults": "输入结果",
       "total": "合计"
     },
+    "taleSpire": {
+      "short": "TaleSpire",
+      "roll": "在 TaleSpire 中掷骰",
+      "rollHint": "把这些骰子放进你的 TaleSpire 骰盘",
+      "toggleHint": "我使用 TaleSpire：显示把骰子放进 TaleSpire 骰盘的按钮",
+      "damage": "Damage",
+      "failed": "无法打开 TaleSpire。是否已安装？"
+    },
     "resources": {
       "title": "能力",
       "add": "能力",
@@ -1619,7 +1627,11 @@
         "bonusActions": "附赠动作",
         "reactions": "反应",
         "legendary": "传奇动作"
-      }
+      },
+      "ownRoll": "输入我的掷骰结果",
+      "d20Rolled": "d20 结果",
+      "damageRolled": "伤害结果",
+      "critDamage": "重击：{dice} 伤害骰掷两次"
     },
     "syncPlayers": "同步玩家",
     "syncPlayersHint": "把玩家在队伍视图（和 D&D Beyond）中的生命值和护甲等级带入本场战斗",

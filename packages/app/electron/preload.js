@@ -29,6 +29,9 @@ contextBridge.exposeInMainWorld('electronAPI', {
   // Open external URL in system browser
   openExternalUrl: url => ipcRenderer.invoke('open-external-url', url),
 
+  // Hand a talespire://dice link to TaleSpire
+  openTaleSpireDice: url => ipcRenderer.invoke('open-talespire-dice', url),
+
   // ========================================
   // AUTO-UPDATER APIs
   // ========================================

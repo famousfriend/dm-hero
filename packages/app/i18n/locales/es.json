@@ -1568,6 +1568,14 @@
       "enterResults": "Introducir resultados",
       "total": "Total"
     },
+    "taleSpire": {
+      "short": "TaleSpire",
+      "roll": "Tirar en TaleSpire",
+      "rollHint": "Poner estos dados en tu bandeja de dados de TaleSpire",
+      "toggleHint": "Uso TaleSpire: mostrar botones que ponen los dados en tu bandeja de TaleSpire",
+      "damage": "Daño",
+      "failed": "No se pudo abrir TaleSpire. ¿Está instalado?"
+    },
     "resources": {
       "title": "Habilidades",
       "add": "Habilidad",
@@ -1619,7 +1627,11 @@
         "bonusActions": "Acciones adicionales",
         "reactions": "Reacciones",
         "legendary": "Acciones legendarias"
-      }
+      },
+      "ownRoll": "Escribir mi tirada",
+      "d20Rolled": "d20 sacado",
+      "damageRolled": "Daño sacado",
+      "critDamage": "Crítico: tira dos veces los dados de daño {dice}"
     },
     "syncPlayers": "Sincronizar jugadores",
     "syncPlayersHint": "Trae los PG y la CA de los jugadores desde la vista de grupo (y D&D Beyond) a este combate",

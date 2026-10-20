@@ -48,6 +48,18 @@
         {{ physicalDice ? $t('encounters.dice.enterResults') : $t('encounters.roll') }}
       </v-btn>
       <v-btn
+        v-if="taleSpire.enabled.value"
+        size="small"
+        variant="tonal"
+        color="primary"
+        :disabled="!hasSelection"
+        prepend-icon="mdi-dice-d20"
+        :title="$t('encounters.taleSpire.rollHint')"
+        @click="sendToTaleSpire"
+      >
+        {{ $t('encounters.taleSpire.short') }}
+      </v-btn>
+      <v-btn
         v-if="hasSelection || modifier !== 0"
         icon
         size="x-small"
@@ -66,6 +78,15 @@
         density="compact"
         hide-details
         class="flex-grow-0"
+      />
+      <v-switch
+        v-model="taleSpire.enabled.value"
+        :label="$t('encounters.taleSpire.short')"
+        :title="$t('encounters.taleSpire.toggleHint')"
+        color="primary"
+        density="compact"
+        hide-details
+        class="flex-grow-0 ml-2"
       />
     </div>
 
@@ -112,6 +133,9 @@ const lastResult = ref<{ total: number, breakdown: string } | null>(null)
 const hasSelection = computed(() => dice.some(d => selected[d] > 0))
 
 const physicalDice = usePhysicalDice()
+const taleSpire = useTaleSpire()
+const { t } = useI18n()
+const snackbarStore = useSnackbarStore()
 const entries = ref<Array<{ die: Die, value: number | null }>>([])
 
 const validEntry = (e: { die: Die, value: number | null }) =>
@@ -128,6 +152,16 @@ function finishEntry() {
   for (const e of entries.value) (rolls[e.die] ??= []).push(e.value!)
   showResult(rolls)
   entries.value = []
+}
+
+/** The picked dice as one roll in the TaleSpire tray, e.g. 2d6+1d8+3 */
+async function sendToTaleSpire() {
+  const terms = dice.filter(d => selected[d] > 0).map(d => `${selected[d]}d${d}`)
+  if (modifier.value) terms.push(modifier.value > 0 ? `+${modifier.value}` : `${modifier.value}`)
+  const expression = terms.join('+').replace(/\+-/g, '-').replace(/\+\+/g, '+')
+  if (!(await taleSpire.sendRolls([{ name: t('encounters.roll'), dice: expression }]))) {
+    snackbarStore.error(t('encounters.taleSpire.failed'))
+  }
 }
 
 function increment(die: Die) {

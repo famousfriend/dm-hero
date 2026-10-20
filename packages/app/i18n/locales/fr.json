@@ -1568,6 +1568,14 @@
       "enterResults": "Saisir les résultats",
       "total": "Total"
     },
+    "taleSpire": {
+      "short": "TaleSpire",
+      "roll": "Lancer dans TaleSpire",
+      "rollHint": "Mettre ces dés dans ton plateau de dés TaleSpire",
+      "toggleHint": "J'utilise TaleSpire : afficher des boutons qui mettent les dés dans ton plateau TaleSpire",
+      "damage": "Dégâts",
+      "failed": "Impossible d'ouvrir TaleSpire. Est-il installé ?"
+    },
     "resources": {
       "title": "Capacités",
       "add": "Capacité",
@@ -1619,7 +1627,11 @@
         "bonusActions": "Actions bonus",
         "reactions": "Réactions",
         "legendary": "Actions légendaires"
-      }
+      },
+      "ownRoll": "Saisir mon jet",
+      "d20Rolled": "d20 obtenu",
+      "damageRolled": "Dégâts obtenus",
+      "critDamage": "Critique : lance deux fois les dés de dégâts {dice}"
     },
     "syncPlayers": "Synchroniser les joueurs",
     "syncPlayersHint": "Reprendre les PV et la CA des joueurs depuis la vue du groupe (et D&D Beyond) dans ce combat",

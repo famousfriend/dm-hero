@@ -44,6 +44,7 @@ export interface ElectronAPI {
   getDataPaths: () => Promise<{ databasePath: string, uploadPath: string, logsPath: string }>
   saveFileDialog: (options: SaveFileOptions) => Promise<SaveFileResult>
   openExternalUrl: (url: string) => Promise<{ success: boolean, error?: string }>
+  openTaleSpireDice?: (url: string) => Promise<{ success: boolean, error?: string }>
   selectFolderDialog: (options?: { title?: string, defaultPath?: string }) => Promise<{ success: boolean, canceled?: boolean, folderPath?: string }>
 
   // Auto-updater APIs

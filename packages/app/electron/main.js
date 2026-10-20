@@ -489,6 +489,22 @@ ipcMain.handle('open-logs-folder', async () => {
   }
 })
 
+// TaleSpire dice links: only talespire://dice/Name:2d6+3[/Name:...], never any other
+// TaleSpire URL (those can e.g. join boards). TaleSpire puts the dice in the tray.
+const TALESPIRE_DICE = /^talespire:\/\/dice\/[A-Za-z0-9]{1,32}:[0-9dD+-]{1,40}(\/[A-Za-z0-9]{1,32}:[0-9dD+-]{1,40}){0,5}$/
+ipcMain.handle('open-talespire-dice', async (event, url) => {
+  if (typeof url !== 'string' || !TALESPIRE_DICE.test(url)) {
+    return { success: false, error: 'Not a TaleSpire dice link' }
+  }
+  try {
+    await shell.openExternal(url)
+    return { success: true }
+  }
+  catch (error) {
+    return { success: false, error: error.message }
+  }
+})
+
 // Open external URL in system browser
 ipcMain.handle('open-external-url', async (event, url) => {
   if (!isSafeExternalUrl(url)) {
