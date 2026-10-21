@@ -2023,6 +2023,11 @@
       "measuring": "Bildschirm wird gemessen",
       "copy": "Bericht kopieren",
       "copied": "Kopiert"
+    },
+    "tabs": {
+      "ai": "KI",
+      "data": "Backups & Daten",
+      "more": "Mehr"
     }
   },
   "players": {

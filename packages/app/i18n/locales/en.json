@@ -2023,6 +2023,11 @@
       "measuring": "Measuring the screen",
       "copy": "Copy report",
       "copied": "Copied"
+    },
+    "tabs": {
+      "ai": "AI",
+      "data": "Backups & data",
+      "more": "More"
     }
   },
   "players": {

@@ -2023,6 +2023,11 @@
       "measuring": "正在测量屏幕",
       "copy": "复制报告",
       "copied": "已复制"
+    },
+    "tabs": {
+      "ai": "AI",
+      "data": "备份与数据",
+      "more": "更多"
     }
   },
   "players": {

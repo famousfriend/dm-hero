@@ -10,347 +10,363 @@
       </p>
     </div>
 
-    <!-- Settings Form -->
-    <v-card>
-      <v-card-text>
-        <!-- AI Integration Section -->
-        <div class="mb-6">
-          <h2 class="text-headline-small mb-4">
-            {{ $t('settings.sections.ai') }}
-          </h2>
+    <!-- One section at a time keeps the page short -->
+    <v-tabs v-model="tab" color="primary" show-arrows>
+      <v-tab value="ai" prepend-icon="mdi-robot">{{ $t('settings.tabs.ai') }}</v-tab>
+      <v-tab value="data" prepend-icon="mdi-database">{{ $t('settings.tabs.data') }}</v-tab>
+      <v-tab value="talespire" prepend-icon="mdi-dice-d20">TaleSpire</v-tab>
+      <v-tab value="more" prepend-icon="mdi-dots-horizontal">{{ $t('settings.tabs.more') }}</v-tab>
+    </v-tabs>
 
-          <!-- Provider Selection -->
-          <v-select
-            v-model="aiProvider"
-            :items="providerOptions"
-            item-title="title"
-            item-value="value"
-            :label="$t('settings.ai.provider')"
-            :hint="$t('settings.ai.providerHint')"
-            variant="outlined"
-            density="comfortable"
-            class="mb-4"
-            persistent-hint
-            autocomplete="off"
-          />
+    <template v-if="tab === 'ai'">
+      <!-- Settings Form -->
+      <v-card class="mt-6">
+        <v-card-text>
+          <!-- AI Integration Section -->
+          <div class="mb-6">
+            <h2 class="text-headline-small mb-4">
+              {{ $t('settings.sections.ai') }}
+            </h2>
 
-          <!-- OpenAI API Key -->
-          <v-text-field
-            v-model="openaiApiKey"
-            :label="$t('settings.ai.openaiApiKey')"
-            :placeholder="$t('settings.ai.openaiApiKeyPlaceholder')"
-            :hint="aiProvider === 'openai' ? $t('settings.ai.activeProvider') : ''"
-            :type="showOpenaiKey ? 'text' : 'password'"
-            variant="outlined"
-            density="comfortable"
-            class="mb-4"
-            persistent-hint
-            :color="aiProvider === 'openai' ? 'primary' : undefined"
-          >
-            <template #prepend-inner>
-              <v-icon v-if="aiProvider === 'openai'" color="primary" size="small">mdi-check-circle</v-icon>
-            </template>
-            <template #append-inner>
-              <v-btn
-                :icon="showOpenaiKey ? 'mdi-eye-off' : 'mdi-eye'"
-                variant="text"
-                size="small"
-                @click="showOpenaiKey = !showOpenaiKey"
-              />
-            </template>
-            <template #details>
-              <a href="https://platform.openai.com/api-keys" target="_blank" class="text-body-small text-primary">
-                {{ $t('settings.ai.openaiHowToGetKey') }}
-                <v-icon size="x-small">mdi-open-in-new</v-icon>
-              </a>
-            </template>
-          </v-text-field>
+            <!-- Provider Selection -->
+            <v-select
+              v-model="aiProvider"
+              :items="providerOptions"
+              item-title="title"
+              item-value="value"
+              :label="$t('settings.ai.provider')"
+              :hint="$t('settings.ai.providerHint')"
+              variant="outlined"
+              density="comfortable"
+              class="mb-4"
+              persistent-hint
+              autocomplete="off"
+            />
 
-          <!-- Gemini API Key -->
-          <v-text-field
-            v-model="geminiApiKey"
-            :label="$t('settings.ai.geminiApiKey')"
-            :placeholder="$t('settings.ai.geminiApiKeyPlaceholder')"
-            :hint="aiProvider === 'gemini' ? $t('settings.ai.activeProvider') : ''"
-            :type="showGeminiKey ? 'text' : 'password'"
-            variant="outlined"
-            density="comfortable"
-            class="mb-4"
-            persistent-hint
-            :color="aiProvider === 'gemini' ? 'primary' : undefined"
-          >
-            <template #prepend-inner>
-              <v-icon v-if="aiProvider === 'gemini'" color="primary" size="small">mdi-check-circle</v-icon>
-            </template>
-            <template #append-inner>
-              <v-btn
-                :icon="showGeminiKey ? 'mdi-eye-off' : 'mdi-eye'"
-                variant="text"
-                size="small"
-                @click="showGeminiKey = !showGeminiKey"
-              />
-            </template>
-            <template #details>
-              <a href="https://aistudio.google.com/apikey" target="_blank" class="text-body-small text-primary">
-                {{ $t('settings.ai.geminiHowToGetKey') }}
-                <v-icon size="x-small">mdi-open-in-new</v-icon>
-              </a>
-            </template>
-          </v-text-field>
+            <!-- OpenAI API Key -->
+            <v-text-field
+              v-model="openaiApiKey"
+              :label="$t('settings.ai.openaiApiKey')"
+              :placeholder="$t('settings.ai.openaiApiKeyPlaceholder')"
+              :hint="aiProvider === 'openai' ? $t('settings.ai.activeProvider') : ''"
+              :type="showOpenaiKey ? 'text' : 'password'"
+              variant="outlined"
+              density="comfortable"
+              class="mb-4"
+              persistent-hint
+              :color="aiProvider === 'openai' ? 'primary' : undefined"
+            >
+              <template #prepend-inner>
+                <v-icon v-if="aiProvider === 'openai'" color="primary" size="small">mdi-check-circle</v-icon>
+              </template>
+              <template #append-inner>
+                <v-btn
+                  :icon="showOpenaiKey ? 'mdi-eye-off' : 'mdi-eye'"
+                  variant="text"
+                  size="small"
+                  @click="showOpenaiKey = !showOpenaiKey"
+                />
+              </template>
+              <template #details>
+                <a href="https://platform.openai.com/api-keys" target="_blank" class="text-body-small text-primary">
+                  {{ $t('settings.ai.openaiHowToGetKey') }}
+                  <v-icon size="x-small">mdi-open-in-new</v-icon>
+                </a>
+              </template>
+            </v-text-field>
 
-          <!-- OpenAI Model -->
-          <v-combobox
-            v-if="aiProvider === 'openai'"
-            v-model="openaiModel"
-            :items="openaiModels"
-            :label="$t('settings.ai.openaiModel')"
-            :hint="$t('settings.ai.modelHint')"
-            variant="outlined"
-            density="comfortable"
-            persistent-hint
-            class="mb-4"
-          />
+            <!-- Gemini API Key -->
+            <v-text-field
+              v-model="geminiApiKey"
+              :label="$t('settings.ai.geminiApiKey')"
+              :placeholder="$t('settings.ai.geminiApiKeyPlaceholder')"
+              :hint="aiProvider === 'gemini' ? $t('settings.ai.activeProvider') : ''"
+              :type="showGeminiKey ? 'text' : 'password'"
+              variant="outlined"
+              density="comfortable"
+              class="mb-4"
+              persistent-hint
+              :color="aiProvider === 'gemini' ? 'primary' : undefined"
+            >
+              <template #prepend-inner>
+                <v-icon v-if="aiProvider === 'gemini'" color="primary" size="small">mdi-check-circle</v-icon>
+              </template>
+              <template #append-inner>
+                <v-btn
+                  :icon="showGeminiKey ? 'mdi-eye-off' : 'mdi-eye'"
+                  variant="text"
+                  size="small"
+                  @click="showGeminiKey = !showGeminiKey"
+                />
+              </template>
+              <template #details>
+                <a href="https://aistudio.google.com/apikey" target="_blank" class="text-body-small text-primary">
+                  {{ $t('settings.ai.geminiHowToGetKey') }}
+                  <v-icon size="x-small">mdi-open-in-new</v-icon>
+                </a>
+              </template>
+            </v-text-field>
 
-          <!-- Gemini Model -->
-          <v-combobox
-            v-if="aiProvider === 'gemini'"
-            v-model="geminiModel"
-            :items="geminiModels"
-            :label="$t('settings.ai.geminiModel')"
-            :hint="$t('settings.ai.modelHint')"
-            variant="outlined"
-            density="comfortable"
-            persistent-hint
-            class="mb-4"
-          />
+            <!-- OpenAI Model -->
+            <v-combobox
+              v-if="aiProvider === 'openai'"
+              v-model="openaiModel"
+              :items="openaiModels"
+              :label="$t('settings.ai.openaiModel')"
+              :hint="$t('settings.ai.modelHint')"
+              variant="outlined"
+              density="comfortable"
+              persistent-hint
+              class="mb-4"
+            />
 
-          <!-- Test Connection Button -->
-          <v-btn
-            :loading="testing"
-            :disabled="!activeApiKey || activeApiKey.trim().length === 0"
-            color="secondary"
-            variant="outlined"
-            class="mb-4"
-            @click="testConnection"
-          >
-            <v-icon start>mdi-connection</v-icon>
-            {{ $t('settings.ai.testConnection') }}
+            <!-- Gemini Model -->
+            <v-combobox
+              v-if="aiProvider === 'gemini'"
+              v-model="geminiModel"
+              :items="geminiModels"
+              :label="$t('settings.ai.geminiModel')"
+              :hint="$t('settings.ai.modelHint')"
+              variant="outlined"
+              density="comfortable"
+              persistent-hint
+              class="mb-4"
+            />
+
+            <!-- Test Connection Button -->
+            <v-btn
+              :loading="testing"
+              :disabled="!activeApiKey || activeApiKey.trim().length === 0"
+              color="secondary"
+              variant="outlined"
+              class="mb-4"
+              @click="testConnection"
+            >
+              <v-icon start>mdi-connection</v-icon>
+              {{ $t('settings.ai.testConnection') }}
+            </v-btn>
+
+            <!-- Test Result Alert -->
+            <v-alert
+              v-if="testResult"
+              :type="testResult.success ? 'success' : 'error'"
+              variant="tonal"
+              density="compact"
+              class="mb-4"
+              closable
+              @click:close="testResult = null"
+            >
+              {{ testResult.message }}
+              <div v-if="testResult.success && testResult.modelsAvailable" class="text-body-small mt-1">
+                {{ testResult.modelsAvailable }} {{ $t('settings.ai.modelsAvailable') }}
+              </div>
+            </v-alert>
+          </div>
+        </v-card-text>
+
+        <v-divider />
+
+        <!-- Action Buttons -->
+        <v-card-actions>
+          <v-spacer />
+          <v-btn variant="text" @click="loadSettings">
+            {{ $t('common.cancel') }}
           </v-btn>
+          <v-btn :loading="saving" color="primary" variant="elevated" @click="saveSettings">
+            {{ $t('common.save') }}
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </template>
 
-          <!-- Test Result Alert -->
-          <v-alert
-            v-if="testResult"
-            :type="testResult.success ? 'success' : 'error'"
-            variant="tonal"
-            density="compact"
-            class="mb-4"
-            closable
-            @click:close="testResult = null"
-          >
-            {{ testResult.message }}
-            <div v-if="testResult.success && testResult.modelsAvailable" class="text-body-small mt-1">
-              {{ testResult.modelsAvailable }} {{ $t('settings.ai.modelsAvailable') }}
+    <template v-else-if="tab === 'data'">
+      <!-- Backups (server-side snapshots, web and desktop) -->
+      <BackupsCard />
+
+      <!-- Data Management Section (Electron only) -->
+      <v-card v-if="isElectron" class="mt-6">
+        <v-card-text>
+          <div class="mb-6">
+            <h2 class="text-headline-small mb-2">
+              {{ $t('settings.dataManagement.title') }}
+            </h2>
+            <p class="text-medium-emphasis text-body-medium">
+              {{ $t('settings.dataManagement.subtitle') }}
+            </p>
+          </div>
+
+          <!-- Storage Path Info -->
+          <v-alert v-if="dataPaths" type="info" variant="tonal" density="compact" class="mb-4">
+            <div class="text-body-small">
+              <strong>{{ $t('settings.dataManagement.storagePath') }}:</strong><br />
+              {{ dataPaths.databasePath }}
             </div>
           </v-alert>
-        </div>
-      </v-card-text>
 
-      <v-divider />
+          <!-- Export Database Button -->
+          <div class="d-flex flex-column flex-sm-row">
+            <v-btn
+              :loading="exporting"
+              color="secondary"
+              variant="outlined"
+              @click="exportDatabase"
+            >
+              <v-icon start>mdi-database-export</v-icon>
+              {{ $t('settings.dataManagement.exportDatabase') }}
+            </v-btn>
 
-      <!-- Action Buttons -->
-      <v-card-actions>
-        <v-spacer />
-        <v-btn variant="text" @click="loadSettings">
-          {{ $t('common.cancel') }}
-        </v-btn>
-        <v-btn :loading="saving" color="primary" variant="elevated" @click="saveSettings">
-          {{ $t('common.save') }}
-        </v-btn>
-      </v-card-actions>
-    </v-card>
-
-    <!-- Backups (server-side snapshots, web and desktop) -->
-    <BackupsCard />
-
-    <!-- TaleSpire: dice switch and the panel inside TaleSpire -->
-    <TaleSpireCard />
-
-    <!-- Data Management Section (Electron only) -->
-    <v-card v-if="isElectron" class="mt-6">
-      <v-card-text>
-        <div class="mb-6">
-          <h2 class="text-headline-small mb-2">
-            {{ $t('settings.dataManagement.title') }}
-          </h2>
-          <p class="text-medium-emphasis text-body-medium">
-            {{ $t('settings.dataManagement.subtitle') }}
-          </p>
-        </div>
-
-        <!-- Storage Path Info -->
-        <v-alert v-if="dataPaths" type="info" variant="tonal" density="compact" class="mb-4">
-          <div class="text-body-small">
-            <strong>{{ $t('settings.dataManagement.storagePath') }}:</strong><br />
-            {{ dataPaths.databasePath }}
+            <v-btn
+              color="secondary"
+              variant="outlined"
+              class="ml-sm-4 mt-3 mt-sm-0"
+              @click="openUploadsFolder"
+            >
+              <v-icon start>mdi-folder-image</v-icon>
+              {{ $t('settings.dataManagement.openUploadsFolder') }}
+            </v-btn>
           </div>
-        </v-alert>
 
-        <!-- Export Database Button -->
-        <div class="d-flex flex-column flex-sm-row">
+          <!-- Hints -->
+          <div class="mt-3 text-body-small text-medium-emphasis">
+            <p>{{ $t('settings.dataManagement.exportDatabaseHint') }}</p>
+            <p>{{ $t('settings.dataManagement.openUploadsFolderHint') }}</p>
+          </div>
+        </v-card-text>
+      </v-card>
+
+      <!-- Logs Section -->
+      <v-card class="mt-6">
+        <v-card-text>
+          <div class="mb-4">
+            <h2 class="text-headline-small mb-2">
+              {{ $t('settings.sections.logs') }}
+            </h2>
+            <p class="text-medium-emphasis text-body-medium">
+              {{ $t('settings.logs.subtitle') }}
+            </p>
+          </div>
+
+          <!-- Log Path Info -->
+          <v-alert v-if="logPath" type="info" variant="tonal" density="compact" class="mb-4">
+            <div class="text-body-small">
+              <strong>{{ $t('settings.logs.logPath') }}:</strong><br />
+              {{ logPath }}
+            </div>
+          </v-alert>
+
+          <!-- Open Logs Folder Button (Electron only) -->
           <v-btn
-            :loading="exporting"
+            v-if="isElectron"
             color="secondary"
             variant="outlined"
-            @click="exportDatabase"
+            @click="openLogsFolder"
           >
-            <v-icon start>mdi-database-export</v-icon>
-            {{ $t('settings.dataManagement.exportDatabase') }}
+            <v-icon start>mdi-folder-text</v-icon>
+            {{ $t('settings.logs.openFolder') }}
           </v-btn>
+
+          <div class="mt-2 text-body-small text-medium-emphasis">
+            {{ $t('settings.logs.hint') }}
+          </div>
+        </v-card-text>
+      </v-card>
+    </template>
+
+    <template v-else-if="tab === 'talespire'">
+      <!-- TaleSpire: dice switch and the panel inside TaleSpire -->
+      <TaleSpireCard />
+    </template>
+
+    <template v-else>
+      <!-- Announcements Section -->
+      <v-card class="mt-6">
+        <v-card-text>
+          <div class="mb-4">
+            <h2 class="text-headline-small mb-2">
+              {{ $t('settings.sections.announcements') }}
+            </h2>
+          </div>
 
           <v-btn
             color="secondary"
             variant="outlined"
-            class="ml-sm-4 mt-3 mt-sm-0"
-            @click="openUploadsFolder"
+            :disabled="!hasSeenLatest"
+            @click="resetAnnouncements"
           >
-            <v-icon start>mdi-folder-image</v-icon>
-            {{ $t('settings.dataManagement.openUploadsFolder') }}
+            <v-icon start>mdi-bell-ring</v-icon>
+            {{ $t('announcements.resetButton') }}
           </v-btn>
-        </div>
 
-        <!-- Hints -->
-        <div class="mt-3 text-body-small text-medium-emphasis">
-          <p>{{ $t('settings.dataManagement.exportDatabaseHint') }}</p>
-          <p>{{ $t('settings.dataManagement.openUploadsFolderHint') }}</p>
-        </div>
-      </v-card-text>
-    </v-card>
-
-    <!-- Logs Section -->
-    <v-card class="mt-6">
-      <v-card-text>
-        <div class="mb-4">
-          <h2 class="text-headline-small mb-2">
-            {{ $t('settings.sections.logs') }}
-          </h2>
-          <p class="text-medium-emphasis text-body-medium">
-            {{ $t('settings.logs.subtitle') }}
-          </p>
-        </div>
-
-        <!-- Log Path Info -->
-        <v-alert v-if="logPath" type="info" variant="tonal" density="compact" class="mb-4">
-          <div class="text-body-small">
-            <strong>{{ $t('settings.logs.logPath') }}:</strong><br />
-            {{ logPath }}
+          <div class="mt-2 text-body-small text-medium-emphasis">
+            {{ hasSeenLatest ? $t('settings.announcements.alreadySeen') : $t('settings.announcements.notSeen') }}
           </div>
-        </v-alert>
+        </v-card-text>
+      </v-card>
 
-        <!-- Open Logs Folder Button (Electron only) -->
-        <v-btn
-          v-if="isElectron"
-          color="secondary"
-          variant="outlined"
-          @click="openLogsFolder"
-        >
-          <v-icon start>mdi-folder-text</v-icon>
-          {{ $t('settings.logs.openFolder') }}
-        </v-btn>
+      <!-- Feature Tooltips Section -->
+      <v-card class="mt-6">
+        <v-card-text>
+          <div class="mb-4">
+            <h2 class="text-headline-small mb-2">
+              {{ $t('featureTooltips.settings.title') }}
+            </h2>
+            <p class="text-medium-emphasis text-body-medium mb-0">
+              {{ $t('featureTooltips.settings.description') }}
+            </p>
+          </div>
 
-        <div class="mt-2 text-body-small text-medium-emphasis">
-          {{ $t('settings.logs.hint') }}
-        </div>
-      </v-card-text>
-    </v-card>
+          <v-switch
+            :model-value="featureTooltipsEnabled"
+            :label="$t('featureTooltips.settings.showToggle')"
+            color="primary"
+            hide-details
+            inset
+            density="comfortable"
+            @update:model-value="setFeatureTooltipsEnabled"
+          />
 
-    <!-- Announcements Section -->
-    <v-card class="mt-6">
-      <v-card-text>
-        <div class="mb-4">
-          <h2 class="text-headline-small mb-2">
-            {{ $t('settings.sections.announcements') }}
-          </h2>
-        </div>
+          <v-btn
+            variant="outlined"
+            color="secondary"
+            class="mt-3"
+            @click="resetAllFeatureTooltips"
+          >
+            <v-icon start>mdi-restart</v-icon>
+            {{ $t('featureTooltips.settings.resetButton') }}
+          </v-btn>
+        </v-card-text>
+      </v-card>
 
-        <v-btn
-          color="secondary"
-          variant="outlined"
-          :disabled="!hasSeenLatest"
-          @click="resetAnnouncements"
-        >
-          <v-icon start>mdi-bell-ring</v-icon>
-          {{ $t('announcements.resetButton') }}
-        </v-btn>
+      <!-- Playfulness / Easter eggs -->
+      <v-card class="mt-6">
+        <v-card-text>
+          <div class="mb-4">
+            <h2 class="text-headline-small mb-2">
+              {{ $t('playfulness.title') }}
+            </h2>
+            <p class="text-medium-emphasis text-body-medium mb-0">
+              {{ $t('playfulness.description') }}
+            </p>
+          </div>
 
-        <div class="mt-2 text-body-small text-medium-emphasis">
-          {{ hasSeenLatest ? $t('settings.announcements.alreadySeen') : $t('settings.announcements.notSeen') }}
-        </div>
-      </v-card-text>
-    </v-card>
-
-    <!-- Feature Tooltips Section -->
-    <v-card class="mt-6">
-      <v-card-text>
-        <div class="mb-4">
-          <h2 class="text-headline-small mb-2">
-            {{ $t('featureTooltips.settings.title') }}
-          </h2>
-          <p class="text-medium-emphasis text-body-medium mb-0">
-            {{ $t('featureTooltips.settings.description') }}
+          <v-switch
+            :model-value="folderAnimationsEnabled"
+            :label="$t('playfulness.folderAnimationsLabel')"
+            color="primary"
+            hide-details
+            inset
+            density="comfortable"
+            @update:model-value="setFolderAnimationsEnabled"
+          />
+          <p class="text-medium-emphasis text-body-small mt-2 mb-0">
+            {{ $t('playfulness.autoOffHint') }}
           </p>
-        </div>
+        </v-card-text>
+      </v-card>
 
-        <v-switch
-          :model-value="featureTooltipsEnabled"
-          :label="$t('featureTooltips.settings.showToggle')"
-          color="primary"
-          hide-details
-          inset
-          density="comfortable"
-          @update:model-value="setFeatureTooltipsEnabled"
-        />
-
-        <v-btn
-          variant="outlined"
-          color="secondary"
-          class="mt-3"
-          @click="resetAllFeatureTooltips"
-        >
-          <v-icon start>mdi-restart</v-icon>
-          {{ $t('featureTooltips.settings.resetButton') }}
-        </v-btn>
-      </v-card-text>
-    </v-card>
-
-    <!-- Playfulness / Easter eggs -->
-    <v-card class="mt-6">
-      <v-card-text>
-        <div class="mb-4">
-          <h2 class="text-headline-small mb-2">
-            {{ $t('playfulness.title') }}
-          </h2>
-          <p class="text-medium-emphasis text-body-medium mb-0">
-            {{ $t('playfulness.description') }}
-          </p>
-        </div>
-
-        <v-switch
-          :model-value="folderAnimationsEnabled"
-          :label="$t('playfulness.folderAnimationsLabel')"
-          color="primary"
-          hide-details
-          inset
-          density="comfortable"
-          @update:model-value="setFolderAnimationsEnabled"
-        />
-        <p class="text-medium-emphasis text-body-small mt-2 mb-0">
-          {{ $t('playfulness.autoOffHint') }}
-        </p>
-      </v-card-text>
-    </v-card>
-
-    <!-- Speed test: numbers from the user's own PC -->
-    <SpeedTestCard />
+      <!-- Speed test: numbers from the user's own PC -->
+      <SpeedTestCard />
+    </template>
 
     <!-- Success/Error Snackbar -->
     <v-snackbar v-model="snackbar.show" :color="snackbar.color" :timeout="3000">
@@ -412,6 +428,8 @@ const dataPaths = ref<{ databasePath: string, uploadPath: string, logsPath: stri
 const exporting = ref(false)
 const logPath = ref<string | null>(null)
 const isElectron = computed(() => electron.isElectron)
+// Kept across page visits, so the speed test comes back to its own tab
+const tab = useState('settingsTab', () => 'ai')
 
 // Settings state
 const aiProvider = ref<'openai' | 'gemini'>('openai')

@@ -2023,6 +2023,11 @@
       "measuring": "Mesure de l'écran",
       "copy": "Copier le rapport",
       "copied": "Copié"
+    },
+    "tabs": {
+      "ai": "IA",
+      "data": "Sauvegardes et données",
+      "more": "Plus"
     }
   },
   "players": {

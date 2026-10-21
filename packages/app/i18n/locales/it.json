@@ -2023,6 +2023,11 @@
       "measuring": "Misurazione dello schermo",
       "copy": "Copia rapporto",
       "copied": "Copiato"
+    },
+    "tabs": {
+      "ai": "IA",
+      "data": "Backup e dati",
+      "more": "Altro"
     }
   },
   "players": {
