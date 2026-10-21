@@ -2015,6 +2015,14 @@
       "installHint": "Hazlo de nuevo tras actualizar la app. Deja la app abierta mientras juegas; el panel lee el combate de ella.",
       "desktopOnly": "El panel se instala desde la app de escritorio.",
       "failed": "No se pudo instalar el panel."
+    },
+    "speedTest": {
+      "title": "Prueba de velocidad",
+      "subtitle": "Recorre las páginas principales y desplaza las listas largas por sí sola, y luego muestra un breve informe que puedes copiar y enviar. No toques el ratón ni el teclado durante un minuto mientras se ejecuta.",
+      "start": "Iniciar prueba",
+      "measuring": "Midiendo la pantalla",
+      "copy": "Copiar informe",
+      "copied": "Copiado"
     }
   },
   "players": {

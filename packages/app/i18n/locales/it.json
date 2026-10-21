@@ -2015,6 +2015,14 @@
       "installHint": "Ripetilo dopo aver aggiornato l'app. Tieni l'app aperta mentre giochi; il pannello legge il combattimento da lì.",
       "desktopOnly": "Il pannello si installa dall'app desktop.",
       "failed": "Impossibile installare il pannello."
+    },
+    "speedTest": {
+      "title": "Test di velocità",
+      "subtitle": "Scorre da solo le pagine principali e le liste lunghe, poi mostra un breve rapporto da copiare e inviare. Non toccare mouse e tastiera per circa un minuto durante il test.",
+      "start": "Avvia test",
+      "measuring": "Misurazione dello schermo",
+      "copy": "Copia rapporto",
+      "copied": "Copiato"
     }
   },
   "players": {

@@ -2015,6 +2015,14 @@
       "installHint": "Do this again after updating the app. Keep the app open while you play; the panel reads the fight from it.",
       "desktopOnly": "Installing the panel works in the desktop app.",
       "failed": "The panel could not be installed."
+    },
+    "speedTest": {
+      "title": "Speed test",
+      "subtitle": "Clicks through the main pages and scrolls the long lists by itself, then shows a short report you can copy and send. Don't touch the mouse or keyboard for about a minute while it runs.",
+      "start": "Run speed test",
+      "measuring": "Measuring the screen",
+      "copy": "Copy report",
+      "copied": "Copied"
     }
   },
   "players": {

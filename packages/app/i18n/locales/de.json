@@ -2015,6 +2015,14 @@
       "installHint": "Nach einem App-Update erneut ausführen. Lass die App beim Spielen offen; das Fenster liest den Kampf aus ihr.",
       "desktopOnly": "Das Fenster lässt sich in der Desktop-App installieren.",
       "failed": "Das Fenster konnte nicht installiert werden."
+    },
+    "speedTest": {
+      "title": "Geschwindigkeitstest",
+      "subtitle": "Klickt sich selbst durch die wichtigsten Seiten und scrollt die langen Listen, danach erscheint ein kurzer Bericht zum Kopieren und Senden. Während des Tests etwa eine Minute lang Maus und Tastatur nicht berühren.",
+      "start": "Test starten",
+      "measuring": "Bildschirm wird gemessen",
+      "copy": "Bericht kopieren",
+      "copied": "Kopiert"
     }
   },
   "players": {

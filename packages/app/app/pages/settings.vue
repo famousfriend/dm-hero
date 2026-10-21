@@ -349,6 +349,9 @@
       </v-card-text>
     </v-card>
 
+    <!-- Speed test: numbers from the user's own PC -->
+    <SpeedTestCard />
+
     <!-- Success/Error Snackbar -->
     <v-snackbar v-model="snackbar.show" :color="snackbar.color" :timeout="3000">
       {{ snackbar.message }}
@@ -358,6 +361,7 @@
 
 <script setup lang="ts">
 import BackupsCard from '~/components/settings/BackupsCard.vue'
+import SpeedTestCard from '~/components/settings/SpeedTestCard.vue'
 import TaleSpireCard from '~/components/settings/TaleSpireCard.vue'
 import { useAnnouncements } from '~/composables/useAnnouncements'
 import { useElectron } from '~/composables/useElectron'
