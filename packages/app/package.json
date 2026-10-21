@@ -58,7 +58,7 @@
   },
   "build": {
     "appId": "com.dm-hero.app",
-    "productName": "DM Hero",
+    "productName": "DM Command Center",
     "directories": {
       "output": "dist-electron",
       "buildResources": "electron/icons"
@@ -122,10 +122,10 @@
         "nsis",
         "zip"
       ],
-      "artifactName": "DM-Hero-${version}-win.${ext}"
+      "artifactName": "DM-Command-Center-${version}-win.${ext}"
     },
     "nsis": {
-      "artifactName": "DM-Hero-Setup-${version}.${ext}"
+      "artifactName": "DM-Command-Center-Setup-${version}.${ext}"
     },
     "linux": {
       "target": [
@@ -133,14 +133,14 @@
       ],
       "category": "Utility",
       "icon": "electron/icons/icon.png",
-      "artifactName": "DM-Hero-${version}.${ext}",
-      "executableName": "dm-hero"
+      "artifactName": "DM-Command-Center-${version}.${ext}",
+      "executableName": "dm-command-center"
     },
     "mac": {
       "target": "dmg",
       "category": "public.app-category.games",
       "icon": "electron/icons/icon.icns",
-      "artifactName": "DM-Hero-${version}-mac-${arch}.${ext}",
+      "artifactName": "DM-Command-Center-${version}-mac-${arch}.${ext}",
       "hardenedRuntime": true,
       "gatekeeperAssess": false,
       "entitlements": "electron/entitlements.mac.plist",
