@@ -19,6 +19,14 @@ import type { SessionMusicLink } from './session-music'
 export const EXPORT_FORMAT_VERSION = '1.1' as const
 
 /**
+ * DM Command Center restarted its own version numbers at 1.0.0. Campaign files keep
+ * comparing against the DM Hero version it is built on, so files from DM Hero 1.6
+ * (and from earlier DM Command Center builds) still import. Raise it when merging a
+ * newer DM Hero.
+ */
+export const DM_HERO_BASE_VERSION = '1.6.0'
+
+/**
  * Version Compatibility Table
  *
  * Maps export format versions to the minimum app version required to import them.

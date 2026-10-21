@@ -1,8 +1,8 @@
 {
   "name": "@dm-hero/app",
-  "version": "1.6.0",
+  "version": "1.0.0",
   "description": "A personal D&D campaign management tool for Dungeon Masters with fuzzy search, entity management, and session tracking",
-  "author": "Florian Heuberger",
+  "author": "famousfriend",
   "license": "MIT",
   "type": "module",
   "private": true,
@@ -59,6 +59,7 @@
   "build": {
     "appId": "com.dm-hero.app",
     "productName": "DM Command Center",
+    "copyright": "Copyright © 2026 famousfriend. Based on DM Hero by Florian Heuberger (MIT License).",
     "directories": {
       "output": "dist-electron",
       "buildResources": "electron/icons"
