@@ -81,6 +81,8 @@ const NOT_COPIED = new Set(['Cache', 'Code Cache', 'GPUCache', 'DawnGraphiteCach
 function useRenamedDataFolder() {
   if (isDev) return
   app.setName(APP_NAME)
+  // An explicit --user-data-dir (the smoke test's fresh profile) wins
+  if (app.commandLine.hasSwitch('user-data-dir')) return
   const newDir = path.join(app.getPath('appData'), APP_NAME)
   app.setPath('userData', newDir)
   if (existsSync(path.join(newDir, 'data', 'dm-hero.db'))) return

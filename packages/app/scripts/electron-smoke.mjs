@@ -14,10 +14,10 @@ const WINDOW_FAILED = '[Electron] Failed to load:'
 const distDir = join(import.meta.dirname, '..', 'dist-electron')
 
 function findExecutable() {
-  if (process.platform === 'win32') return join(distDir, 'win-unpacked', 'DM Hero.exe')
-  if (process.platform === 'linux') return join(distDir, 'linux-unpacked', 'dm-hero')
+  if (process.platform === 'win32') return join(distDir, 'win-unpacked', 'DM Command Center.exe')
+  if (process.platform === 'linux') return join(distDir, 'linux-unpacked', 'dm-command-center')
   const macDir = readdirSync(distDir).find(d => d.startsWith('mac'))
-  return join(distDir, macDir ?? 'mac', 'DM Hero.app', 'Contents', 'MacOS', 'DM Hero')
+  return join(distDir, macDir ?? 'mac', 'DM Command Center.app', 'Contents', 'MacOS', 'DM Command Center')
 }
 
 const executable = findExecutable()
