@@ -43,7 +43,7 @@
     "arrange": {
       "button": "Organiser la navigation",
       "title": "Organiser la navigation",
-      "hint": "Fais glisser par la poignée ou trie avec les flèches.",
+      "hint": "Fais glisser par la poignée ou trie avec les flèches. L'œil masque une entrée de la barre latérale ou l'affiche à nouveau.",
       "divider": "Séparateur",
       "addDivider": "Séparateur",
       "removeDivider": "Retirer le séparateur",
@@ -52,7 +52,9 @@
       "reset": "Par défaut",
       "done": "Terminé",
       "saveFailed": "Impossible d’enregistrer la navigation",
-      "loadFailed": "Impossible de charger la navigation enregistrée – réessaie dans un instant."
+      "loadFailed": "Impossible de charger la navigation enregistrée – réessaie dans un instant.",
+      "hide": "Masquer {name}",
+      "show": "Afficher {name}"
     },
     "party": "Groupe",
     "live": "Séance en direct"
@@ -2015,14 +2017,6 @@
       "installHint": "Refais-le après une mise à jour de l'app. Garde l'app ouverte pendant la partie ; le panneau y lit le combat.",
       "desktopOnly": "Le panneau s'installe depuis l'app de bureau.",
       "failed": "Le panneau n'a pas pu être installé."
-    },
-    "speedTest": {
-      "title": "Test de vitesse",
-      "subtitle": "Parcourt seul les pages principales et fait défiler les longues listes, puis affiche un court rapport à copier et envoyer. Ne touchez ni la souris ni le clavier pendant environ une minute.",
-      "start": "Lancer le test",
-      "measuring": "Mesure de l'écran",
-      "copy": "Copier le rapport",
-      "copied": "Copié"
     },
     "tabs": {
       "ai": "IA",

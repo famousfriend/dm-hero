@@ -14,22 +14,32 @@
             <v-icon icon="mdi-minus" size="small" class="me-2" />{{ $t('nav.arrange.divider') }}
           </template>
           <template v-else-if="dragged[0]">
-            <v-icon :icon="NAV_ITEMS[dragged[0].id as NavKey].icon(music)" size="small" class="me-2" />{{ $t(NAV_ITEMS[dragged[0].id as NavKey].title) }}
+            <v-icon :icon="NAV_ITEMS[navKeyOf(dragged[0].id)].icon(music)" size="small" class="me-2" />{{ $t(NAV_ITEMS[navKeyOf(dragged[0].id)].title) }}
           </template>
         </div>
       </template>
 
       <FreeformItem v-for="(item, index) in items" :key="item.id" :item="item">
         <template #default>
-          <div class="nav-editor__row">
+          <div class="nav-editor__row" :class="{ 'nav-editor__row--hidden': isNavHidden(item.id) }">
             <v-icon data-freeform-handle icon="mdi-drag-vertical" size="small" class="nav-editor__handle" :aria-hidden="true" />
             <template v-if="isNavDivider(item.id)">
               <v-divider class="flex-grow-1 mx-1" />
               <span class="text-caption text-medium-emphasis me-1">{{ $t('nav.arrange.divider') }}</span>
             </template>
             <template v-else>
-              <v-icon :icon="NAV_ITEMS[item.id as NavKey].icon(music)" size="small" class="me-2" />
-              <span class="text-body-medium flex-grow-1 text-truncate">{{ $t(NAV_ITEMS[item.id as NavKey].title) }}</span>
+              <v-icon :icon="NAV_ITEMS[navKeyOf(item.id)].icon(music)" size="small" class="me-2" />
+              <span class="text-body-medium flex-grow-1 text-truncate">{{ $t(NAV_ITEMS[navKeyOf(item.id)].title) }}</span>
+              <!-- Hide from the sidebar / show again (keeps its place) -->
+              <v-btn
+                :icon="isNavHidden(item.id) ? 'mdi-eye-off-outline' : 'mdi-eye-outline'"
+                size="x-small"
+                variant="text"
+                density="comfortable"
+                :title="isNavHidden(item.id) ? $t('nav.arrange.show', { name: label(item.id) }) : $t('nav.arrange.hide', { name: label(item.id) })"
+                :aria-label="isNavHidden(item.id) ? $t('nav.arrange.show', { name: label(item.id) }) : $t('nav.arrange.hide', { name: label(item.id) })"
+                @click="toggleHidden(index)"
+              />
             </template>
             <v-btn
               icon="mdi-chevron-up"
@@ -86,7 +96,7 @@
 </template>
 
 <script setup lang="ts">
-import { isNavDivider, MAX_NAV_DIVIDERS, normalizeNavLayout, type NavKey, type NavLayoutEntry } from '~~/types/navigation'
+import { isNavDivider, isNavHidden, MAX_NAV_DIVIDERS, navKeyOf, normalizeNavLayout, type NavLayoutEntry } from '~~/types/navigation'
 
 const emit = defineEmits<{ done: [] }>()
 const { t } = useI18n()
@@ -98,7 +108,14 @@ const { layout, save } = useNavigationLayout()
 const items = ref(layout.value.map(id => ({ id: id as string })))
 const dividerCount = computed(() => items.value.filter(i => isNavDivider(i.id)).length)
 
-const label = (id: string) => (isNavDivider(id) ? t('nav.arrange.divider') : t(NAV_ITEMS[id as NavKey].title))
+const label = (id: string) => (isNavDivider(id) ? t('nav.arrange.divider') : t(NAV_ITEMS[navKeyOf(id)].title))
+
+function toggleHidden(index: number) {
+  const id = items.value[index]!.id
+  const next = [...items.value]
+  next[index] = { id: isNavHidden(id) ? navKeyOf(id) : `hidden:${id}` }
+  items.value = next
+}
 
 function move(index: number, direction: -1 | 1) {
   const next = [...items.value]
@@ -150,6 +167,10 @@ function resetLayout() {
   min-height: 34px;
   padding: 0 4px;
   border-radius: 6px;
+}
+
+.nav-editor__row--hidden > :not(.v-btn) {
+  opacity: 0.45;
 }
 
 .nav-editor__row:hover {

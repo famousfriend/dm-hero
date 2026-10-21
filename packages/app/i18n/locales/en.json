@@ -43,7 +43,7 @@
     "arrange": {
       "button": "Arrange navigation",
       "title": "Arrange navigation",
-      "hint": "Drag by the handle or sort with the arrows.",
+      "hint": "Drag by the handle or sort with the arrows. The eye hides an entry from the sidebar or shows it again.",
       "divider": "Divider",
       "addDivider": "Divider",
       "removeDivider": "Remove divider",
@@ -52,7 +52,9 @@
       "reset": "Default",
       "done": "Done",
       "saveFailed": "Could not save the navigation",
-      "loadFailed": "Could not load the saved navigation – please try again in a moment."
+      "loadFailed": "Could not load the saved navigation – please try again in a moment.",
+      "hide": "Hide {name}",
+      "show": "Show {name}"
     },
     "party": "Party",
     "live": "Live session"
@@ -2015,14 +2017,6 @@
       "installHint": "Do this again after updating the app. Keep the app open while you play; the panel reads the fight from it.",
       "desktopOnly": "Installing the panel works in the desktop app.",
       "failed": "The panel could not be installed."
-    },
-    "speedTest": {
-      "title": "Speed test",
-      "subtitle": "Clicks through the main pages and scrolls the long lists by itself, then shows a short report you can copy and send. Don't touch the mouse or keyboard for about a minute while it runs.",
-      "start": "Run speed test",
-      "measuring": "Measuring the screen",
-      "copy": "Copy report",
-      "copied": "Copied"
     },
     "tabs": {
       "ai": "AI",

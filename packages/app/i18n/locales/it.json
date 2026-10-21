@@ -43,7 +43,7 @@
     "arrange": {
       "button": "Organizza navigazione",
       "title": "Organizza navigazione",
-      "hint": "Trascina dalla maniglia o ordina con le frecce.",
+      "hint": "Trascina dalla maniglia o ordina con le frecce. L'occhio nasconde una voce dalla barra laterale o la mostra di nuovo.",
       "divider": "Separatore",
       "addDivider": "Separatore",
       "removeDivider": "Rimuovi separatore",
@@ -52,7 +52,9 @@
       "reset": "Predefinito",
       "done": "Fatto",
       "saveFailed": "Impossibile salvare la navigazione",
-      "loadFailed": "Impossibile caricare la navigazione salvata: riprova tra poco."
+      "loadFailed": "Impossibile caricare la navigazione salvata: riprova tra poco.",
+      "hide": "Nascondi {name}",
+      "show": "Mostra {name}"
     },
     "party": "Gruppo",
     "live": "Sessione dal vivo"
@@ -2015,14 +2017,6 @@
       "installHint": "Ripetilo dopo aver aggiornato l'app. Tieni l'app aperta mentre giochi; il pannello legge il combattimento da lì.",
       "desktopOnly": "Il pannello si installa dall'app desktop.",
       "failed": "Impossibile installare il pannello."
-    },
-    "speedTest": {
-      "title": "Test di velocità",
-      "subtitle": "Scorre da solo le pagine principali e le liste lunghe, poi mostra un breve rapporto da copiare e inviare. Non toccare mouse e tastiera per circa un minuto durante il test.",
-      "start": "Avvia test",
-      "measuring": "Misurazione dello schermo",
-      "copy": "Copia rapporto",
-      "copied": "Copiato"
     },
     "tabs": {
       "ai": "IA",

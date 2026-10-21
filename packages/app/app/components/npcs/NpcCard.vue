@@ -407,7 +407,6 @@
           {{ $t('common.view') }}
         </SharedLazyTooltip>
       </v-btn>
-      <GameTableShareButton type="npc" :entity-id="npc.id" :name="npc.name" />
       <v-btn icon size="small" variant="text" @click.stop="openChaosGraph">
         <v-icon>mdi-graph</v-icon>
         <SharedLazyTooltip activator="parent" location="bottom">

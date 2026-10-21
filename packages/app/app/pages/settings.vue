@@ -278,65 +278,6 @@
     </template>
 
     <template v-else>
-      <!-- Announcements Section -->
-      <v-card class="mt-6">
-        <v-card-text>
-          <div class="mb-4">
-            <h2 class="text-headline-small mb-2">
-              {{ $t('settings.sections.announcements') }}
-            </h2>
-          </div>
-
-          <v-btn
-            color="secondary"
-            variant="outlined"
-            :disabled="!hasSeenLatest"
-            @click="resetAnnouncements"
-          >
-            <v-icon start>mdi-bell-ring</v-icon>
-            {{ $t('announcements.resetButton') }}
-          </v-btn>
-
-          <div class="mt-2 text-body-small text-medium-emphasis">
-            {{ hasSeenLatest ? $t('settings.announcements.alreadySeen') : $t('settings.announcements.notSeen') }}
-          </div>
-        </v-card-text>
-      </v-card>
-
-      <!-- Feature Tooltips Section -->
-      <v-card class="mt-6">
-        <v-card-text>
-          <div class="mb-4">
-            <h2 class="text-headline-small mb-2">
-              {{ $t('featureTooltips.settings.title') }}
-            </h2>
-            <p class="text-medium-emphasis text-body-medium mb-0">
-              {{ $t('featureTooltips.settings.description') }}
-            </p>
-          </div>
-
-          <v-switch
-            :model-value="featureTooltipsEnabled"
-            :label="$t('featureTooltips.settings.showToggle')"
-            color="primary"
-            hide-details
-            inset
-            density="comfortable"
-            @update:model-value="setFeatureTooltipsEnabled"
-          />
-
-          <v-btn
-            variant="outlined"
-            color="secondary"
-            class="mt-3"
-            @click="resetAllFeatureTooltips"
-          >
-            <v-icon start>mdi-restart</v-icon>
-            {{ $t('featureTooltips.settings.resetButton') }}
-          </v-btn>
-        </v-card-text>
-      </v-card>
-
       <!-- Playfulness / Easter eggs -->
       <v-card class="mt-6">
         <v-card-text>
@@ -363,9 +304,6 @@
           </p>
         </v-card-text>
       </v-card>
-
-      <!-- Speed test: numbers from the user's own PC -->
-      <SpeedTestCard />
     </template>
 
     <!-- Success/Error Snackbar -->
@@ -377,29 +315,11 @@
 
 <script setup lang="ts">
 import BackupsCard from '~/components/settings/BackupsCard.vue'
-import SpeedTestCard from '~/components/settings/SpeedTestCard.vue'
 import TaleSpireCard from '~/components/settings/TaleSpireCard.vue'
-import { useAnnouncements } from '~/composables/useAnnouncements'
 import { useElectron } from '~/composables/useElectron'
-import { useFeatureTooltipSettings } from '~/composables/useFeatureTooltips'
 import { useFolderAnimationSettings } from '~/composables/useFolderAnimations'
 
 const { t } = useI18n()
-
-// Announcements
-const { resetAnnouncements: doResetAnnouncements, hasSeenLatest: checkHasSeenLatest } = useAnnouncements()
-const hasSeenLatest = ref(true)
-
-// Feature tooltips
-const featureTooltipSettings = useFeatureTooltipSettings()
-const featureTooltipsEnabled = featureTooltipSettings.globallyEnabled
-function setFeatureTooltipsEnabled(value: boolean | null) {
-  featureTooltipSettings.setGloballyEnabled(value ?? false)
-}
-function resetAllFeatureTooltips() {
-  featureTooltipSettings.resetAllDismissed()
-  snackbar.value = { show: true, color: 'success', message: t('featureTooltips.settings.resetButton') }
-}
 
 // Playful folder hover animations (kobold, snake, spaceship, …)
 const folderAnimationSettings = useFolderAnimationSettings()
@@ -408,28 +328,13 @@ function setFolderAnimationsEnabled(value: boolean | null) {
   folderAnimationSettings.setEnabled(value ?? false)
 }
 
-function resetAnnouncements() {
-  doResetAnnouncements()
-  hasSeenLatest.value = false
-  snackbar.value = {
-    show: true,
-    message: t('announcements.resetSuccess'),
-    color: 'success',
-  }
-}
-
-function checkAnnouncementState() {
-  hasSeenLatest.value = checkHasSeenLatest()
-}
-
 // Electron API detection
 const electron = useElectron()
 const dataPaths = ref<{ databasePath: string, uploadPath: string, logsPath: string } | null>(null)
 const exporting = ref(false)
 const logPath = ref<string | null>(null)
 const isElectron = computed(() => electron.isElectron)
-// Kept across page visits, so the speed test comes back to its own tab
-const tab = useState('settingsTab', () => 'ai')
+const tab = ref('ai')
 
 // Settings state
 const aiProvider = ref<'openai' | 'gemini'>('openai')
@@ -471,7 +376,6 @@ const snackbar = ref({
 onMounted(() => {
   loadSettings()
   checkElectron()
-  checkAnnouncementState()
   loadLogPath()
 })
 

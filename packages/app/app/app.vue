@@ -30,11 +30,6 @@
       <CodexSidebar />
     </ClientOnly>
 
-    <!-- Share dialog: can be opened from anywhere (share buttons on entity cards) -->
-    <ClientOnly>
-      <GameTableShareDialog />
-    </ClientOnly>
-
     <!-- Ctrl+K command palette (also "/" and the search buttons) -->
     <ClientOnly>
       <CommandPalette v-model="showSearch" />
@@ -54,11 +49,6 @@
         </v-btn>
       </template>
     </v-snackbar>
-
-    <!-- Announcements Dialog -->
-    <ClientOnly>
-      <SharedAnnouncementDialog />
-    </ClientOnly>
 
     <!-- Global music player – lives here so playback survives navigation.
          Full bar on /music, floating mini player everywhere else. -->

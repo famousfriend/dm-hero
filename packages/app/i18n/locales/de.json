@@ -43,7 +43,7 @@
     "arrange": {
       "button": "Navigation anpassen",
       "title": "Navigation anpassen",
-      "hint": "Am Griff ziehen oder mit den Pfeilen sortieren.",
+      "hint": "Am Griff ziehen oder mit den Pfeilen sortieren. Das Auge blendet einen Eintrag in der Seitenleiste aus oder wieder ein.",
       "divider": "Trenner",
       "addDivider": "Trenner",
       "removeDivider": "Trenner entfernen",
@@ -52,7 +52,9 @@
       "reset": "Standard",
       "done": "Fertig",
       "saveFailed": "Navigation konnte nicht gespeichert werden",
-      "loadFailed": "Die gespeicherte Navigation konnte nicht geladen werden – versuch es gleich noch einmal."
+      "loadFailed": "Die gespeicherte Navigation konnte nicht geladen werden – versuch es gleich noch einmal.",
+      "hide": "{name} ausblenden",
+      "show": "{name} einblenden"
     },
     "party": "Gruppe",
     "live": "Live-Sitzung"
@@ -2015,14 +2017,6 @@
       "installHint": "Nach einem App-Update erneut ausführen. Lass die App beim Spielen offen; das Fenster liest den Kampf aus ihr.",
       "desktopOnly": "Das Fenster lässt sich in der Desktop-App installieren.",
       "failed": "Das Fenster konnte nicht installiert werden."
-    },
-    "speedTest": {
-      "title": "Geschwindigkeitstest",
-      "subtitle": "Klickt sich selbst durch die wichtigsten Seiten und scrollt die langen Listen, danach erscheint ein kurzer Bericht zum Kopieren und Senden. Während des Tests etwa eine Minute lang Maus und Tastatur nicht berühren.",
-      "start": "Test starten",
-      "measuring": "Bildschirm wird gemessen",
-      "copy": "Bericht kopieren",
-      "copied": "Kopiert"
     },
     "tabs": {
       "ai": "KI",

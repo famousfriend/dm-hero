@@ -59,7 +59,7 @@
         value="home"
         to="/"
       />
-      <template v-for="entry in layout" :key="entry">
+      <template v-for="entry in visibleLayout" :key="entry">
         <v-divider v-if="isNavDivider(entry)" class="my-1" />
         <v-list-item
           v-else
@@ -88,11 +88,6 @@
           </template>
           <template v-else-if="entry === 'notes' && notesStore.pendingCount > 0" #append>
             <v-badge :content="notesStore.pendingCount" color="primary" inline />
-          </template>
-          <template v-else-if="entry === 'gameTable' && isNew('gameTable')" #append>
-            <v-chip size="x-small" color="primary" variant="flat">
-              {{ $t('common.new') }}
-            </v-chip>
           </template>
         </v-list-item>
       </template>
@@ -127,13 +122,14 @@
 </template>
 
 <script setup lang="ts">
-import { isNavDivider } from '~~/types/navigation'
+import { isNavDivider, isNavHidden, type NavKey } from '~~/types/navigation'
 
 const router = useRouter()
-const { isNew } = useNewBadges()
 const { layout, ready, load: loadLayout, retry: retryLayout } = useNavigationLayout()
 // During the page load (also server-side): the sidebar starts in the saved order
 await loadLayout()
+// Entries the DM hid in "Arrange navigation" stay out of the sidebar
+const visibleLayout = computed(() => layout.value.filter(e => !isNavHidden(e)) as (NavKey | `divider:${string}`)[])
 
 // The editor only starts from the saved order - never from defaults that would overwrite it
 const editing = ref(false)

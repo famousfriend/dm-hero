@@ -23,7 +23,6 @@ export const NAV_ITEMS: Record<NavKey, NavItem> = {
   party: { icon: fixed('mdi-shield-account'), title: 'nav.party', to: '/party', needsCampaign: true },
   sessions: { icon: fixed('mdi-book-open-page-variant'), title: 'nav.sessions', to: '/sessions', needsCampaign: true },
   quests: { icon: fixed('mdi-script-text'), title: 'nav.quests', to: '/quests', needsCampaign: true },
-  gameTable: { icon: fixed('mdi-table-furniture'), title: 'nav.gameTable', to: '/game-table', needsCampaign: true },
   encounters: { icon: fixed('mdi-sword-cross'), title: 'nav.encounters', to: '/encounters', needsCampaign: true },
   calendar: { icon: fixed('mdi-calendar'), title: 'calendar.title', to: '/calendar', needsCampaign: true },
   maps: { icon: fixed('mdi-map'), title: 'nav.maps', to: '/maps', needsCampaign: true },

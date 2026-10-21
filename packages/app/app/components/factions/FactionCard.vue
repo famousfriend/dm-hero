@@ -359,7 +359,6 @@
           {{ $t('common.view') }}
         </SharedLazyTooltip>
       </v-btn>
-      <GameTableShareButton type="faction" :entity-id="faction.id" :name="faction.name" />
       <v-btn icon="mdi-graph" size="small" variant="text" color="primary" @click.stop="$emit('chaos', faction)">
         <v-icon>mdi-graph</v-icon>
         <SharedLazyTooltip activator="parent" location="bottom">

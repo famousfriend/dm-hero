@@ -43,7 +43,7 @@
     "arrange": {
       "button": "Organizar navegación",
       "title": "Organizar navegación",
-      "hint": "Arrastra por el asa u ordena con las flechas.",
+      "hint": "Arrastra por el asa u ordena con las flechas. El ojo oculta una entrada de la barra lateral o la vuelve a mostrar.",
       "divider": "Separador",
       "addDivider": "Separador",
       "removeDivider": "Quitar separador",
@@ -52,7 +52,9 @@
       "reset": "Predeterminado",
       "done": "Listo",
       "saveFailed": "No se pudo guardar la navegación",
-      "loadFailed": "No se pudo cargar la navegación guardada; inténtalo de nuevo en un momento."
+      "loadFailed": "No se pudo cargar la navegación guardada; inténtalo de nuevo en un momento.",
+      "hide": "Ocultar {name}",
+      "show": "Mostrar {name}"
     },
     "party": "Grupo",
     "live": "Sesión en vivo"
@@ -2015,14 +2017,6 @@
       "installHint": "Hazlo de nuevo tras actualizar la app. Deja la app abierta mientras juegas; el panel lee el combate de ella.",
       "desktopOnly": "El panel se instala desde la app de escritorio.",
       "failed": "No se pudo instalar el panel."
-    },
-    "speedTest": {
-      "title": "Prueba de velocidad",
-      "subtitle": "Recorre las páginas principales y desplaza las listas largas por sí sola, y luego muestra un breve informe que puedes copiar y enviar. No toques el ratón ni el teclado durante un minuto mientras se ejecuta.",
-      "start": "Iniciar prueba",
-      "measuring": "Midiendo la pantalla",
-      "copy": "Copiar informe",
-      "copied": "Copiado"
     },
     "tabs": {
       "ai": "IA",
