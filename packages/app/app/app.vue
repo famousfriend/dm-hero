@@ -265,4 +265,9 @@ html {
 .v-card--hover :not(.v-ripple__animation) {
   transition: none !important;
 }
+
+/* Long words and names wrap instead of running out of their box */
+body {
+  overflow-wrap: break-word;
+}
 </style>

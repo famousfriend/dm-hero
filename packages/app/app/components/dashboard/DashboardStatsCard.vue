@@ -63,8 +63,13 @@ const formattedPlaytime = computed(() => formatPlaytime(props.totalPlaytimeMinut
 <style scoped>
 .stats-grid {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  /* Two columns while they fit, one column when the card gets narrow */
+  grid-template-columns: repeat(auto-fit, minmax(9.5rem, 1fr));
   gap: 16px;
+}
+
+.stat-item > .flex-grow-1 {
+  min-width: 0;
 }
 
 .stat-item {
@@ -73,5 +78,8 @@ const formattedPlaytime = computed(() => formatPlaytime(props.totalPlaytimeMinut
 
 .stat-label {
   letter-spacing: 0.5px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 </style>
