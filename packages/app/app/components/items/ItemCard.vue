@@ -344,6 +344,12 @@
           {{ $t('common.download') }}
         </SharedLazyTooltip>
       </v-btn>
+      <v-btn icon="mdi-script-text-outline" size="small" variant="text" @click.stop="$emit('handout', item)">
+        <v-icon>mdi-script-text-outline</v-icon>
+        <SharedLazyTooltip activator="parent" location="bottom">
+          {{ $t('items.handout.button') }}
+        </SharedLazyTooltip>
+      </v-btn>
       <v-spacer />
       <SharedEntityMoveMenu
         v-if="campaignStore.activeCampaignIdNumber"
@@ -439,6 +445,7 @@ const emit = defineEmits<{
   'view': [item: Item]
   'edit': [item: Item]
   'download': [item: Item]
+  'handout': [item: Item]
   'archive': [item: Item]
   'delete': [item: Item]
   'chaos': [item: Item]
