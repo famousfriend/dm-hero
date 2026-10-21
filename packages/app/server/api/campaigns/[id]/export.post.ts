@@ -37,10 +37,9 @@ import type {
   ExportStatTemplate,
   ExportEntityStats,
 } from '~~/types/export'
-import { EXPORT_FORMAT_VERSION } from '~~/types/export'
+import { DM_HERO_BASE_VERSION, EXPORT_FORMAT_VERSION } from '~~/types/export'
 
 // Get app version from package.json
-import pkg from '~~/package.json'
 import { parseMusicLinks } from '~~/server/utils/music-links'
 import { exportCampaignExtras } from '~~/server/utils/campaign-export-extras'
 
@@ -1148,7 +1147,7 @@ export default defineEventHandler(async (event) => {
     version: EXPORT_FORMAT_VERSION,
     exportedAt: new Date().toISOString(),
     generator: 'dm-hero',
-    generatorVersion: pkg.version,
+    generatorVersion: DM_HERO_BASE_VERSION,
     exportType: mode,
     entityTypes: exportEntityTypes,
     meta: meta || undefined,

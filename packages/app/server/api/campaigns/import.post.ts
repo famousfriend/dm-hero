@@ -33,10 +33,8 @@ import type {
   ImportConflictInfo,
   ImportTracking,
 } from '~~/types/export'
-import { isExportCompatible, isExportFromNewerVersion } from '~~/types/export'
+import { DM_HERO_BASE_VERSION, isExportCompatible, isExportFromNewerVersion } from '~~/types/export'
 
-// Get app version from package.json
-import pkg from '~~/package.json'
 import { sanitizeMusicLinks } from '~~/server/utils/music-links'
 import { importCampaignExtras } from '~~/server/utils/campaign-export-extras'
 
@@ -369,7 +367,7 @@ export default defineEventHandler(async (event) => {
     }
 
     // Check version compatibility
-    if (!isExportCompatible(manifest.version, pkg.version)) {
+    if (!isExportCompatible(manifest.version, DM_HERO_BASE_VERSION)) {
       throw createError({
         statusCode: 400,
         message: `Export format v${manifest.version} requires app version ${manifest.generatorVersion} or later. Please update DM Hero.`,
@@ -377,10 +375,10 @@ export default defineEventHandler(async (event) => {
     }
 
     // Check if export is from a newer app version (may lose data)
-    if (isExportFromNewerVersion(manifest.generatorVersion, pkg.version)) {
+    if (isExportFromNewerVersion(manifest.generatorVersion, DM_HERO_BASE_VERSION)) {
       throw createError({
         statusCode: 400,
-        message: `This export was created with DM Hero v${manifest.generatorVersion}. Your version is v${pkg.version}. Please update to avoid data loss.`,
+        message: `This export was created with DM Hero v${manifest.generatorVersion}. Your version is v${DM_HERO_BASE_VERSION}. Please update to avoid data loss.`,
       })
     }
 
