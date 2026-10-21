@@ -1,6 +1,6 @@
 {
   "app": {
-    "title": "DM Hero",
+    "title": "DM: Command Center",
     "welcome": "Welcome, Dungeon Master",
     "subtitle": "Keep track of your campaign"
   },
@@ -43,7 +43,7 @@
     "arrange": {
       "button": "Arrange navigation",
       "title": "Arrange navigation",
-      "hint": "Drag by the handle or sort with the arrows.",
+      "hint": "Drag by the handle or sort with the arrows. The eye hides an entry from the sidebar or shows it again.",
       "divider": "Divider",
       "addDivider": "Divider",
       "removeDivider": "Remove divider",
@@ -52,7 +52,9 @@
       "reset": "Default",
       "done": "Done",
       "saveFailed": "Could not save the navigation",
-      "loadFailed": "Could not load the saved navigation – please try again in a moment."
+      "loadFailed": "Could not load the saved navigation – please try again in a moment.",
+      "hide": "Hide {name}",
+      "show": "Show {name}"
     },
     "party": "Party",
     "live": "Live session"
@@ -1316,7 +1318,54 @@
       "documents": "Documents & Notes",
       "images": "Image Gallery"
     },
-    "image": "Image"
+    "image": "Image",
+    "handout": {
+      "button": "Item handout",
+      "title": "Item handout for The Homebrewery",
+      "name": "Item name",
+      "category": "Category",
+      "rarity": "Rarity",
+      "rarityVaries": "Rarity varies",
+      "baseItem": "Base item",
+      "baseItemHint": "Pick one to fill in damage, properties and weight",
+      "bonus": "Magic bonus",
+      "noBonus": "None",
+      "attunement": "Requires attunement",
+      "attunementBy": "Attunement by (optional)",
+      "damage": "Damage",
+      "armorClass": "Armor Class",
+      "charges": "Charges (optional)",
+      "properties": "Properties and tags",
+      "propertiesHint": "Pick from the list or type your own and press Enter",
+      "weight": "Weight",
+      "value": "Value",
+      "description": "What the item does",
+      "descriptionHint": "Markdown works: **bold**, *italic*, blank line for a new paragraph",
+      "imageUrl": "Picture link (optional)",
+      "imageUrlHint": "A web link to a picture (https://...). Pictures saved only in this app don't show on The Homebrewery.",
+      "preview": "Page text",
+      "stepsTitle": "How to make the page",
+      "step1": "Click \"Copy and open Homebrewery\".",
+      "step2": "On The Homebrewery, click in the left half, press Ctrl+A, then Ctrl+V.",
+      "step3": "The right half shows the finished page. Click \"Get PDF\" at the top and choose \"Save as PDF\".",
+      "step4": "Send the PDF to your players, for example on Discord.",
+      "reset": "Start over",
+      "copy": "Copy text",
+      "copied": "Copied",
+      "copyAndOpen": "Copy and open Homebrewery",
+      "copyFailed": "Couldn't copy. Select the page text and copy it yourself.",
+      "categories": {
+        "weapon": "Weapon",
+        "armor": "Armor",
+        "potion": "Potion",
+        "ring": "Ring",
+        "rod": "Rod",
+        "scroll": "Scroll",
+        "staff": "Staff",
+        "wand": "Wand",
+        "wondrous": "Wondrous item"
+      }
+    }
   },
   "referenceData": {
     "title": "Reference Data",
@@ -2015,6 +2064,11 @@
       "installHint": "Do this again after updating the app. Keep the app open while you play; the panel reads the fight from it.",
       "desktopOnly": "Installing the panel works in the desktop app.",
       "failed": "The panel could not be installed."
+    },
+    "tabs": {
+      "ai": "AI",
+      "data": "Backups & data",
+      "more": "More"
     }
   },
   "players": {

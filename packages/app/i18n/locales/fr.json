@@ -1,6 +1,6 @@
 {
   "app": {
-    "title": "DM Hero",
+    "title": "DM: Command Center",
     "welcome": "Bienvenue, Maître du jeu",
     "subtitle": "Gardez le fil de votre campagne"
   },
@@ -43,7 +43,7 @@
     "arrange": {
       "button": "Organiser la navigation",
       "title": "Organiser la navigation",
-      "hint": "Fais glisser par la poignée ou trie avec les flèches.",
+      "hint": "Fais glisser par la poignée ou trie avec les flèches. L'œil masque une entrée de la barre latérale ou l'affiche à nouveau.",
       "divider": "Séparateur",
       "addDivider": "Séparateur",
       "removeDivider": "Retirer le séparateur",
@@ -52,7 +52,9 @@
       "reset": "Par défaut",
       "done": "Terminé",
       "saveFailed": "Impossible d’enregistrer la navigation",
-      "loadFailed": "Impossible de charger la navigation enregistrée – réessaie dans un instant."
+      "loadFailed": "Impossible de charger la navigation enregistrée – réessaie dans un instant.",
+      "hide": "Masquer {name}",
+      "show": "Afficher {name}"
     },
     "party": "Groupe",
     "live": "Séance en direct"
@@ -1316,7 +1318,54 @@
       "documents": "Documents et notes",
       "images": "Galerie d'images"
     },
-    "image": "Image"
+    "image": "Image",
+    "handout": {
+      "button": "Fiche d'objet",
+      "title": "Fiche d'objet pour The Homebrewery",
+      "name": "Nom de l'objet",
+      "category": "Catégorie",
+      "rarity": "Rareté",
+      "rarityVaries": "Rareté variable",
+      "baseItem": "Objet de base",
+      "baseItemHint": "Choisis-en un pour remplir dégâts, propriétés et poids",
+      "bonus": "Bonus magique",
+      "noBonus": "Aucun",
+      "attunement": "Nécessite un lien",
+      "attunementBy": "Lien par (facultatif)",
+      "damage": "Dégâts",
+      "armorClass": "Classe d'armure",
+      "charges": "Charges (facultatif)",
+      "properties": "Propriétés et étiquettes",
+      "propertiesHint": "Choisis dans la liste ou tape la tienne puis Entrée",
+      "weight": "Poids",
+      "value": "Valeur",
+      "description": "Ce que fait l'objet",
+      "descriptionHint": "Markdown accepté : **gras**, *italique*, ligne vide pour un nouveau paragraphe",
+      "imageUrl": "Lien d'image (facultatif)",
+      "imageUrlHint": "Un lien web vers une image (https://...). Les images enregistrées seulement dans cette app n'apparaissent pas sur The Homebrewery.",
+      "preview": "Texte de la page",
+      "stepsTitle": "Créer la page",
+      "step1": "Clique sur « Copier et ouvrir Homebrewery ».",
+      "step2": "Sur The Homebrewery, clique dans la moitié gauche, appuie sur Ctrl+A puis Ctrl+V.",
+      "step3": "La moitié droite montre la page finie. Clique sur « Get PDF » en haut et choisis « Enregistrer au format PDF ».",
+      "step4": "Envoie le PDF à tes joueurs, par exemple sur Discord.",
+      "reset": "Recommencer",
+      "copy": "Copier le texte",
+      "copied": "Copié",
+      "copyAndOpen": "Copier et ouvrir Homebrewery",
+      "copyFailed": "Copie impossible. Sélectionne le texte de la page et copie-le toi-même.",
+      "categories": {
+        "weapon": "Arme",
+        "armor": "Armure",
+        "potion": "Potion",
+        "ring": "Anneau",
+        "rod": "Sceptre",
+        "scroll": "Parchemin",
+        "staff": "Bâton",
+        "wand": "Baguette",
+        "wondrous": "Objet merveilleux"
+      }
+    }
   },
   "referenceData": {
     "title": "Données de référence",
@@ -2015,6 +2064,11 @@
       "installHint": "Refais-le après une mise à jour de l'app. Garde l'app ouverte pendant la partie ; le panneau y lit le combat.",
       "desktopOnly": "Le panneau s'installe depuis l'app de bureau.",
       "failed": "Le panneau n'a pas pu être installé."
+    },
+    "tabs": {
+      "ai": "IA",
+      "data": "Sauvegardes et données",
+      "more": "Plus"
     }
   },
   "players": {

@@ -128,7 +128,7 @@ const appUrl = computed(() => info.value?.appUrl ?? 'http://127.0.0.1:3456')
 const mcpPath = computed(() => info.value?.mcpPath ?? '/path/to/dm-hero/packages/mcp/dist/mcp.mjs')
 
 const runtime = computed(() => info.value?.runtime ?? { command: 'node', env: {} })
-// Paths with spaces (C:\Users\...\DM Hero.exe) need quotes on the command line
+// Paths with spaces (C:\Users\...\DM Command Center.exe) need quotes on the command line
 const quote = (value: string) => (/\s/.test(value) ? `"${value}"` : value)
 
 const claudeCodeCmd = computed(() => {

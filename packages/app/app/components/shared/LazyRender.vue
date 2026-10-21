@@ -5,10 +5,14 @@
 </template>
 
 <script setup lang="ts">
+import { unwatch, watchNear } from '~/utils/lazyRender'
+
 /**
- * Draws its content only once it scrolls near the screen (and keeps it after).
+ * Draws its content once it comes near the screen (and keeps it after).
  * Long card lists use it so a campaign with hundreds of NPCs opens at once
- * instead of building every card, with all its menus and tooltips, up front.
+ * instead of building every card up front. Cards up to a few screens ahead
+ * are built while the app is idle, so scrolling down doesn't have to build
+ * them mid-scroll.
  */
 const props = withDefaults(defineProps<{
   /** Height to reserve until the content is drawn */
@@ -20,22 +24,12 @@ const props = withDefaults(defineProps<{
 const root = ref<HTMLElement | null>(null)
 const visible = ref(false)
 const shown = computed(() => visible.value || props.eager)
-let observer: IntersectionObserver | null = null
+const show = () => (visible.value = true)
 
 onMounted(() => {
-  if (shown.value || typeof IntersectionObserver === 'undefined') {
-    visible.value = true
-    return
-  }
-  observer = new IntersectionObserver((entries) => {
-    if (entries.some(e => e.isIntersecting)) {
-      visible.value = true
-      observer?.disconnect()
-      observer = null
-    }
-  }, { rootMargin: '400px 0px' })
-  observer.observe(root.value!)
+  if (shown.value || typeof IntersectionObserver === 'undefined') return show()
+  watchNear(root.value!, show)
 })
 
-onBeforeUnmount(() => observer?.disconnect())
+onBeforeUnmount(() => root.value && unwatch(root.value))
 </script>

@@ -51,6 +51,18 @@ describe('navigation layout', () => {
     expect(await call('index.get.ts')).toEqual([...NAV_KEYS])
   })
 
+  it('hidden entries keep their place and are never added a second time', async () => {
+    const layout = normalizeNavLayout(['maps', 'hidden:npcs', 'npcs', 'hidden:evil', 'hidden:maps'])
+    expect(layout.slice(0, 2)).toEqual(['maps', 'hidden:npcs'])
+    expect(layout).not.toContain('npcs')
+    expect(layout).not.toContain('hidden:maps')
+    expect(layout).toHaveLength(NAV_KEYS.length)
+
+    const saved = await call<string[]>('index.put.ts', { layout: ['hidden:music', 'npcs'] })
+    expect(saved.slice(0, 2)).toEqual(['hidden:music', 'npcs'])
+    expect(await call('index.get.ts')).toEqual(saved)
+  })
+
   it('rejects a body without a layout', async () => {
     await expect(call('index.put.ts', { layout: 'npcs' })).rejects.toMatchObject({ statusCode: 400 })
   })

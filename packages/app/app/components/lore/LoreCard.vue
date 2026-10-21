@@ -5,6 +5,8 @@
     :variant="lore.archived_at ? 'outlined' : undefined"
     :class="['d-flex flex-column lore-card', { 'highlighted-card': isHighlighted }]"
     :style="{ height: '100%', cursor: 'pointer', opacity: lore.archived_at ? 0.6 : 1 }"
+    @mouseenter="armTooltips"
+    @focusin="armTooltips"
     @click="$emit('view', lore)"
     @contextmenu.prevent="quickLink.openContextMenu"
   >
@@ -98,7 +100,7 @@
       <!-- Count Badges (NPCs, Items, Factions, Documents, Images) -->
       <div class="d-flex flex-wrap" style="gap: 6px">
         <!-- NPCs Count Badge -->
-        <v-tooltip location="top">
+        <SharedLazyTooltip location="top">
           <template #activator="{ props: tooltipProps }">
             <v-chip
               v-if="counts"
@@ -124,10 +126,10 @@
             </v-chip>
           </template>
           <span>{{ $t('lore.badgeTooltips.npcs') }}</span>
-        </v-tooltip>
+        </SharedLazyTooltip>
 
         <!-- Items Count Badge -->
-        <v-tooltip location="top">
+        <SharedLazyTooltip location="top">
           <template #activator="{ props: tooltipProps }">
             <v-chip
               v-if="counts"
@@ -153,10 +155,10 @@
             </v-chip>
           </template>
           <span>{{ $t('lore.badgeTooltips.items') }}</span>
-        </v-tooltip>
+        </SharedLazyTooltip>
 
         <!-- Factions Count Badge -->
-        <v-tooltip location="top">
+        <SharedLazyTooltip location="top">
           <template #activator="{ props: tooltipProps }">
             <v-chip
               v-if="counts"
@@ -182,10 +184,10 @@
             </v-chip>
           </template>
           <span>{{ $t('lore.badgeTooltips.factions') }}</span>
-        </v-tooltip>
+        </SharedLazyTooltip>
 
         <!-- Locations Count Badge -->
-        <v-tooltip location="top">
+        <SharedLazyTooltip location="top">
           <template #activator="{ props: tooltipProps }">
             <v-chip
               v-if="counts"
@@ -211,10 +213,10 @@
             </v-chip>
           </template>
           <span>{{ $t('lore.badgeTooltips.locations') }}</span>
-        </v-tooltip>
+        </SharedLazyTooltip>
 
         <!-- Players Count Badge -->
-        <v-tooltip location="top">
+        <SharedLazyTooltip location="top">
           <template #activator="{ props: tooltipProps }">
             <v-chip
               v-if="counts"
@@ -240,10 +242,10 @@
             </v-chip>
           </template>
           <span>{{ $t('lore.badgeTooltips.players') }}</span>
-        </v-tooltip>
+        </SharedLazyTooltip>
 
         <!-- Documents Count Badge -->
-        <v-tooltip location="top">
+        <SharedLazyTooltip location="top">
           <template #activator="{ props: tooltipProps }">
             <v-chip
               v-if="counts"
@@ -269,10 +271,10 @@
             </v-chip>
           </template>
           <span>{{ $t('lore.badgeTooltips.documents') }}</span>
-        </v-tooltip>
+        </SharedLazyTooltip>
 
         <!-- Images Count Badge -->
-        <v-tooltip location="top">
+        <SharedLazyTooltip location="top">
           <template #activator="{ props: tooltipProps }">
             <v-chip
               v-if="counts"
@@ -298,7 +300,7 @@
             </v-chip>
           </template>
           <span>{{ $t('lore.badgeTooltips.images') }}</span>
-        </v-tooltip>
+        </SharedLazyTooltip>
       </div>
 
       <!-- Tags Row -->
@@ -312,16 +314,15 @@
     <v-card-actions class="px-4 entity-actions">
       <v-btn icon="mdi-eye" size="small" variant="text" @click.stop="$emit('view', lore)">
         <v-icon>mdi-eye</v-icon>
-        <v-tooltip activator="parent" location="bottom">
+        <SharedLazyTooltip activator="parent" location="bottom">
           {{ $t('common.view') }}
-        </v-tooltip>
+        </SharedLazyTooltip>
       </v-btn>
-      <GameTableShareButton type="lore" :entity-id="lore.id" :name="lore.name" />
       <v-btn icon="mdi-graph" size="small" variant="text" color="primary" @click.stop="$emit('chaos', lore)">
         <v-icon>mdi-graph</v-icon>
-        <v-tooltip activator="parent" location="bottom">
+        <SharedLazyTooltip activator="parent" location="bottom">
           {{ $t('chaos.title') }}
-        </v-tooltip>
+        </SharedLazyTooltip>
       </v-btn>
 
       <v-btn
@@ -332,9 +333,9 @@
         @click.stop="$emit('download', lore)"
       >
         <v-icon>mdi-download</v-icon>
-        <v-tooltip activator="parent" location="bottom">
+        <SharedLazyTooltip activator="parent" location="bottom">
           {{ $t('common.download') }}
-        </v-tooltip>
+        </SharedLazyTooltip>
       </v-btn>
       <v-spacer />
       <SharedEntityMoveMenu
@@ -349,9 +350,9 @@
       <SharedEntityCopyMenu :entity-id="lore.id" entity-type="lore" :name="lore.name" />
       <v-btn icon="mdi-pencil" size="small" variant="text" @click.stop="$emit('edit', lore)">
         <v-icon>mdi-pencil</v-icon>
-        <v-tooltip activator="parent" location="bottom">
+        <SharedLazyTooltip activator="parent" location="bottom">
           {{ $t('common.edit') }}
-        </v-tooltip>
+        </SharedLazyTooltip>
       </v-btn>
       <v-btn
         :icon="lore.archived_at ? 'mdi-package-up' : 'mdi-archive-arrow-down'"
@@ -361,9 +362,9 @@
         @click.stop="$emit('archive', lore)"
       >
         <v-icon>{{ lore.archived_at ? 'mdi-package-up' : 'mdi-archive-arrow-down' }}</v-icon>
-        <v-tooltip activator="parent" location="bottom">
+        <SharedLazyTooltip activator="parent" location="bottom">
           {{ lore.archived_at ? $t('common.unarchive') : $t('common.archive') }}
-        </v-tooltip>
+        </SharedLazyTooltip>
       </v-btn>
       <v-btn
         icon="mdi-delete"
@@ -373,9 +374,9 @@
         @click.stop="$emit('delete', lore)"
       >
         <v-icon>mdi-delete</v-icon>
-        <v-tooltip activator="parent" location="bottom">
+        <SharedLazyTooltip activator="parent" location="bottom">
           {{ $t('common.delete') }}
-        </v-tooltip>
+        </SharedLazyTooltip>
       </v-btn>
     </v-card-actions>
   </v-card>
@@ -415,6 +416,8 @@ import type { Lore, LoreCounts } from '../../../types/lore'
 import ImagePreviewDialog from '~/components/shared/ImagePreviewDialog.vue'
 import QuickLinkContextMenu from '~/components/shared/QuickLinkContextMenu.vue'
 import QuickLinkEntitySelectDialog from '~/components/shared/QuickLinkEntitySelectDialog.vue'
+
+const { armTooltips } = useLazyTooltips()
 
 interface Props {
   lore: Lore

@@ -30,11 +30,6 @@
       <CodexSidebar />
     </ClientOnly>
 
-    <!-- Share dialog: can be opened from anywhere (share buttons on entity cards) -->
-    <ClientOnly>
-      <GameTableShareDialog />
-    </ClientOnly>
-
     <!-- Ctrl+K command palette (also "/" and the search buttons) -->
     <ClientOnly>
       <CommandPalette v-model="showSearch" />
@@ -54,11 +49,6 @@
         </v-btn>
       </template>
     </v-snackbar>
-
-    <!-- Announcements Dialog -->
-    <ClientOnly>
-      <SharedAnnouncementDialog />
-    </ClientOnly>
 
     <!-- Global music player – lives here so playback survives navigation.
          Full bar on /music, floating mini player everywhere else. -->
@@ -256,5 +246,18 @@ html {
   height: 100%;
   overflow-y: auto;
   overflow-x: hidden;
+}
+
+/* Hover highlights on clickable cards switch instantly instead of fading.
+   While scrolling, cards slide under the mouse one after another, and each
+   fade redrew the page on every frame. Click ripples still animate. */
+.v-card--hover,
+.v-card--hover :not(.v-ripple__animation) {
+  transition: none !important;
+}
+
+/* Long words and names wrap instead of running out of their box */
+body {
+  overflow-wrap: break-word;
 }
 </style>

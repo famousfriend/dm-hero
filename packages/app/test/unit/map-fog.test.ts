@@ -46,18 +46,16 @@ afterAll(() => {
 
 let campaignId: number
 let mapId: number
-let tableId: number
 
 const addCampaign = (name: string) => Number(db.prepare('INSERT INTO campaigns (name) VALUES (?)').run(name).lastInsertRowid)
 const addMap = (campaign: number) => Number(db.prepare('INSERT INTO campaign_maps (campaign_id, name, image_url) VALUES (?, ?, ?)').run(campaign, 'Welt', 'map.png').lastInsertRowid)
-const shownMap = () => (db.prepare('SELECT shown_map_id FROM game_tables WHERE id = ?').get(tableId) as { shown_map_id: number | null }).shown_map_id
 
 beforeEach(() => {
   db = getTestDb()
   campaignId = addCampaign('Fog')
   mapId = addMap(campaignId)
-  tableId = Number(db.prepare('INSERT INTO game_tables (campaign_id, code, relay_game_id, relay_dm_token) VALUES (?, ?, ?, ?)')
-    .run(campaignId, 'FOGFOG', 'relay', 'token').lastInsertRowid)
+  db.prepare('INSERT INTO game_tables (campaign_id, code, relay_game_id, relay_dm_token) VALUES (?, ?, ?, ?)')
+    .run(campaignId, 'FOGFOG', 'relay', 'token')
 })
 
 const fog: MapFog = {
@@ -88,30 +86,5 @@ describe('map fog', () => {
       expect(isMapFog(body)).toBe(false)
       await expect(call('maps/[id]/fog.put.ts', { params: { id: String(mapId) }, body })).rejects.toMatchObject({ statusCode: 400 })
     }
-  })
-})
-
-describe('shown map', () => {
-  it('shows exactly one map, switching replaces it, null hides it', async () => {
-    const second = addMap(campaignId)
-    await call('game-table/[id]/shown-map.put.ts', { params: { id: String(tableId) }, body: { mapId } })
-    expect(shownMap()).toBe(mapId)
-    await call('game-table/[id]/shown-map.put.ts', { params: { id: String(tableId) }, body: { mapId: second } })
-    expect(shownMap()).toBe(second)
-    await call('game-table/[id]/shown-map.put.ts', { params: { id: String(tableId) }, body: { mapId: null } })
-    expect(shownMap()).toBeNull()
-  })
-
-  it('never shows a map of another campaign', async () => {
-    const foreign = addMap(addCampaign('Other'))
-    await expect(call('game-table/[id]/shown-map.put.ts', { params: { id: String(tableId) }, body: { mapId: foreign } }))
-      .rejects.toMatchObject({ statusCode: 400 })
-    expect(shownMap()).toBeNull()
-  })
-
-  it('deleting the shown map stops showing it', async () => {
-    await call('game-table/[id]/shown-map.put.ts', { params: { id: String(tableId) }, body: { mapId } })
-    await call('maps/[id]/index.delete.ts', { params: { id: String(mapId) } })
-    expect(shownMap()).toBeNull()
   })
 })

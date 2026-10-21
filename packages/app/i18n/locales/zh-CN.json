@@ -1,6 +1,6 @@
 {
   "app": {
-    "title": "DM Hero",
+    "title": "DM: Command Center",
     "welcome": "欢迎，地下城主",
     "subtitle": "追踪你的战役"
   },
@@ -43,7 +43,7 @@
     "arrange": {
       "button": "调整导航",
       "title": "调整导航",
-      "hint": "拖动手柄或用箭头排序。",
+      "hint": "拖动手柄或用箭头排序。 点击眼睛图标可在侧边栏中隐藏或重新显示条目。",
       "divider": "分隔线",
       "addDivider": "分隔线",
       "removeDivider": "移除分隔线",
@@ -52,7 +52,9 @@
       "reset": "恢复默认",
       "done": "完成",
       "saveFailed": "无法保存导航",
-      "loadFailed": "无法加载已保存的导航，请稍后再试。"
+      "loadFailed": "无法加载已保存的导航，请稍后再试。",
+      "hide": "隐藏 {name}",
+      "show": "显示 {name}"
     },
     "party": "队伍",
     "live": "实时游戏"
@@ -1316,7 +1318,54 @@
       "documents": "文件和笔记",
       "images": "图片库"
     },
-    "image": "图片"
+    "image": "图片",
+    "handout": {
+      "button": "物品卡片",
+      "title": "Homebrewery 物品卡片",
+      "name": "物品名称",
+      "category": "类别",
+      "rarity": "稀有度",
+      "rarityVaries": "稀有度不定",
+      "baseItem": "基础物品",
+      "baseItemHint": "选择后自动填写伤害、属性和重量",
+      "bonus": "魔法加值",
+      "noBonus": "无",
+      "attunement": "需要同调",
+      "attunementBy": "同调者（可选）",
+      "damage": "伤害",
+      "armorClass": "护甲等级",
+      "charges": "充能（可选）",
+      "properties": "属性和标签",
+      "propertiesHint": "从列表选择，或输入自定义内容后按回车",
+      "weight": "重量",
+      "value": "价值",
+      "description": "物品效果",
+      "descriptionHint": "支持 Markdown：**粗体**、*斜体*，空一行开始新段落",
+      "imageUrl": "图片链接（可选）",
+      "imageUrlHint": "图片的网络链接 (https://...)。只保存在本应用中的图片不会显示在 The Homebrewery 上。",
+      "preview": "页面文本",
+      "stepsTitle": "如何生成页面",
+      "step1": "点击“复制并打开 Homebrewery”。",
+      "step2": "在 The Homebrewery 中点击左半边，按 Ctrl+A，然后按 Ctrl+V。",
+      "step3": "右半边会显示完成的页面。点击顶部的“Get PDF”，选择“另存为 PDF”。",
+      "step4": "把 PDF 发给玩家，例如通过 Discord。",
+      "reset": "重新开始",
+      "copy": "复制文本",
+      "copied": "已复制",
+      "copyAndOpen": "复制并打开 Homebrewery",
+      "copyFailed": "复制失败。请选中页面文本手动复制。",
+      "categories": {
+        "weapon": "武器",
+        "armor": "护甲",
+        "potion": "药水",
+        "ring": "戒指",
+        "rod": "权杖",
+        "scroll": "卷轴",
+        "staff": "法杖",
+        "wand": "魔杖",
+        "wondrous": "奇物"
+      }
+    }
   },
   "referenceData": {
     "title": "参考数据",
@@ -2015,6 +2064,11 @@
       "installHint": "更新应用后请再执行一次。游戏时保持应用打开；面板从应用读取战斗。",
       "desktopOnly": "面板只能在桌面应用中安装。",
       "failed": "无法安装面板。"
+    },
+    "tabs": {
+      "ai": "AI",
+      "data": "备份与数据",
+      "more": "更多"
     }
   },
   "players": {

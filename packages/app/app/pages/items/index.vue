@@ -3,6 +3,9 @@
     <UiPageHeader :title="$t('items.title')" :subtitle="$t('items.subtitle')">
       <template #actions>
         <SharedEntityTemplateMenu entity-type="item" class="mr-2" />
+        <v-btn variant="tonal" prepend-icon="mdi-script-text-outline" size="large" class="mr-2" @click="openHandout(null)">
+          {{ $t('items.handout.button') }}
+        </v-btn>
         <v-btn color="primary" prepend-icon="mdi-plus" size="large" @click="openCreateDialog">
           {{ $t('items.create') }}
         </v-btn>
@@ -56,6 +59,7 @@
               @view="viewItem"
               @edit="editItem"
               @download="(item: Item) => downloadImage(`/uploads/${item.image_url}`, item.name)"
+              @handout="openHandout"
               @archive="archiveEntity"
               @delete="deleteItem"
               @chaos="openChaosGraph"
@@ -133,6 +137,7 @@
                 @view="viewItem"
                 @edit="editItem"
                 @download="(item) => downloadImage(`/uploads/${item.image_url}`, item.name)"
+                @handout="openHandout"
                 @archive="archiveEntity"
                 @delete="deleteItem"
                 @chaos="openChaosGraph"
@@ -170,6 +175,7 @@
 
     <!-- View Item Dialog -->
     <ClientOnly>
+      <ItemHandoutDialog v-model="showHandout" :item="handoutItem" />
       <ItemViewDialog
         v-model="showViewDialog"
         :item="viewingItem"
@@ -259,6 +265,7 @@ import type { Item } from '../../../types/item'
 import ImagePreviewDialog from '~/components/shared/ImagePreviewDialog.vue'
 import ItemCard from '~/components/items/ItemCard.vue'
 import ItemViewDialog from '~/components/items/ItemViewDialog.vue'
+import ItemHandoutDialog from '~/components/items/ItemHandoutDialog.vue'
 import ItemEditDialog from '~/components/items/ItemEditDialog.vue'
 import GroupPreviewDialog from '~/components/groups/GroupPreviewDialog.vue'
 
@@ -272,6 +279,14 @@ const { loadItemCountsBatch } = useItemCounts()
 
 const activeCampaignId = computed(() => campaignStore.activeCampaignId)
 const activeCampaignIdNumber = computed(() => campaignStore.activeCampaignIdNumber)
+
+// Item handout for The Homebrewery (null = start from an empty form)
+const showHandout = ref(false)
+const handoutItem = ref<Item | null>(null)
+function openHandout(item: Item | null) {
+  handoutItem.value = item
+  showHandout.value = true
+}
 
 // ============================================================================
 // Search

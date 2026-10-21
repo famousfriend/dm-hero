@@ -1,7 +1,7 @@
 import { app, BrowserWindow, utilityProcess, ipcMain, dialog, shell, Menu, nativeImage } from 'electron'
 import pkg from 'electron-updater'
 import path from 'path'
-import { existsSync, mkdirSync, copyFileSync, cpSync, writeFileSync, appendFileSync } from 'fs'
+import { existsSync, mkdirSync, copyFileSync, cpSync, writeFileSync, appendFileSync, readdirSync, renameSync, rmSync } from 'fs'
 import { fileURLToPath } from 'url'
 
 const { autoUpdater } = pkg
@@ -70,6 +70,46 @@ const THEME = {
     },
   },
 }
+
+// The app was renamed from "DM Hero". Its data folder name is set here so it never depends on
+// how the build names the app, and the old folder (campaigns, uploads, settings) is copied over
+// once. The old folder stays untouched as a backup.
+const APP_NAME = 'DM Command Center'
+const OLD_DATA_FOLDERS = ['DM Hero', '@dm-hero/app']
+const NOT_COPIED = new Set(['Cache', 'Code Cache', 'GPUCache', 'DawnGraphiteCache', 'DawnWebGPUCache', 'Crashpad', 'logs', 'mcp', 'SingletonLock', 'SingletonCookie', 'SingletonSocket'])
+
+function useRenamedDataFolder() {
+  if (isDev) return
+  app.setName(APP_NAME)
+  // An explicit --user-data-dir (the smoke test's fresh profile) wins
+  if (app.commandLine.hasSwitch('user-data-dir')) return
+  const newDir = path.join(app.getPath('appData'), APP_NAME)
+  app.setPath('userData', newDir)
+  if (existsSync(path.join(newDir, 'data', 'dm-hero.db'))) return
+  const oldDir = OLD_DATA_FOLDERS.map(name => path.join(app.getPath('appData'), name))
+    .find(dir => existsSync(path.join(dir, 'data', 'dm-hero.db')))
+  if (!oldDir) return
+  const copying = path.join(newDir, 'data.copying')
+  try {
+    mkdirSync(newDir, { recursive: true })
+    for (const entry of readdirSync(oldDir)) {
+      if (entry === 'data' || NOT_COPIED.has(entry)) continue
+      cpSync(path.join(oldDir, entry), path.join(newDir, entry), { recursive: true, force: false })
+    }
+    // Database last and all at once: a half-finished copy never counts as done
+    rmSync(copying, { recursive: true, force: true })
+    cpSync(path.join(oldDir, 'data'), copying, { recursive: true })
+    renameSync(copying, path.join(newDir, 'data'))
+    console.log('[Electron] Copied data from', oldDir)
+  }
+  catch (error) {
+    console.error('[Electron] Copying data from the old app folder failed:', error)
+    rmSync(copying, { recursive: true, force: true })
+    // Keep working on the old folder rather than starting empty
+    app.setPath('userData', oldDir)
+  }
+}
+useRenamedDataFolder()
 
 let mainWindow = null
 let serverProcess = null
@@ -277,7 +317,7 @@ function createWindow() {
   const windowOptions = {
     width: 1400,
     height: 900,
-    title: 'DM Hero',
+    title: 'DM: Command Center',
     backgroundColor: currentTheme.background,
     show: false,
     webPreferences: {
@@ -294,7 +334,7 @@ function createWindow() {
       ...(process.platform === 'darwin'
         ? [
             {
-              label: 'DM Hero',
+              label: 'DM: Command Center',
               submenu: [
                 { role: 'about' },
                 { type: 'separator' },

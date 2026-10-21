@@ -37,7 +37,7 @@
               <div class="text-label-large mb-1">{{ $t('campaigns.playerExport.fields') }}</div>
               <v-chip-group v-model="fields[type]" multiple column class="mb-2">
                 <v-chip
-                  v-for="field in gameTable.shareKinds[type] ?? []"
+                  v-for="field in shareFields.shareKinds[type] ?? []"
                   :key="field"
                   :value="field"
                   filter
@@ -108,7 +108,7 @@ const props = defineProps<{ campaignId: number, campaignName?: string | null }>(
 const dialogVisible = defineModel<boolean>({ default: false })
 
 const { t, locale } = useI18n()
-const gameTable = useGameTableStore()
+const shareFields = useShareFieldsStore()
 const snackbar = useSnackbarStore()
 const { saveFile } = useElectron()
 
@@ -145,13 +145,13 @@ watch(dialogVisible, async (open) => {
   try {
     const [list] = await Promise.all([
       $fetch<Candidate[]>(`/api/campaigns/${props.campaignId}/player-export`),
-      gameTable.ensureShareKinds(),
+      shareFields.ensureShareKinds(),
     ])
     candidates.value = list
     picked.value = list.filter(c => c.shared).map(key)
     for (const type of SHARE_TYPES) {
-      const offered = gameTable.shareKinds[type] ?? []
-      fields[type] = [...(gameTable.shareDefaults[type] ?? offered)].filter(f => offered.includes(f))
+      const offered = shareFields.shareKinds[type] ?? []
+      fields[type] = [...(shareFields.shareDefaults[type] ?? offered)].filter(f => offered.includes(f))
     }
     expanded.value = typesWithEntries.value[0]
   }

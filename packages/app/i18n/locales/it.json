@@ -1,6 +1,6 @@
 {
   "app": {
-    "title": "DM Hero",
+    "title": "DM: Command Center",
     "welcome": "Benvenuto, Dungeon Master",
     "subtitle": "Tieni sotto controllo la tua campagna"
   },
@@ -43,7 +43,7 @@
     "arrange": {
       "button": "Organizza navigazione",
       "title": "Organizza navigazione",
-      "hint": "Trascina dalla maniglia o ordina con le frecce.",
+      "hint": "Trascina dalla maniglia o ordina con le frecce. L'occhio nasconde una voce dalla barra laterale o la mostra di nuovo.",
       "divider": "Separatore",
       "addDivider": "Separatore",
       "removeDivider": "Rimuovi separatore",
@@ -52,7 +52,9 @@
       "reset": "Predefinito",
       "done": "Fatto",
       "saveFailed": "Impossibile salvare la navigazione",
-      "loadFailed": "Impossibile caricare la navigazione salvata: riprova tra poco."
+      "loadFailed": "Impossibile caricare la navigazione salvata: riprova tra poco.",
+      "hide": "Nascondi {name}",
+      "show": "Mostra {name}"
     },
     "party": "Gruppo",
     "live": "Sessione dal vivo"
@@ -1316,7 +1318,54 @@
       "documents": "Documenti e note",
       "images": "Galleria immagini"
     },
-    "image": "Immagine"
+    "image": "Immagine",
+    "handout": {
+      "button": "Scheda oggetto",
+      "title": "Scheda oggetto per The Homebrewery",
+      "name": "Nome dell'oggetto",
+      "category": "Categoria",
+      "rarity": "Rarità",
+      "rarityVaries": "Rarità variabile",
+      "baseItem": "Oggetto base",
+      "baseItemHint": "Scegline uno per compilare danni, proprietà e peso",
+      "bonus": "Bonus magico",
+      "noBonus": "Nessuno",
+      "attunement": "Richiede sintonia",
+      "attunementBy": "Sintonia da parte di (facoltativo)",
+      "damage": "Danni",
+      "armorClass": "Classe Armatura",
+      "charges": "Cariche (facoltativo)",
+      "properties": "Proprietà e tag",
+      "propertiesHint": "Scegli dalla lista o scrivi la tua e premi Invio",
+      "weight": "Peso",
+      "value": "Valore",
+      "description": "Cosa fa l'oggetto",
+      "descriptionHint": "Funziona il Markdown: **grassetto**, *corsivo*, riga vuota per un nuovo paragrafo",
+      "imageUrl": "Link immagine (facoltativo)",
+      "imageUrlHint": "Un link web a un'immagine (https://...). Le immagini salvate solo in questa app non appaiono su The Homebrewery.",
+      "preview": "Testo della pagina",
+      "stepsTitle": "Come creare la pagina",
+      "step1": "Clicca su \"Copia e apri Homebrewery\".",
+      "step2": "Su The Homebrewery, clicca nella metà sinistra, premi Ctrl+A e poi Ctrl+V.",
+      "step3": "La metà destra mostra la pagina finita. Clicca su \"Get PDF\" in alto e scegli \"Salva come PDF\".",
+      "step4": "Invia il PDF ai tuoi giocatori, ad esempio su Discord.",
+      "reset": "Ricomincia",
+      "copy": "Copia testo",
+      "copied": "Copiato",
+      "copyAndOpen": "Copia e apri Homebrewery",
+      "copyFailed": "Copia non riuscita. Seleziona il testo della pagina e copialo tu.",
+      "categories": {
+        "weapon": "Arma",
+        "armor": "Armatura",
+        "potion": "Pozione",
+        "ring": "Anello",
+        "rod": "Verga",
+        "scroll": "Pergamena",
+        "staff": "Bastone",
+        "wand": "Bacchetta",
+        "wondrous": "Oggetto meraviglioso"
+      }
+    }
   },
   "referenceData": {
     "title": "Dati di riferimento",
@@ -2015,6 +2064,11 @@
       "installHint": "Ripetilo dopo aver aggiornato l'app. Tieni l'app aperta mentre giochi; il pannello legge il combattimento da lì.",
       "desktopOnly": "Il pannello si installa dall'app desktop.",
       "failed": "Impossibile installare il pannello."
+    },
+    "tabs": {
+      "ai": "IA",
+      "data": "Backup e dati",
+      "more": "Altro"
     }
   },
   "players": {

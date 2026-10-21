@@ -1,8 +1,8 @@
 <template>
   <v-app-bar border class="app-bar-draggable">
     <v-app-bar-title>
-      <v-icon icon="mdi-dice-d20" class="mr-2" />
-      DM Hero
+      <img src="/logo-small.png" alt="" class="app-logo mr-2" />
+      DM CC
       <v-chip size="x-small" variant="outlined" class="ml-2 version-badge-inline">
         v{{ version }}
       </v-chip>
@@ -16,11 +16,6 @@
     </v-app-bar-title>
 
     <v-spacer />
-
-    <!-- Game table status of the active campaign (hidden if there is no game) -->
-    <ClientOnly>
-      <GameTableHeaderChip />
-    </ClientOnly>
 
     <!-- Language Switcher with Flags -->
     <v-menu>
@@ -148,6 +143,13 @@ if (import.meta.client && window.electronAPI?.isElectron) {
 </style>
 
 <style scoped>
+.app-logo {
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+  vertical-align: middle;
+}
+
 /* The per-release codename next to the title. */
 .release-codename {
   font-size: 1.25rem;
