@@ -9,8 +9,8 @@
     <!-- Fixed top: app title + active campaign -->
     <template #prepend>
       <v-list-item
-        :prepend-icon="rail ? 'mdi-dice-d20' : 'mdi-dice-d20'"
-        :title="rail ? '' : 'DM Hero'"
+        :prepend-avatar="'/logo-small.png'"
+        :title="rail ? '' : 'DM CC'"
         nav
       >
         <template #append>

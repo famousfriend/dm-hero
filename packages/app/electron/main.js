@@ -277,7 +277,7 @@ function createWindow() {
   const windowOptions = {
     width: 1400,
     height: 900,
-    title: 'DM Hero',
+    title: 'DM: Command Center',
     backgroundColor: currentTheme.background,
     show: false,
     webPreferences: {
@@ -294,7 +294,7 @@ function createWindow() {
       ...(process.platform === 'darwin'
         ? [
             {
-              label: 'DM Hero',
+              label: 'DM: Command Center',
               submenu: [
                 { role: 'about' },
                 { type: 'separator' },
