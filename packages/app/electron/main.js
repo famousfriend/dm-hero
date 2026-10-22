@@ -113,6 +113,7 @@ useRenamedDataFolder()
 
 let mainWindow = null
 let serverProcess = null
+let serverErrors = ''
 
 /**
  * Get user data paths for database, uploads, and logs
@@ -254,7 +255,10 @@ async function startServer() {
   })
 
   serverProcess.stderr?.on('data', (data) => {
-    console.error('[Server Error]', data.toString().trim())
+    const text = data.toString().trim()
+    console.error('[Server Error]', text)
+    // Kept so a failed start can say why
+    serverErrors = (serverErrors + '\n' + text).slice(-4000)
   })
 
   serverProcess.on('exit', (code) => {
@@ -284,6 +288,8 @@ async function waitForServer(url, timeout = 30000) {
     catch {
       // Server not ready yet
     }
+    // A crashed server never answers: stop waiting instead of sitting out the timeout
+    if (!serverProcess) throw new Error('The app\'s server stopped while starting')
     await new Promise(resolve => setTimeout(resolve, 100))
   }
 
@@ -851,6 +857,11 @@ app.whenReady().then(async () => {
   }
   catch (error) {
     console.error('[Electron] Failed to start:', error)
+    // Never vanish silently: write down why and tell the user where to find it
+    const details = `${error instanceof Error ? error.message : String(error)}${serverErrors ? `\n\nServer output:\n${serverErrors}` : ''}`
+    logToFile(`Failed to start: ${details}`)
+    const logsDir = getDataPaths()?.logsPath
+    dialog.showErrorBox('DM Command Center could not start', `${details.slice(0, 1500)}${logsDir ? `\n\nThe full report is in:\n${path.join(logsDir, 'dm-hero.log')}` : ''}`)
     app.quit()
   }
 })
