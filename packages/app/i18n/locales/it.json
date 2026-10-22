@@ -2069,6 +2069,12 @@
       "ai": "IA",
       "data": "Backup e dati",
       "more": "Altro"
+    },
+    "window": {
+      "title": "Finestra",
+      "description": "Se lo scorrimento è meno fluido nell'app che nel browser, prova la barra del titolo standard di Windows.",
+      "nativeFrame": "Usa la barra del titolo standard di Windows",
+      "restartHint": "L'app si riavvia quando cambi questa opzione."
     }
   },
   "players": {

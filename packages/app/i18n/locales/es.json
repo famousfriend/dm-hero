@@ -2069,6 +2069,12 @@
       "ai": "IA",
       "data": "Copias y datos",
       "more": "Más"
+    },
+    "window": {
+      "title": "Ventana",
+      "description": "Si el desplazamiento es menos fluido en la app que en un navegador, prueba la barra de título estándar de Windows.",
+      "nativeFrame": "Usar la barra de título estándar de Windows",
+      "restartHint": "La app se reinicia al cambiar esto."
     }
   },
   "players": {

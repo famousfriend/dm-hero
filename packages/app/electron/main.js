@@ -1,7 +1,7 @@
 import { app, BrowserWindow, utilityProcess, ipcMain, dialog, shell, Menu, nativeImage } from 'electron'
 import pkg from 'electron-updater'
 import path from 'path'
-import { existsSync, mkdirSync, copyFileSync, cpSync, writeFileSync, appendFileSync, readdirSync, renameSync, rmSync } from 'fs'
+import { existsSync, mkdirSync, copyFileSync, cpSync, writeFileSync, appendFileSync, readdirSync, readFileSync, renameSync, rmSync } from 'fs'
 import { fileURLToPath } from 'url'
 
 const { autoUpdater } = pkg
@@ -113,6 +113,7 @@ useRenamedDataFolder()
 
 let mainWindow = null
 let serverProcess = null
+let serverErrors = ''
 
 /**
  * Get user data paths for database, uploads, and logs
@@ -254,7 +255,10 @@ async function startServer() {
   })
 
   serverProcess.stderr?.on('data', (data) => {
-    console.error('[Server Error]', data.toString().trim())
+    const text = data.toString().trim()
+    console.error('[Server Error]', text)
+    // Kept so a failed start can say why
+    serverErrors = (serverErrors + '\n' + text).slice(-4000)
   })
 
   serverProcess.on('exit', (code) => {
@@ -284,6 +288,8 @@ async function waitForServer(url, timeout = 30000) {
     catch {
       // Server not ready yet
     }
+    // A crashed server never answers: stop waiting instead of sitting out the timeout
+    if (!serverProcess) throw new Error('The app\'s server stopped while starting')
     await new Promise(resolve => setTimeout(resolve, 100))
   }
 
@@ -298,6 +304,20 @@ function stopServer() {
     console.log('[Electron] Stopping server...')
     serverProcess.kill()
     serverProcess = null
+  }
+}
+
+// Window options the user picks in Settings > More, read when the window opens.
+// nativeFrame: the standard Windows title bar instead of the app's own (smoother on some PCs)
+function windowPrefsFile() {
+  return path.join(app.getPath('userData'), 'window.json')
+}
+function readWindowPrefs() {
+  try {
+    return JSON.parse(readFileSync(windowPrefsFile(), 'utf-8'))
+  }
+  catch {
+    return {}
   }
 }
 
@@ -376,9 +396,13 @@ function createWindow() {
     Menu.setApplicationMenu(Menu.buildFromTemplate(template))
   }
 
-  if (isWindows) {
+  if (isWindows && !readWindowPrefs().nativeFrame) {
     windowOptions.titleBarStyle = 'hidden'
     windowOptions.titleBarOverlay = currentTheme.titleBarOverlay
+  }
+  else if (isWindows) {
+    // Standard Windows title bar (Settings > More): no Electron menu bar under it
+    Menu.setApplicationMenu(null)
   }
   else {
     // Linux/macOS: Hide menu bar for cleaner look
@@ -430,6 +454,16 @@ function createWindow() {
 }
 
 // IPC Handlers for data management
+ipcMain.handle('get-window-prefs', () => readWindowPrefs())
+
+// Saves the choice and restarts, since the title bar is fixed once the window exists
+ipcMain.handle('set-window-prefs', (event, prefs = {}) => {
+  writeFileSync(windowPrefsFile(), JSON.stringify({ ...readWindowPrefs(), nativeFrame: prefs.nativeFrame === true }))
+  app.relaunch()
+  app.quit()
+  return { success: true }
+})
+
 ipcMain.handle('get-data-paths', () => {
   if (isDev) {
     // Dev mode uses project-local paths
@@ -851,6 +885,11 @@ app.whenReady().then(async () => {
   }
   catch (error) {
     console.error('[Electron] Failed to start:', error)
+    // Never vanish silently: write down why and tell the user where to find it
+    const details = `${error instanceof Error ? error.message : String(error)}${serverErrors ? `\n\nServer output:\n${serverErrors}` : ''}`
+    logToFile(`Failed to start: ${details}`)
+    const logsDir = getDataPaths()?.logsPath
+    dialog.showErrorBox('DM Command Center could not start', `${details.slice(0, 1500)}${logsDir ? `\n\nThe full report is in:\n${path.join(logsDir, 'dm-hero.log')}` : ''}`)
     app.quit()
   }
 })
