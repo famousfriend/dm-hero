@@ -2069,6 +2069,12 @@
       "ai": "KI",
       "data": "Backups & Daten",
       "more": "Mehr"
+    },
+    "window": {
+      "title": "Fenster",
+      "description": "Wenn das Scrollen in der App weniger flüssig ist als im Browser, probier die normale Windows-Titelleiste.",
+      "nativeFrame": "Normale Windows-Titelleiste verwenden",
+      "restartHint": "Die App startet beim Umschalten neu."
     }
   },
   "players": {

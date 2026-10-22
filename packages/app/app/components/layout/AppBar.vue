@@ -1,5 +1,5 @@
 <template>
-  <v-app-bar border class="app-bar-draggable">
+  <v-app-bar border :class="{ 'app-bar-draggable': draggable }">
     <v-app-bar-title>
       <img src="/logo-small.png" alt="" class="app-logo mr-2" />
       DM CC
@@ -104,6 +104,13 @@ const locales = SUPPORTED_LOCALES.map(l => ({ value: l.code, label: l.name, flag
 
 const currentLocaleData = computed(() => {
   return locales.find(l => l.value === props.currentLocale) ?? locales[0]
+})
+
+// With the standard Windows title bar (Settings > More) the window drags by that bar,
+// so the app bar drops its drag region (Chromium recomputes those on every layout)
+const draggable = ref(true)
+onMounted(() => {
+  if (window.electronAPI?.platform === 'win32' && !navigator.windowControlsOverlay?.visible) draggable.value = false
 })
 
 // Set to 100% by default, meaning the right edge of the window controls is at the far right of the window
