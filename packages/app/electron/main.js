@@ -1,8 +1,10 @@
-import { app, BrowserWindow, utilityProcess, ipcMain, dialog, shell, Menu, nativeImage, screen } from 'electron'
+import { app, BrowserWindow, utilityProcess, ipcMain, dialog, shell, Menu, nativeImage, screen, contentTracing } from 'electron'
 import pkg from 'electron-updater'
 import path from 'path'
 import { existsSync, mkdirSync, copyFileSync, cpSync, writeFileSync, appendFileSync, readdirSync, readFileSync, renameSync, rmSync } from 'fs'
 import { fileURLToPath } from 'url'
+import os from 'os'
+import { gzipSync } from 'zlib'
 
 const { autoUpdater } = pkg
 
@@ -469,6 +471,71 @@ ipcMain.handle('get-graphics-info', async () => {
     electron: process.versions.electron,
     forceGpu: readGraphicsPrefs().forceGpu === true,
   }
+})
+
+// Performance recording (Settings > More > Graphics check): a Chromium trace of every
+// process (window, page, graphics card, server) plus CPU use per process, so a stutter
+// can be traced to the thread that causes it instead of guessed at. Runs here so it
+// keeps going while the person switches pages; the file is shown in Explorer when done.
+const TRACE_SECONDS = 15
+const TRACE_CATEGORIES = [
+  'toplevel', 'benchmark', 'input', 'latencyInfo', 'cc', 'viz', 'gpu', 'gpu.service', 'blink',
+  'renderer.scheduler', 'scheduler', 'devtools.timeline', 'v8', 'ipc', 'mojom', 'electron',
+  'disabled-by-default-devtools.timeline', 'disabled-by-default-devtools.timeline.frame',
+  'disabled-by-default-viz.display', 'disabled-by-default-gpu.service',
+]
+let traceRunning = false
+
+async function recordPerformanceTrace() {
+  const metrics = []
+  const sampler = setInterval(() => {
+    metrics.push({
+      t: Date.now(),
+      processes: app.getAppMetrics().map(m => ({ type: m.type, name: m.name ?? m.serviceName ?? '', pid: m.pid, cpu: m.cpu.percentCPUUsage })),
+    })
+  }, 500)
+  try {
+    await contentTracing.startRecording({ included_categories: TRACE_CATEGORIES, excluded_categories: ['*'] })
+    await new Promise(resolve => setTimeout(resolve, TRACE_SECONDS * 1000))
+    const rawPath = await contentTracing.stopRecording()
+    const gpu = await app.getGPUInfo('complete').catch(() => null)
+    const stamp = new Date().toISOString().slice(0, 19).replace(/[T:]/g, '-')
+    const outPath = path.join(app.getPath('downloads'), `DM-CC-performance-${stamp}.json.gz`)
+    // Context for reading the trace, added to the same file so only one file is sent
+    const info = {
+      app: app.getVersion(),
+      electron: process.versions.electron,
+      chrome: process.versions.chrome,
+      windows: os.release(),
+      cpus: os.cpus().length,
+      switches: process.argv.slice(1),
+      renderer: gpu?.auxAttributes?.glRenderer ?? null,
+      featureStatus: app.getGPUFeatureStatus(),
+      displays: screen.getAllDisplays().map(d => ({ hz: d.displayFrequency, scale: d.scaleFactor, width: d.size.width, primary: d.id === screen.getPrimaryDisplay().id })),
+      windowDisplayHz: mainWindow ? screen.getDisplayMatching(mainWindow.getBounds()).displayFrequency : null,
+      metrics,
+    }
+    // Spliced in as text: the trace can be hundreds of MB, too big to parse here
+    const raw = readFileSync(rawPath, 'utf-8').trimEnd()
+    const trace = raw.endsWith('}') ? `${raw.slice(0, -1)},"dmccInfo":${JSON.stringify(info)}}` : raw
+    writeFileSync(outPath, gzipSync(trace))
+    rmSync(rawPath, { force: true })
+    shell.showItemInFolder(outPath)
+  }
+  finally {
+    clearInterval(sampler)
+    traceRunning = false
+  }
+}
+
+ipcMain.handle('record-performance-trace', () => {
+  if (traceRunning) return { started: false, seconds: TRACE_SECONDS }
+  traceRunning = true
+  recordPerformanceTrace().catch((err) => {
+    console.error('[Electron] Performance recording failed:', err)
+    dialog.showErrorBox('Performance recording failed', String(err?.message ?? err))
+  })
+  return { started: true, seconds: TRACE_SECONDS }
 })
 
 // Saves the choice and restarts, since Chromium reads these switches only at startup

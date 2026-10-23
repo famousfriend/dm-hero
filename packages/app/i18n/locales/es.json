@@ -2080,7 +2080,11 @@
       "compositing": "Composición por GPU",
       "rasterization": "Rasterización por GPU",
       "card": "Tarjeta gráfica",
-      "refresh": "Frecuencia de la pantalla"
+      "refresh": "Frecuencia de la pantalla",
+      "recordTitle": "Grabar un tirón",
+      "recordDescription": "Haz clic en Grabar y durante 15 segundos desplázate por una página larga y pasa el ratón sobre las carpetas, donde vaya a tirones. Luego se abre un archivo en el Explorador: envíaselo a Claude.",
+      "record": "Grabar 15 segundos",
+      "recording": "Grabando… desplázate y mueve el ratón ahora"
     }
   },
   "players": {
