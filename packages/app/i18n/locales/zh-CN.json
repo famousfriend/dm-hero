@@ -2080,7 +2080,11 @@
       "compositing": "GPU 合成",
       "rasterization": "GPU 光栅化",
       "card": "显卡",
-      "refresh": "屏幕刷新率"
+      "refresh": "屏幕刷新率",
+      "recordTitle": "录制卡顿",
+      "recordDescription": "点击录制，然后在 15 秒内滚动一个长页面并将鼠标移到文件夹上，在卡顿的地方操作。之后会在资源管理器中打开一个文件：把它发给 Claude。",
+      "record": "录制 15 秒",
+      "recording": "正在录制… 现在滚动并移动鼠标"
     }
   },
   "players": {

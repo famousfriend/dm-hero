@@ -2080,7 +2080,11 @@
       "compositing": "Composition GPU",
       "rasterization": "Rastérisation GPU",
       "card": "Carte graphique",
-      "refresh": "Fréquence de l'écran"
+      "refresh": "Fréquence de l'écran",
+      "recordTitle": "Enregistrer une saccade",
+      "recordDescription": "Cliquez sur Enregistrer, puis pendant 15 secondes faites défiler une longue page et survolez des dossiers, là où ça saccade. Un fichier s'ouvre ensuite dans l'Explorateur : envoyez-le à Claude.",
+      "record": "Enregistrer 15 secondes",
+      "recording": "Enregistrement… faites défiler et survolez maintenant"
     }
   },
   "players": {

@@ -35,6 +35,24 @@
       <p class="text-medium-emphasis text-body-small mt-2 mb-0">
         {{ $t('settings.graphics.restartHint') }}
       </p>
+
+      <v-divider class="my-4" />
+      <!-- Records what every part of the app does while it stutters, for Claude to read -->
+      <h3 class="text-title-medium mb-1">
+        {{ $t('settings.graphics.recordTitle') }}
+      </h3>
+      <p class="text-medium-emphasis text-body-medium mb-3">
+        {{ $t('settings.graphics.recordDescription') }}
+      </p>
+      <v-btn
+        variant="tonal"
+        size="small"
+        prepend-icon="mdi-record-rec"
+        :disabled="!canRecord || recording"
+        @click="record"
+      >
+        {{ recording ? $t('settings.graphics.recording') : $t('settings.graphics.record') }}
+      </v-btn>
     </v-card-text>
   </v-card>
 </template>
@@ -77,6 +95,16 @@ async function copy() {
   catch {
     // clipboard blocked - nothing else to do
   }
+}
+
+const canRecord = computed(() => !!electronAPI?.recordPerformanceTrace)
+const recording = ref(false)
+
+// The window keeps recording when this page is left; Explorer opens on the file when done
+async function record() {
+  recording.value = true
+  const result = await electronAPI!.recordPerformanceTrace!()
+  setTimeout(() => (recording.value = false), result.seconds * 1000)
 }
 
 // Saving restarts the app (Chromium reads these switches only at startup)

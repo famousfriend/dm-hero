@@ -2080,7 +2080,11 @@
       "compositing": "GPU-Compositing",
       "rasterization": "GPU-Rasterisierung",
       "card": "Grafikkarte",
-      "refresh": "Bildwiederholrate"
+      "refresh": "Bildwiederholrate",
+      "recordTitle": "Ruckeln aufzeichnen",
+      "recordDescription": "Klicke auf Aufzeichnen und scrolle dann 15 Sekunden lang durch eine lange Seite und fahre mit der Maus über Ordner, dort wo es ruckelt. Danach öffnet sich eine Datei im Explorer: Schicke sie an Claude.",
+      "record": "15 Sekunden aufzeichnen",
+      "recording": "Zeichnet auf… jetzt scrollen und Maus bewegen"
     }
   },
   "players": {

@@ -59,6 +59,7 @@ export interface ElectronAPI {
   openTaleSpireDice?: (url: string) => Promise<{ success: boolean, error?: string }>
   getGraphicsInfo?: () => Promise<GraphicsInfo>
   setGraphicsPrefs?: (prefs: { forceGpu: boolean }) => Promise<{ success: boolean }>
+  recordPerformanceTrace?: () => Promise<{ started: boolean, seconds: number }>
   installTaleSpirePanel?: (options: { url: string, key: string, folder?: string }) => Promise<{ success: boolean, notFound?: boolean, path?: string, error?: string }>
   selectFolderDialog: (options?: { title?: string, defaultPath?: string }) => Promise<{ success: boolean, canceled?: boolean, folderPath?: string }>
 

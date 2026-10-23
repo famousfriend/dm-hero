@@ -2080,7 +2080,11 @@
       "compositing": "GPU compositing",
       "rasterization": "GPU rasterization",
       "card": "Graphics card",
-      "refresh": "Screen refresh rate"
+      "refresh": "Screen refresh rate",
+      "recordTitle": "Record a stutter",
+      "recordDescription": "Click Record, then for 15 seconds scroll a long page and move the mouse over folders, wherever it stutters. A file then opens in Explorer: send it to Claude.",
+      "record": "Record 15 seconds",
+      "recording": "Recording… scroll and hover now"
     }
   },
   "players": {
