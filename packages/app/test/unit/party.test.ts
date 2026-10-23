@@ -11,6 +11,7 @@ import {
   importDdbJson,
   sanitizeManual,
 } from '../../server/utils/party'
+import { writeManualStatBlock } from '../../server/utils/ddb-sheet'
 import { applyHpChange, mergePartyStats, parseDdbCharacterId, EMPTY_PARTY_STATS } from '../../types/party'
 
 // Shaped like character-service.dndbeyond.com/character/v5/character/{id}
@@ -270,6 +271,36 @@ describe('party storage', () => {
     expect(other.ddb?.ac).toBe(20)
     expect(other.ddbCharacterId).toBe('12345678')
     expect(() => importDdbJson(db, otherId, { nope: true })).toThrow()
+  })
+
+  it('fills the Stat Block and an empty description from the sheet', () => {
+    importDdbJson(db, otherId, { success: true, data: fighterWizard() })
+    const row = db.prepare('SELECT t.system_key, s.values_json FROM entity_stats s JOIN stat_templates t ON t.id = s.template_id WHERE s.entity_id = ?')
+      .get(otherId) as { system_key: string, values_json: string }
+    expect(row.system_key).toBe('dnd5e')
+    const values = JSON.parse(row.values_json)
+    expect(values.str).toEqual({ value: 15, modifier: 2 })
+    expect(values.hp).toEqual({ current: 36, max: 48 })
+    expect(values.ac).toBe(20)
+    expect(typeof values.save_con).toBe('number')
+    expect(typeof values.stealth).toBe('number')
+    const entity = db.prepare('SELECT description FROM entities WHERE id = ?').get(otherId) as { description: string }
+    expect(entity.description).toContain('Fighter')
+
+    // A hand-written value in another field stays; a second load reuses the same template
+    db.prepare('UPDATE entity_stats SET values_json = json_set(values_json, \'$.custom\', 1) WHERE entity_id = ?').run(otherId)
+    importDdbJson(db, otherId, { success: true, data: fighterWizard() })
+    const again = db.prepare('SELECT values_json FROM entity_stats WHERE entity_id = ?').get(otherId) as { values_json: string }
+    expect(JSON.parse(again.values_json).custom).toBe(1)
+    expect(db.prepare('SELECT COUNT(*) AS n FROM stat_templates WHERE system_key = \'dnd5e\'').get()).toEqual({ n: 1 })
+  })
+
+  it('stores typed-in numbers in the Stat Block', () => {
+    const playerType = db.prepare('SELECT id FROM entity_types WHERE name = ?').get('Player') as { id: number }
+    const id = Number(db.prepare('INSERT INTO entities (type_id, campaign_id, name) VALUES (?, ?, ?)').run(playerType.id, campaignId, 'Hand').lastInsertRowid)
+    writeManualStatBlock(db, id, { scores: { dex: 14 }, hpMax: 20, ac: 15, speed: 30 })
+    const row = db.prepare('SELECT values_json FROM entity_stats WHERE entity_id = ?').get(id) as { values_json: string }
+    expect(JSON.parse(row.values_json)).toEqual({ dex: { value: 14, modifier: 2 }, initiative: 2, hp: { current: 20, max: 20 }, ac: 15, speed: 30 })
   })
 
   it('removes party data with the player', () => {

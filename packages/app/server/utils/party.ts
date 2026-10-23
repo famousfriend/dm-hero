@@ -6,7 +6,8 @@ import {
   type PartyMember,
   type PartyStats,
 } from '../../types/party'
-import { DdbFetchError, fetchDdbCharacter, mapDdbCharacter, unwrapDdbResponse, type DdbCharacter } from './ddb'
+import { fillEmptyDescription, saveDdbAvatar, writeDdbStatBlock } from './ddb-sheet'
+import { DdbFetchError, fetchDdbCharacter, mapDdbCharacter, unwrapDdbResponse, type DdbCharacter, type MappedCharacter } from './ddb'
 
 interface PartyRow {
   entity_id: number
@@ -151,15 +152,20 @@ export function updatePartyMember(
 }
 
 /** Stores a sheet from D&D Beyond (fetched or imported from a saved file). */
-export function storeDdbCharacter(db: Database.Database, entityId: number, character: DdbCharacter): void {
+export function storeDdbCharacter(db: Database.Database, entityId: number, character: DdbCharacter): MappedCharacter {
   ensureRow(db, entityId)
-  const { stats, explain } = mapDdbCharacter(character)
+  const mapped = mapDdbCharacter(character)
+  const { stats, explain } = mapped
   db.prepare(
     `UPDATE party_status SET ddb_stats_json = ?, ddb_explain_json = ?, ddb_fetched_at = CURRENT_TIMESTAMP,
      ddb_attempted_at = CURRENT_TIMESTAMP, ddb_error = NULL,
      ddb_character_id = COALESCE(ddb_character_id, ?), updated_at = CURRENT_TIMESTAMP
      WHERE entity_id = ?`,
   ).run(JSON.stringify(stats), JSON.stringify(explain), character.id ? String(character.id) : null, entityId)
+  // The full sheet also fills the player's Stat Block and an empty description
+  writeDdbStatBlock(db, entityId, mapped)
+  fillEmptyDescription(db, entityId, mapped)
+  return mapped
 }
 
 export function importDdbJson(db: Database.Database, entityId: number, json: unknown): void {
@@ -190,7 +196,9 @@ export async function refreshPartyMember(
   db.prepare('UPDATE party_status SET ddb_attempted_at = CURRENT_TIMESTAMP WHERE entity_id = ?').run(entityId)
   try {
     const character = await (options.fetcher ?? fetchDdbCharacter)(row.ddb_character_id)
-    storeDdbCharacter(db, entityId, character)
+    const mapped = storeDdbCharacter(db, entityId, character)
+    // Portrait only for real fetches (tests pass their own fetcher)
+    if (!options.fetcher) await saveDdbAvatar(db, entityId, mapped.sheet.avatarUrl)
   }
   catch (error) {
     const message = error instanceof DdbFetchError || error instanceof Error ? error.message : 'Refresh failed'

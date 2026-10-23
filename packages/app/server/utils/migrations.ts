@@ -3174,6 +3174,33 @@ export const migrations: Migration[] = [
       console.log('✅ Migration 74: Codex campaign edits')
     },
   },
+  {
+    version: 75,
+    name: 'entities_fts external content triggers',
+    up: (db: Database.Database) => {
+      // entities_fts reads its text from the entities table. An UPDATE/DELETE on it
+      // makes SQLite look up the old words in a row that has already changed, so a
+      // new word in a description failed with "database disk image is malformed"
+      // (SQLite 3.53). The documented way: a 'delete' command with the old values.
+      db.exec(`
+        DROP TRIGGER IF EXISTS entities_ad;
+        DROP TRIGGER IF EXISTS entities_au;
+        CREATE TRIGGER entities_ad AFTER DELETE ON entities BEGIN
+          INSERT INTO entities_fts(entities_fts, rowid, name, description, metadata)
+          VALUES ('delete', old.id, old.name, old.description, old.metadata);
+        END;
+        CREATE TRIGGER entities_au AFTER UPDATE ON entities BEGIN
+          INSERT INTO entities_fts(entities_fts, rowid, name, description, metadata)
+          VALUES ('delete', old.id, old.name, old.description, old.metadata);
+          INSERT INTO entities_fts(rowid, name, description, metadata)
+          VALUES (new.id, new.name, new.description, new.metadata);
+        END;
+        INSERT INTO entities_fts(entities_fts) VALUES ('rebuild');
+      `)
+
+      console.log('✅ Migration 75: Search index triggers fixed')
+    },
+  },
 ]
 
 export async function runMigrations(db: Database.Database) {

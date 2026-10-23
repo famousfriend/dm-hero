@@ -2259,8 +2259,8 @@
       "refresh": "Cargar lo último de D&D Beyond",
       "open": "Abrir hoja",
       "unlink": "Desvincular",
-      "intro": "Pega el enlace de D&D Beyond del personaje y sus PG, CA, pasivas y estados se cargan en la página de Grupo y en los combates.",
-      "introCreate": "Pega el enlace de D&D Beyond del personaje: el nombre se rellena solo y sus PG, CA, pasivas y estados se cargan en la página de Grupo y en los combates.",
+      "intro": "Pega el enlace de D&D Beyond del personaje: características, salvaciones, habilidades, PG, CA y estados se cargan en las estadísticas, la página del grupo y los combates.",
+      "introCreate": "Pega el enlace de D&D Beyond del personaje: el nombre, la imagen y la descripción se rellenan solos, y características, salvaciones, habilidades, PG, CA y estados se cargan en las estadísticas, la página del grupo y los combates.",
       "link": "Vincular y cargar",
       "loadsOnSave": "Se carga desde D&D Beyond al hacer clic en Crear",
       "howTo": "¿Cómo consigo el enlace?",
@@ -2271,6 +2271,24 @@
       "nameFromSheet": "Déjalo vacío para usar el nombre de D&D Beyond",
       "placeholderName": "Nuevo personaje",
       "addFromDdb": "Añadir desde D&D Beyond"
+    },
+    "addMode": {
+      "label": "¿Cómo quieres añadir este personaje?",
+      "manual": "Introducir a mano",
+      "ddb": "Enlace de D&D Beyond"
+    },
+    "manual": {
+      "title": "Estadísticas del personaje",
+      "intro": "Rellena lo que sepas. Puedes cambiarlo todo más tarde en la pestaña de estadísticas y en la página del grupo.",
+      "classLabel": "Clase y nivel",
+      "classPlaceholder": "p. ej. Monje 7",
+      "level": "Nivel",
+      "hpMax": "PG máx.",
+      "ac": "Clase de armadura",
+      "speed": "Velocidad (ft)",
+      "passivePerception": "Percepción pasiva",
+      "abilities": "Puntuaciones de característica",
+      "saveFailed": "No se pudieron guardar las estadísticas del personaje"
     }
   },
   "calendar": {
@@ -2868,7 +2886,8 @@
     "uploadCharacterSheet": "Subir hoja de personaje",
     "replaceCharacterSheet": "Reemplazar",
     "noCharacterSheet": "No se ha subido ninguna hoja de personaje",
-    "modifier": "Mod."
+    "modifier": "Mod.",
+    "useDnd5e": "Usar estadísticas de D&D 5e"
   },
   "statTemplates": {
     "title": "Bloques de estadísticas",

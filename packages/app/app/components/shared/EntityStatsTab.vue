@@ -30,6 +30,17 @@
           </v-btn>
         </div>
 
+        <v-btn
+          variant="tonal"
+          color="primary"
+          prepend-icon="mdi-dice-d20"
+          class="mb-4"
+          :loading="store.saving"
+          @click="useDnd5e"
+        >
+          {{ $t('entityStats.useDnd5e') }}
+        </v-btn>
+        <br />
         <NuxtLink to="/reference-data" class="text-body-small text-medium-emphasis">
           {{ $t('entityStats.createTemplateLink') }}
         </NuxtLink>
@@ -742,6 +753,16 @@ function onResourceCurrentChange(fieldName: string, current: number) {
 async function assignTemplate() {
   if (!selectedTemplateId.value) return
   await store.assignTemplate(selectedTemplateId.value)
+  snackbarStore.success(t('entityStats.saved'))
+  emit('changed')
+}
+
+// One click: the D&D 5e stat block (created from the preset the first time)
+async function useDnd5e() {
+  await templatesStore.loadTemplates()
+  let template = templatesStore.templates.find(tmpl => tmpl.system_key === 'dnd5e')
+  if (!template) template = await templatesStore.createFromPreset('dnd5e', t('statPresets.dnd5e.name'))
+  await store.assignTemplate(template.id)
   snackbarStore.success(t('entityStats.saved'))
   emit('changed')
 }
