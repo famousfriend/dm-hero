@@ -2252,6 +2252,25 @@
       "misunderstands": "Fraintende",
       "teaches": "Insegna",
       "studies": "Studia"
+    },
+    "ddb": {
+      "title": "Personaggio D&D Beyond",
+      "linked": "Collegato",
+      "refresh": "Carica gli ultimi dati da D&D Beyond",
+      "open": "Apri scheda",
+      "unlink": "Scollega",
+      "intro": "Incolla il link D&D Beyond del personaggio: PF, CA, valori passivi e condizioni vengono caricati nella pagina Gruppo e negli scontri.",
+      "introCreate": "Incolla il link D&D Beyond del personaggio: il nome si compila da solo e PF, CA, valori passivi e condizioni vengono caricati nella pagina Gruppo e negli scontri.",
+      "link": "Collega e carica",
+      "loadsOnSave": "Viene caricato da D&D Beyond quando fai clic su Crea",
+      "howTo": "Come ottengo il link?",
+      "step1": "Su D&D Beyond, apri la scheda del personaggio.",
+      "step2": "Assicurati che la privacy del personaggio sia impostata su Pubblico.",
+      "step3": "Copia l'indirizzo dalla barra del browser (o Share > Copy link) e incollalo qui.",
+      "level": "Livello",
+      "nameFromSheet": "Lascia vuoto per usare il nome di D&D Beyond",
+      "placeholderName": "Nuovo personaggio",
+      "addFromDdb": "Aggiungi da D&D Beyond"
     }
   },
   "calendar": {

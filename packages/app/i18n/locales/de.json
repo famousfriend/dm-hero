@@ -2252,6 +2252,25 @@
       "misunderstands": "Missversteht",
       "teaches": "Lehrt",
       "studies": "Studiert"
+    },
+    "ddb": {
+      "title": "D&D-Beyond-Charakter",
+      "linked": "Verknüpft",
+      "refresh": "Neueste Daten von D&D Beyond laden",
+      "open": "Bogen öffnen",
+      "unlink": "Verknüpfung lösen",
+      "intro": "Füge den D&D-Beyond-Link des Charakters ein, dann werden TP, RK, passive Werte und Zustände in die Party-Seite und Kämpfe geladen.",
+      "introCreate": "Füge den D&D-Beyond-Link des Charakters ein: Der Name wird automatisch ausgefüllt und TP, RK, passive Werte und Zustände werden in die Party-Seite und Kämpfe geladen.",
+      "link": "Verknüpfen und laden",
+      "loadsOnSave": "Wird beim Klick auf Erstellen von D&D Beyond geladen",
+      "howTo": "Wie bekomme ich den Link?",
+      "step1": "Öffne auf D&D Beyond den Charakterbogen.",
+      "step2": "Stelle sicher, dass die Privatsphäre des Charakters auf Öffentlich steht.",
+      "step3": "Kopiere die Adresse aus der Adressleiste (oder Share > Copy link) und füge sie hier ein.",
+      "level": "Stufe",
+      "nameFromSheet": "Leer lassen, um den Namen von D&D Beyond zu übernehmen",
+      "placeholderName": "Neuer Charakter",
+      "addFromDdb": "Von D&D Beyond hinzufügen"
     }
   },
   "calendar": {

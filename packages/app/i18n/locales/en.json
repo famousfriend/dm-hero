@@ -2252,6 +2252,25 @@
       "misunderstands": "Misunderstands",
       "teaches": "Teaches",
       "studies": "Studies"
+    },
+    "ddb": {
+      "title": "D&D Beyond character",
+      "linked": "Linked",
+      "refresh": "Load latest from D&D Beyond",
+      "open": "Open sheet",
+      "unlink": "Unlink",
+      "intro": "Paste the character's D&D Beyond link and its HP, AC, passives and conditions load into the Party page and fights.",
+      "introCreate": "Paste the character's D&D Beyond link: the name fills in by itself and HP, AC, passives and conditions load into the Party page and fights.",
+      "link": "Link and load",
+      "loadsOnSave": "Loads from D&D Beyond when you click Create",
+      "howTo": "How do I get the link?",
+      "step1": "On D&D Beyond, open the character sheet.",
+      "step2": "Make sure the character's privacy is set to Public.",
+      "step3": "Copy the address from the browser bar (or Share > Copy link) and paste it here.",
+      "level": "Level",
+      "nameFromSheet": "Leave empty to use the name from D&D Beyond",
+      "placeholderName": "New character",
+      "addFromDdb": "Add from D&D Beyond"
     }
   },
   "calendar": {

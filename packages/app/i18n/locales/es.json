@@ -2252,6 +2252,25 @@
       "misunderstands": "Malinterpreta",
       "teaches": "Enseña",
       "studies": "Estudia"
+    },
+    "ddb": {
+      "title": "Personaje de D&D Beyond",
+      "linked": "Vinculado",
+      "refresh": "Cargar lo último de D&D Beyond",
+      "open": "Abrir hoja",
+      "unlink": "Desvincular",
+      "intro": "Pega el enlace de D&D Beyond del personaje y sus PG, CA, pasivas y estados se cargan en la página de Grupo y en los combates.",
+      "introCreate": "Pega el enlace de D&D Beyond del personaje: el nombre se rellena solo y sus PG, CA, pasivas y estados se cargan en la página de Grupo y en los combates.",
+      "link": "Vincular y cargar",
+      "loadsOnSave": "Se carga desde D&D Beyond al hacer clic en Crear",
+      "howTo": "¿Cómo consigo el enlace?",
+      "step1": "En D&D Beyond, abre la hoja del personaje.",
+      "step2": "Asegúrate de que la privacidad del personaje esté en Público.",
+      "step3": "Copia la dirección de la barra del navegador (o Share > Copy link) y pégala aquí.",
+      "level": "Nivel",
+      "nameFromSheet": "Déjalo vacío para usar el nombre de D&D Beyond",
+      "placeholderName": "Nuevo personaje",
+      "addFromDdb": "Añadir desde D&D Beyond"
     }
   },
   "calendar": {
