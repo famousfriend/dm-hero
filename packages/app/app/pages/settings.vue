@@ -278,11 +278,8 @@
     </template>
 
     <template v-else>
-      <!-- Desktop app: does the window draw with the graphics card? -->
-      <GraphicsCheckCard />
-
       <!-- Playfulness / Easter eggs -->
-      <v-card class="mt-6">
+      <v-card>
         <v-card-text>
           <div class="mb-4">
             <h2 class="text-headline-small mb-2">
@@ -307,6 +304,19 @@
           </p>
         </v-card-text>
       </v-card>
+
+      <!-- About: version and credit to the original app -->
+      <v-card class="mt-6">
+        <v-card-text>
+          <h2 class="text-headline-small mb-2">{{ $t('settings.about.title') }}</h2>
+          <p class="text-body-medium mb-2">DM Command Center {{ appVersion }}</p>
+          <p class="text-body-medium text-medium-emphasis mb-0">
+            {{ $t('settings.about.basedOn') }}
+            <a href="https://github.com/Flo0806/dm-hero" target="_blank" rel="noopener" @click.prevent="electron.openExternalUrl('https://github.com/Flo0806/dm-hero')">DM Hero</a>
+            {{ $t('settings.about.byAuthor') }}
+          </p>
+        </v-card-text>
+      </v-card>
     </template>
 
     <!-- Success/Error Snackbar -->
@@ -319,9 +329,10 @@
 <script setup lang="ts">
 import BackupsCard from '~/components/settings/BackupsCard.vue'
 import TaleSpireCard from '~/components/settings/TaleSpireCard.vue'
-import GraphicsCheckCard from '~/components/settings/GraphicsCheckCard.vue'
 import { useElectron } from '~/composables/useElectron'
 import { useFolderAnimationSettings } from '~/composables/useFolderAnimations'
+
+const appVersion = useRuntimeConfig().public.appVersion as string
 
 const { t } = useI18n()
 

@@ -2070,23 +2070,10 @@
       "data": "Copias y datos",
       "more": "Más"
     },
-    "graphics": {
-      "title": "Comprobación gráfica",
-      "description": "Si la app se desplaza con menos fluidez que un navegador, aquí ves con qué dibuja su ventana. Pulsa Copiar y pégalo para Claude.",
-      "copy": "Copiar detalles",
-      "copied": "Copiado",
-      "forceGpu": "Usar la tarjeta gráfica aunque Windows o el controlador estén bloqueados",
-      "restartHint": "La app se reinicia al cambiar esto.",
-      "compositing": "Composición por GPU",
-      "rasterization": "Rasterización por GPU",
-      "card": "Tarjeta gráfica",
-      "refresh": "Frecuencia de la pantalla",
-      "recordTitle": "Grabar un tirón",
-      "recordDescription": "Haz clic en Grabar y durante 15 segundos desplázate por una página larga y pasa el ratón sobre las carpetas, donde vaya a tirones. Luego se abre un archivo en el Explorador: envíaselo a Claude.",
-      "record": "Grabar 15 segundos",
-      "recording": "Grabando… desplázate y mueve el ratón ahora",
-      "mainProcessGpu": "Dibujar desde la propia ventana de la app",
-      "mainProcessGpuHint": "Se elige automáticamente: activado en tarjetas gráficas NVIDIA de sobremesa, que si no limitan la app a 20 fotogramas por segundo. Desactívalo si la app muestra una ventana vacía o negra."
+    "about": {
+      "title": "Acerca de",
+      "basedOn": "Basado en",
+      "byAuthor": "de Florian Heuberger, usado bajo la licencia MIT. Gracias por la base sobre la que se construye esta app."
     }
   },
   "players": {

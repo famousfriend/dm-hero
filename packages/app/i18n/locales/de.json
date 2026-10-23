@@ -2070,23 +2070,10 @@
       "data": "Backups & Daten",
       "more": "Mehr"
     },
-    "graphics": {
-      "title": "Grafik-Check",
-      "description": "Wenn die App weniger flüssig scrollt als ein Browser, zeigt das hier, womit ihr Fenster zeichnet. Klicke auf Kopieren und füge es bei Claude ein.",
-      "copy": "Details kopieren",
-      "copied": "Kopiert",
-      "forceGpu": "Grafikkarte auch nutzen, wenn Windows oder der Treiber gesperrt ist",
-      "restartHint": "Die App startet beim Umschalten neu.",
-      "compositing": "GPU-Compositing",
-      "rasterization": "GPU-Rasterisierung",
-      "card": "Grafikkarte",
-      "refresh": "Bildwiederholrate",
-      "recordTitle": "Ruckeln aufzeichnen",
-      "recordDescription": "Klicke auf Aufzeichnen und scrolle dann 15 Sekunden lang durch eine lange Seite und fahre mit der Maus über Ordner, dort wo es ruckelt. Danach öffnet sich eine Datei im Explorer: Schicke sie an Claude.",
-      "record": "15 Sekunden aufzeichnen",
-      "recording": "Zeichnet auf… jetzt scrollen und Maus bewegen",
-      "mainProcessGpu": "Aus dem eigenen Fenster der App zeichnen",
-      "mainProcessGpuHint": "Wird automatisch gewählt: an bei NVIDIA-Grafikkarten in Desktop-PCs, die die App sonst auf 20 Bilder pro Sekunde begrenzen. Ausschalten, wenn die App ein leeres oder schwarzes Fenster zeigt."
+    "about": {
+      "title": "Über",
+      "basedOn": "Basiert auf",
+      "byAuthor": "von Florian Heuberger, verwendet unter der MIT-Lizenz. Danke für das Fundament, auf dem diese App aufbaut."
     }
   },
   "players": {

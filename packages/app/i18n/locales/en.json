@@ -2070,23 +2070,10 @@
       "data": "Backups & data",
       "more": "More"
     },
-    "graphics": {
-      "title": "Graphics check",
-      "description": "If the app scrolls less smoothly than a web browser, this shows what its window draws with. Click Copy and paste it to Claude.",
-      "copy": "Copy details",
-      "copied": "Copied",
-      "forceGpu": "Use the graphics card even if Windows or the driver is on a blocklist",
-      "restartHint": "The app restarts when you change this.",
-      "compositing": "GPU compositing",
-      "rasterization": "GPU rasterization",
-      "card": "Graphics card",
-      "refresh": "Screen refresh rate",
-      "recordTitle": "Record a stutter",
-      "recordDescription": "Click Record, then for 15 seconds scroll a long page and move the mouse over folders, wherever it stutters. A file then opens in Explorer: send it to Claude.",
-      "record": "Record 15 seconds",
-      "recording": "Recording… scroll and hover now",
-      "mainProcessGpu": "Draw from the app's own window",
-      "mainProcessGpuHint": "Chosen automatically: on for desktop NVIDIA graphics cards, which otherwise limit the app to 20 frames a second. Turn it off if the app shows a blank or black window."
+    "about": {
+      "title": "About",
+      "basedOn": "Based on",
+      "byAuthor": "by Florian Heuberger, used under the MIT License. Thank you for the foundation this app is built on."
     }
   },
   "players": {
