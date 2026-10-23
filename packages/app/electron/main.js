@@ -1,7 +1,7 @@
 import { app, BrowserWindow, utilityProcess, ipcMain, dialog, shell, Menu, nativeImage } from 'electron'
 import pkg from 'electron-updater'
 import path from 'path'
-import { existsSync, mkdirSync, copyFileSync, cpSync, writeFileSync, appendFileSync, readdirSync, readFileSync, renameSync, rmSync } from 'fs'
+import { existsSync, mkdirSync, copyFileSync, cpSync, writeFileSync, appendFileSync, readdirSync, renameSync, rmSync } from 'fs'
 import { fileURLToPath } from 'url'
 
 const { autoUpdater } = pkg
@@ -307,20 +307,6 @@ function stopServer() {
   }
 }
 
-// Window options the user picks in Settings > More, read when the window opens.
-// nativeFrame: the standard Windows title bar instead of the app's own (smoother on some PCs)
-function windowPrefsFile() {
-  return path.join(app.getPath('userData'), 'window.json')
-}
-function readWindowPrefs() {
-  try {
-    return JSON.parse(readFileSync(windowPrefsFile(), 'utf-8'))
-  }
-  catch {
-    return {}
-  }
-}
-
 function createWindow() {
   console.log('[Electron] Creating window...')
   console.log('[Electron] isDev:', isDev)
@@ -396,13 +382,9 @@ function createWindow() {
     Menu.setApplicationMenu(Menu.buildFromTemplate(template))
   }
 
-  if (isWindows && !readWindowPrefs().nativeFrame) {
+  if (isWindows) {
     windowOptions.titleBarStyle = 'hidden'
     windowOptions.titleBarOverlay = currentTheme.titleBarOverlay
-  }
-  else if (isWindows) {
-    // Standard Windows title bar (Settings > More): no Electron menu bar under it
-    Menu.setApplicationMenu(null)
   }
   else {
     // Linux/macOS: Hide menu bar for cleaner look
@@ -454,16 +436,6 @@ function createWindow() {
 }
 
 // IPC Handlers for data management
-ipcMain.handle('get-window-prefs', () => readWindowPrefs())
-
-// Saves the choice and restarts, since the title bar is fixed once the window exists
-ipcMain.handle('set-window-prefs', (event, prefs = {}) => {
-  writeFileSync(windowPrefsFile(), JSON.stringify({ ...readWindowPrefs(), nativeFrame: prefs.nativeFrame === true }))
-  app.relaunch()
-  app.quit()
-  return { success: true }
-})
-
 ipcMain.handle('get-data-paths', () => {
   if (isDev) {
     // Dev mode uses project-local paths

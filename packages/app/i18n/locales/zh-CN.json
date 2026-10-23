@@ -2069,12 +2069,6 @@
       "ai": "AI",
       "data": "备份与数据",
       "more": "更多"
-    },
-    "window": {
-      "title": "窗口",
-      "description": "如果应用内滚动不如浏览器流畅，请尝试使用 Windows 标准标题栏。",
-      "nativeFrame": "使用 Windows 标准标题栏",
-      "restartHint": "更改此项后应用会重新启动。"
     }
   },
   "players": {

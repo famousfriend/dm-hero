@@ -2069,12 +2069,6 @@
       "ai": "IA",
       "data": "Sauvegardes et données",
       "more": "Plus"
-    },
-    "window": {
-      "title": "Fenêtre",
-      "description": "Si le défilement est moins fluide dans l'app que dans un navigateur, essaie la barre de titre standard de Windows.",
-      "nativeFrame": "Utiliser la barre de titre standard de Windows",
-      "restartHint": "L'app redémarre quand tu changes ce réglage."
     }
   },
   "players": {
