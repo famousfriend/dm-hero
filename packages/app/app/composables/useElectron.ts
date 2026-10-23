@@ -35,20 +35,6 @@ export interface UpdateDownloadProgress {
   total: number
 }
 
-/** Settings > More > Graphics check: what the desktop window draws with */
-export interface GraphicsInfo {
-  featureStatus: Record<string, string>
-  renderer: string | null
-  devices: { active: boolean, vendorId: number, deviceId: number, driver?: string }[]
-  displays: { hz: number, scale: number, width: number, primary: boolean }[]
-  windowDisplayHz: number | null
-  chrome: string
-  electron: string
-  forceGpu: boolean
-  /** Windows: drawing from the window's own process (null elsewhere) */
-  mainProcessGpu: boolean | null
-}
-
 export interface ElectronAPI {
   isElectron: boolean
   exportDatabase: () => Promise<{ success: boolean, canceled?: boolean, filePath?: string, error?: string }>
@@ -59,9 +45,6 @@ export interface ElectronAPI {
   saveFileDialog: (options: SaveFileOptions) => Promise<SaveFileResult>
   openExternalUrl: (url: string) => Promise<{ success: boolean, error?: string }>
   openTaleSpireDice?: (url: string) => Promise<{ success: boolean, error?: string }>
-  getGraphicsInfo?: () => Promise<GraphicsInfo>
-  setGraphicsPrefs?: (prefs: { forceGpu?: boolean, mainProcessGpu?: boolean }) => Promise<{ success: boolean }>
-  recordPerformanceTrace?: () => Promise<{ started: boolean, seconds: number }>
   installTaleSpirePanel?: (options: { url: string, key: string, folder?: string }) => Promise<{ success: boolean, notFound?: boolean, path?: string, error?: string }>
   selectFolderDialog: (options?: { title?: string, defaultPath?: string }) => Promise<{ success: boolean, canceled?: boolean, folderPath?: string }>
 

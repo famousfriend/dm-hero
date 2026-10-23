@@ -1,10 +1,8 @@
-import { app, BrowserWindow, utilityProcess, ipcMain, dialog, shell, Menu, nativeImage, screen, contentTracing } from 'electron'
+import { app, BrowserWindow, utilityProcess, ipcMain, dialog, shell, Menu, nativeImage } from 'electron'
 import pkg from 'electron-updater'
 import path from 'path'
 import { existsSync, mkdirSync, copyFileSync, cpSync, writeFileSync, appendFileSync, readdirSync, readFileSync, renameSync, rmSync } from 'fs'
 import { fileURLToPath } from 'url'
-import os from 'os'
-import { gzipSync } from 'zlib'
 
 const { autoUpdater } = pkg
 
@@ -113,8 +111,7 @@ function useRenamedDataFolder() {
 }
 useRenamedDataFolder()
 
-// Graphics options from Settings > More > Graphics check (they need a restart)
-// forceGpu: use the graphics card even where Chromium would fall back to slower drawing
+// Graphics choices remembered per PC (they need a restart); see mainProcessGpu below
 function graphicsPrefsFile() {
   return path.join(app.getPath('userData'), 'graphics.json')
 }
@@ -134,12 +131,6 @@ function writeGraphicsPrefs(changes) {
     console.error('[Electron] Saving graphics settings failed:', err)
   }
 }
-if (readGraphicsPrefs().forceGpu) {
-  app.commandLine.appendSwitch('ignore-gpu-blocklist')
-  app.commandLine.appendSwitch('enable-gpu-rasterization')
-  app.commandLine.appendSwitch('enable-zero-copy')
-}
-
 // mainProcessGpu (Windows): draw from the window's own process.
 // Chromium normally draws from a separate helper process. Graphics drivers decide what is
 // "in the background" by which process owns the active window, so they appear to take the
@@ -148,7 +139,7 @@ if (readGraphicsPrefs().forceGpu) {
 // That limit is NVIDIA's, and on a laptop the same switch left the window empty, so it is
 // automatic only where it is needed: an NVIDIA card with no Intel/AMD chip beside it (a
 // desktop). The cards are read after each start (gpus) and used from the next start, so a
-// new PC starts the safe way once. The Settings switch overrides this (true/false).
+// new PC starts the safe way once. A "mainProcessGpu": true/false in graphics.json overrides this.
 // If a window ever fails to show with it, the next start switches it off.
 const isWindowsPlatform = process.platform === 'win32'
 const VENDOR_NVIDIA = 0x10DE
@@ -509,100 +500,6 @@ function createWindow() {
 }
 
 // IPC Handlers for data management
-// What the window draws with: tells a slow window (software drawing, blocked GPU) apart
-// from a slow page, which Chrome would show too
-ipcMain.handle('get-graphics-info', async () => {
-  const gpu = await app.getGPUInfo('complete').catch(() => null)
-  return {
-    featureStatus: app.getGPUFeatureStatus(),
-    renderer: gpu?.auxAttributes?.glRenderer ?? null,
-    devices: (gpu?.gpuDevice ?? []).map(d => ({ active: d.active, vendorId: d.vendorId, deviceId: d.deviceId, driver: d.driverVersion })),
-    displays: screen.getAllDisplays().map(d => ({ hz: d.displayFrequency, scale: d.scaleFactor, width: d.size.width, primary: d.id === screen.getPrimaryDisplay().id })),
-    windowDisplayHz: mainWindow ? screen.getDisplayMatching(mainWindow.getBounds()).displayFrequency : null,
-    chrome: process.versions.chrome,
-    electron: process.versions.electron,
-    forceGpu: readGraphicsPrefs().forceGpu === true,
-    mainProcessGpu: isWindowsPlatform ? app.commandLine.hasSwitch('in-process-gpu') : null,
-  }
-})
-
-// Performance recording (Settings > More > Graphics check): a Chromium trace of every
-// process (window, page, graphics card, server) plus CPU use per process, so a stutter
-// can be traced to the thread that causes it instead of guessed at. Runs here so it
-// keeps going while the person switches pages; the file is shown in Explorer when done.
-const TRACE_SECONDS = 15
-const TRACE_CATEGORIES = [
-  'toplevel', 'benchmark', 'input', 'latencyInfo', 'cc', 'viz', 'gpu', 'gpu.service', 'blink',
-  'renderer.scheduler', 'scheduler', 'devtools.timeline', 'v8', 'ipc', 'mojom', 'electron',
-  'disabled-by-default-devtools.timeline', 'disabled-by-default-devtools.timeline.frame',
-  'disabled-by-default-viz.display', 'disabled-by-default-gpu.service',
-]
-let traceRunning = false
-
-async function recordPerformanceTrace() {
-  const metrics = []
-  const sampler = setInterval(() => {
-    metrics.push({
-      t: Date.now(),
-      processes: app.getAppMetrics().map(m => ({ type: m.type, name: m.name ?? m.serviceName ?? '', pid: m.pid, cpu: m.cpu.percentCPUUsage })),
-    })
-  }, 500)
-  try {
-    await contentTracing.startRecording({ included_categories: TRACE_CATEGORIES, excluded_categories: ['*'] })
-    await new Promise(resolve => setTimeout(resolve, TRACE_SECONDS * 1000))
-    const rawPath = await contentTracing.stopRecording()
-    const gpu = await app.getGPUInfo('complete').catch(() => null)
-    const stamp = new Date().toISOString().slice(0, 19).replace(/[T:]/g, '-')
-    const outPath = path.join(app.getPath('downloads'), `DM-CC-performance-${stamp}.json.gz`)
-    // Context for reading the trace, added to the same file so only one file is sent
-    const info = {
-      app: app.getVersion(),
-      electron: process.versions.electron,
-      chrome: process.versions.chrome,
-      windows: os.release(),
-      cpus: os.cpus().length,
-      switches: process.argv.slice(1),
-      mainProcessGpu: app.commandLine.hasSwitch('in-process-gpu'),
-      renderer: gpu?.auxAttributes?.glRenderer ?? null,
-      featureStatus: app.getGPUFeatureStatus(),
-      displays: screen.getAllDisplays().map(d => ({ hz: d.displayFrequency, scale: d.scaleFactor, width: d.size.width, primary: d.id === screen.getPrimaryDisplay().id })),
-      windowDisplayHz: mainWindow ? screen.getDisplayMatching(mainWindow.getBounds()).displayFrequency : null,
-      metrics,
-    }
-    // Spliced in as text: the trace can be hundreds of MB, too big to parse here
-    const raw = readFileSync(rawPath, 'utf-8').trimEnd()
-    const trace = raw.endsWith('}') ? `${raw.slice(0, -1)},"dmccInfo":${JSON.stringify(info)}}` : raw
-    writeFileSync(outPath, gzipSync(trace))
-    rmSync(rawPath, { force: true })
-    shell.showItemInFolder(outPath)
-  }
-  finally {
-    clearInterval(sampler)
-    traceRunning = false
-  }
-}
-
-ipcMain.handle('record-performance-trace', () => {
-  if (traceRunning) return { started: false, seconds: TRACE_SECONDS }
-  traceRunning = true
-  recordPerformanceTrace().catch((err) => {
-    console.error('[Electron] Performance recording failed:', err)
-    dialog.showErrorBox('Performance recording failed', String(err?.message ?? err))
-  })
-  return { started: true, seconds: TRACE_SECONDS }
-})
-
-// Saves the choice and restarts, since Chromium reads these switches only at startup
-ipcMain.handle('set-graphics-prefs', (event, prefs = {}) => {
-  const changes = {}
-  if (typeof prefs.forceGpu === 'boolean') changes.forceGpu = prefs.forceGpu
-  if (typeof prefs.mainProcessGpu === 'boolean') changes.mainProcessGpu = prefs.mainProcessGpu
-  writeGraphicsPrefs(changes)
-  app.relaunch()
-  app.quit()
-  return { success: true }
-})
-
 ipcMain.handle('get-data-paths', () => {
   if (isDev) {
     // Dev mode uses project-local paths
