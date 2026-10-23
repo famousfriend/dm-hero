@@ -1,17 +1,20 @@
 name: Release App
 
+# DM Command Center releases (Windows): a new version in packages/app/package.json,
+# or new notes in packages/app/RELEASE_NOTES.md, on main builds the installer and
+# publishes it as a GitHub release. The app's update check reads latest.yml from
+# the newest release, so installed copies offer the update by themselves.
+# A version is released only once its "## X.Y.Z" notes are in RELEASE_NOTES.md,
+# and never twice (an existing tag vX.Y.Z is skipped).
+
 on:
   push:
     branches:
       - main
     paths:
       - 'packages/app/package.json'
-      - 'packages/app/CHANGELOG.md'
+      - 'packages/app/RELEASE_NOTES.md'
   workflow_dispatch:
-
-env:
-  REGISTRY: ghcr.io
-  IMAGE_NAME: flo0806/dm-hero
 
 jobs:
   check:
@@ -35,122 +38,21 @@ jobs:
         id: check
         run: |
           VERSION="${{ steps.version.outputs.version }}"
-          # Check if tag already exists on remote
           if git ls-remote --tags origin | grep -q "refs/tags/v${VERSION}$"; then
             echo "Tag v${VERSION} already exists - skipping release"
+            echo "should_release=false" >> $GITHUB_OUTPUT
+          elif ! grep -qxF "## ${VERSION}" packages/app/RELEASE_NOTES.md; then
+            echo "No '## ${VERSION}' notes in RELEASE_NOTES.md yet - skipping release"
             echo "should_release=false" >> $GITHUB_OUTPUT
           else
             echo "Tag v${VERSION} does not exist - will create release"
             echo "should_release=true" >> $GITHUB_OUTPUT
           fi
 
-  build-docker-amd64:
-    needs: check
-    if: needs.check.outputs.should_release == 'true'
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      packages: write
-
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
-
-      - name: Log in to GitHub Container Registry
-        uses: docker/login-action@v3
-        with:
-          registry: ${{ env.REGISTRY }}
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Build and push Docker image (amd64)
-        uses: docker/build-push-action@v5
-        with:
-          context: .
-          push: true
-          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ needs.check.outputs.version }}-amd64
-          cache-from: type=gha,scope=amd64
-          cache-to: type=gha,mode=max,scope=amd64
-          platforms: linux/amd64
-          provenance: false
-
-  build-docker-arm64:
-    needs: check
-    if: needs.check.outputs.should_release == 'true'
-    runs-on: ubuntu-24.04-arm
-    permissions:
-      contents: read
-      packages: write
-
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
-
-      - name: Log in to GitHub Container Registry
-        uses: docker/login-action@v3
-        with:
-          registry: ${{ env.REGISTRY }}
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Build and push Docker image (arm64)
-        uses: docker/build-push-action@v5
-        with:
-          context: .
-          push: true
-          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ needs.check.outputs.version }}-arm64
-          cache-from: type=gha,scope=arm64
-          cache-to: type=gha,mode=max,scope=arm64
-          platforms: linux/arm64
-          provenance: false
-
-  create-docker-manifest:
-    needs: [check, build-docker-amd64, build-docker-arm64]
-    if: needs.check.outputs.should_release == 'true'
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      packages: write
-
-    steps:
-      - name: Log in to GitHub Container Registry
-        uses: docker/login-action@v3
-        with:
-          registry: ${{ env.REGISTRY }}
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Create and push multi-arch manifest
-        run: |
-          VERSION="${{ needs.check.outputs.version }}"
-          IMAGE="${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}"
-
-          # Create manifest for version tag (--amend allows manifest lists as sources)
-          docker manifest create --amend ${IMAGE}:${VERSION} \
-            ${IMAGE}:${VERSION}-amd64 \
-            ${IMAGE}:${VERSION}-arm64
-          docker manifest push ${IMAGE}:${VERSION}
-
-          # Create manifest for latest tag
-          docker manifest create --amend ${IMAGE}:latest \
-            ${IMAGE}:${VERSION}-amd64 \
-            ${IMAGE}:${VERSION}-arm64
-          docker manifest push ${IMAGE}:latest
-
-          echo "✅ Multi-arch manifest pushed for ${IMAGE}:${VERSION} and ${IMAGE}:latest"
-
-  build-electron-windows:
+  build-windows:
     needs: check
     if: needs.check.outputs.should_release == 'true'
     runs-on: windows-latest
-    permissions:
-      contents: write
 
     steps:
       - name: Checkout repository
@@ -167,7 +69,7 @@ jobs:
       - name: Install dependencies
         run: pnpm install
 
-      - name: Build MCP server
+      - name: Build MCP server (bundled for "Connect your AI")
         run: pnpm --filter @dm-hero/mcp build
 
       - name: Build Nuxt
@@ -178,243 +80,20 @@ jobs:
 
       - name: Build Electron app
         working-directory: packages/app
-        run: pnpm exec electron-builder --win
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: pnpm exec electron-builder --win --publish never
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: dm-hero-windows
+          name: dm-command-center-windows
           path: |
-            packages/app/dist-electron/*.zip
             packages/app/dist-electron/*.exe
+            packages/app/dist-electron/*.exe.blockmap
             packages/app/dist-electron/latest.yml
-          if-no-files-found: warn
-
-  build-electron-linux:
-    needs: check
-    if: needs.check.outputs.should_release == 'true'
-    runs-on: ubuntu-latest
-    permissions:
-      contents: write
-
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '24'
-
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v4
-
-      - name: Install dependencies
-        run: pnpm install
-
-      - name: Build MCP server
-        run: pnpm --filter @dm-hero/mcp build
-
-      - name: Build Nuxt
-        run: pnpm --filter @dm-hero/app build
-
-      - name: Rebuild better-sqlite3 for Electron
-        run: pnpm --filter @dm-hero/app electron:rebuild
-
-      - name: Build Electron app
-        working-directory: packages/app
-        run: pnpm exec electron-builder --linux
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Upload artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          name: dm-hero-linux
-          path: |
-            packages/app/dist-electron/*.AppImage
-            packages/app/dist-electron/latest-linux.yml
-          if-no-files-found: warn
-
-  # ============================================================================
-  # MACOS BUILD (signed + notarized, both architectures)
-  # ============================================================================
-  build-electron-macos:
-    needs: check
-    if: needs.check.outputs.should_release == 'true'
-    runs-on: macos-15
-    permissions:
-      contents: write
-    strategy:
-      fail-fast: false
-      matrix:
-        arch: [x64, arm64]
-
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '24'
-
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v4
-
-      - name: Install dependencies
-        run: pnpm install
-
-      - name: Build MCP server
-        run: pnpm --filter @dm-hero/mcp build
-
-      - name: Build Nuxt
-        run: pnpm --filter @dm-hero/app build
-
-      - name: Install and copy sharp binaries for ${{ matrix.arch }}
-        run: |
-          cd packages/app
-          mkdir -p .output/server/node_modules/@img
-
-          if [ "${{ matrix.arch }}" = "x64" ]; then
-            echo "=== Cross-compiling for x64 on arm64 host ==="
-            # Use npm to force-install x64 binaries (pnpm skips wrong-platform packages)
-            npm pack @img/sharp-darwin-x64 --pack-destination /tmp
-            npm pack @img/sharp-libvips-darwin-x64 --pack-destination /tmp
-
-            # Extract directly to .output (npm pack creates img-<name>-<version>.tgz)
-            mkdir -p .output/server/node_modules/@img/sharp-darwin-x64
-            mkdir -p .output/server/node_modules/@img/sharp-libvips-darwin-x64
-            tar -xzf /tmp/img-sharp-darwin-x64-*.tgz -C .output/server/node_modules/@img/sharp-darwin-x64 --strip-components=1
-            tar -xzf /tmp/img-sharp-libvips-darwin-x64-*.tgz -C .output/server/node_modules/@img/sharp-libvips-darwin-x64 --strip-components=1
-          else
-            echo "=== Native arm64 build ==="
-            # For arm64, packages are already installed by pnpm - just copy them
-            for pkg in sharp-darwin-arm64 sharp-libvips-darwin-arm64; do
-              src=$(find ../../node_modules/.pnpm -type d -name "$pkg" -path "*/@img/$pkg" 2>/dev/null | head -1)
-              if [ -n "$src" ] && [ -d "$src" ]; then
-                echo "Copying $pkg from $src"
-                cp -r "$src" .output/server/node_modules/@img/
-              else
-                echo "Warning: $pkg not found in pnpm store"
-              fi
-            done
-          fi
-
-          echo "=== @img contents ==="
-          ls -la .output/server/node_modules/@img/
-
-      - name: Rebuild better-sqlite3 for Electron (${{ matrix.arch }})
-        run: |
-          cd packages/app
-          npm_config_arch=${{ matrix.arch }} node scripts/electron-rebuild.js
-        env:
-          npm_config_arch: ${{ matrix.arch }}
-
-      - name: Build Electron app (Signed + Notarized)
-        working-directory: packages/app
-        run: pnpm exec electron-builder --mac --${{ matrix.arch }}
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          CSC_LINK: ${{ secrets.APPLE_CERTIFICATE }}
-          CSC_KEY_PASSWORD: ${{ secrets.APPLE_CERTIFICATE_PASSWORD }}
-          APPLE_ID: ${{ secrets.APPLE_ID }}
-          APPLE_APP_SPECIFIC_PASSWORD: ${{ secrets.APPLE_APP_PASSWORD }}
-          APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
-
-      - name: Rename latest-mac.yml with arch suffix
-        run: |
-          cd packages/app/dist-electron
-          if [ -f "latest-mac.yml" ]; then
-            mv latest-mac.yml latest-mac-${{ matrix.arch }}.yml
-            echo "Renamed to latest-mac-${{ matrix.arch }}.yml"
-            cat latest-mac-${{ matrix.arch }}.yml
-          fi
-
-      - name: Upload artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          name: dm-hero-macos-${{ matrix.arch }}
-          path: |
-            packages/app/dist-electron/*.dmg
-            packages/app/dist-electron/latest-mac-${{ matrix.arch }}.yml
-          if-no-files-found: warn
-
-  # ============================================================================
-  # MERGE MAC LATEST YML (combines arm64 + x64 for auto-update)
-  # ============================================================================
-  merge-mac-latest-yml:
-    needs: [check, build-electron-macos]
-    if: needs.check.outputs.should_release == 'true'
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Download macOS arm64 artifacts
-        uses: actions/download-artifact@v4
-        with:
-          name: dm-hero-macos-arm64
-          path: ./mac-arm64
-
-      - name: Download macOS x64 artifacts
-        uses: actions/download-artifact@v4
-        with:
-          name: dm-hero-macos-x64
-          path: ./mac-x64
-
-      - name: Merge latest-mac.yml files
-        run: |
-          # Install js-yaml for parsing
-          npm install js-yaml
-
-          node << 'EOF'
-          const fs = require('fs');
-          const yaml = require('js-yaml');
-
-          // Read both yml files
-          const arm64Yml = yaml.load(fs.readFileSync('./mac-arm64/latest-mac-arm64.yml', 'utf8'));
-          const x64Yml = yaml.load(fs.readFileSync('./mac-x64/latest-mac-x64.yml', 'utf8'));
-
-          console.log('=== arm64 yml ===');
-          console.log(JSON.stringify(arm64Yml, null, 2));
-          console.log('=== x64 yml ===');
-          console.log(JSON.stringify(x64Yml, null, 2));
-
-          // Create merged yml with both architectures
-          const merged = {
-            version: arm64Yml.version,
-            files: [
-              // arm64 file(s)
-              ...(arm64Yml.files || [{ url: arm64Yml.path, sha512: arm64Yml.sha512, size: arm64Yml.size }]).map(f => ({
-                ...f,
-                arch: 'arm64'
-              })),
-              // x64 file(s)
-              ...(x64Yml.files || [{ url: x64Yml.path, sha512: x64Yml.sha512, size: x64Yml.size }]).map(f => ({
-                ...f,
-                arch: 'x64'
-              }))
-            ],
-            releaseDate: arm64Yml.releaseDate || new Date().toISOString()
-          };
-
-          // Write merged file
-          const output = yaml.dump(merged, { lineWidth: -1 });
-          fs.writeFileSync('./latest-mac.yml', output);
-
-          console.log('=== Merged latest-mac.yml ===');
-          console.log(output);
-          EOF
-
-      - name: Upload merged latest-mac.yml
-        uses: actions/upload-artifact@v4
-        with:
-          name: dm-hero-macos-latest
-          path: ./latest-mac.yml
+          if-no-files-found: error
 
   create-release:
-    needs: [check, create-docker-manifest, build-electron-windows, build-electron-linux, merge-mac-latest-yml]
+    needs: [check, build-windows]
     if: needs.check.outputs.should_release == 'true'
     runs-on: ubuntu-latest
     permissions:
@@ -427,54 +106,26 @@ jobs:
       - name: Download Windows artifacts
         uses: actions/download-artifact@v4
         with:
-          name: dm-hero-windows
+          name: dm-command-center-windows
           path: ./artifacts
 
-      - name: Download Linux artifacts
-        uses: actions/download-artifact@v4
-        with:
-          name: dm-hero-linux
-          path: ./artifacts
-
-      - name: Download macOS arm64 artifacts
-        uses: actions/download-artifact@v4
-        with:
-          name: dm-hero-macos-arm64
-          path: ./artifacts
-
-      - name: Download macOS x64 artifacts
-        uses: actions/download-artifact@v4
-        with:
-          name: dm-hero-macos-x64
-          path: ./artifacts
-
-      - name: Download merged macOS latest yml
-        uses: actions/download-artifact@v4
-        with:
-          name: dm-hero-macos-latest
-          path: ./artifacts
-
-      - name: Clean up arch-specific yml files (keep only merged)
+      - name: Read release notes
+        id: notes
         run: |
-          rm -f ./artifacts/latest-mac-arm64.yml ./artifacts/latest-mac-x64.yml
-          echo "=== Final artifacts ==="
-          ls -la ./artifacts/
-
-      - name: Read changelog
-        id: changelog
-        run: |
-          # Extract the latest changelog entry
-          CHANGELOG=$(sed -n '/^## /,/^## /p' packages/app/CHANGELOG.md | sed '$ d' | tail -n +2)
-          echo "changelog<<EOF" >> $GITHUB_OUTPUT
-          echo "$CHANGELOG" >> $GITHUB_OUTPUT
+          # This version's section of RELEASE_NOTES.md (from "## X.Y.Z" to the next heading)
+          VERSION="${{ needs.check.outputs.version }}"
+          NOTES=$(awk -v h="## ${VERSION}" '$0==h{on=1; next} /^## /{on=0} on' packages/app/RELEASE_NOTES.md)
+          echo "notes<<EOF" >> $GITHUB_OUTPUT
+          echo "$NOTES" >> $GITHUB_OUTPUT
           echo "EOF" >> $GITHUB_OUTPUT
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
         with:
           tag_name: v${{ needs.check.outputs.version }}
-          name: DM Hero v${{ needs.check.outputs.version }}
-          body: ${{ steps.changelog.outputs.changelog }}
+          target_commitish: ${{ github.sha }}
+          name: DM Command Center ${{ needs.check.outputs.version }}
+          body: ${{ steps.notes.outputs.notes }}
           files: ./artifacts/*
           draft: false
           prerelease: ${{ contains(needs.check.outputs.version, 'alpha') || contains(needs.check.outputs.version, 'beta') }}
