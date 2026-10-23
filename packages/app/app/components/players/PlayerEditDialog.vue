@@ -58,6 +58,7 @@
         <v-tabs-window v-if="player" v-model="activeTab">
           <!-- Details Tab -->
           <v-tabs-window-item value="details">
+            <PlayerQuickInfo :entity-id="player.id" :refresh-key="quickInfoKey" />
             <PlayerDdbSection :entity-id="player.id" @updated="onDdbUpdated" />
 
             <!-- Hidden file input -->
@@ -431,6 +432,7 @@ import type { PartyMember } from '~~/types/party'
 import { parseDdbCharacterId } from '~~/types/party'
 import PlayerDdbSection from './PlayerDdbSection.vue'
 import PlayerCharacterFields from './PlayerCharacterFields.vue'
+import PlayerQuickInfo from './PlayerQuickInfo.vue'
 import { emptyManualCharacter, manualCharacterPatch } from './manual-character'
 import EntityImageUpload from '../shared/EntityImageUpload.vue'
 import EntityImageGallery from '../shared/EntityImageGallery.vue'
@@ -489,6 +491,8 @@ const ddbLink = ref('')
 // Create: type the character in by hand, or load it from a D&D Beyond link
 const addMode = ref<'manual' | 'ddb'>('manual')
 const manualCharacter = ref(emptyManualCharacter())
+// Bumped after a D&D Beyond load so Quick info shows the new numbers
+const quickInfoKey = ref(0)
 const ddbLinkValid = computed(() => addMode.value === 'ddb' && !!parseDdbCharacterId(ddbLink.value))
 const activeTab = ref('details')
 const saving = ref(false)
@@ -774,6 +778,7 @@ async function saveManualCharacter(entityId: number) {
 // Edit: a D&D Beyond load also filled the Stat Block, an empty description and maybe the picture
 async function onDdbUpdated() {
   if (!player.value) return
+  quickInfoKey.value++
   const id = player.value.id
   try {
     const fresh = await $fetch<Player>(`/api/players/${id}`)

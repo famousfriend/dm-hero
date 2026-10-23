@@ -2289,7 +2289,8 @@
       "passivePerception": "Passive Wahrnehmung",
       "abilities": "Attributswerte",
       "saveFailed": "Die Charakterwerte konnten nicht gespeichert werden"
-    }
+    },
+    "quickInfo": "Kurzinfo"
   },
   "calendar": {
     "title": "Kalender",

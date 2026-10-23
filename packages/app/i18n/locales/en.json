@@ -2289,7 +2289,8 @@
       "passivePerception": "Passive Perception",
       "abilities": "Ability scores",
       "saveFailed": "The character stats could not be saved"
-    }
+    },
+    "quickInfo": "Quick info"
   },
   "calendar": {
     "title": "Calendar",

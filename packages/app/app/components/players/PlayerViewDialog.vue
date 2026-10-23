@@ -85,6 +85,8 @@
           <!-- Overview Tab -->
           <v-window-item value="overview">
             <div class="pa-4">
+              <PlayerQuickInfo :entity-id="player.id" />
+
               <!-- Description -->
               <div v-if="player.description" class="mb-6">
                 <h3 class="text-title-medium font-weight-bold mb-2">{{ $t('players.description') }}</h3>
@@ -242,6 +244,7 @@
 </template>
 
 <script setup lang="ts">
+import PlayerQuickInfo from './PlayerQuickInfo.vue'
 import type { Player } from '~~/types/player'
 import EntityRelationsList from '~/components/shared/EntityRelationsList.vue'
 import EntityDocumentsView from '~/components/shared/EntityDocumentsView.vue'
