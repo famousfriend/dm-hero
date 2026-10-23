@@ -1,6 +1,9 @@
 name: Test Build (All Platforms)
 
 on:
+  # Every merge to main builds the Windows app, so a fresh download is always ready
+  push:
+    branches: [main]
   workflow_dispatch:
     inputs:
       platform:
@@ -26,7 +29,7 @@ jobs:
   # WINDOWS BUILD (identical to release-app.yml)
   # ============================================================================
   build-electron-windows:
-    if: inputs.platform == 'all' || inputs.platform == 'windows'
+    if: github.event_name == 'push' || inputs.platform == 'all' || inputs.platform == 'windows'
     runs-on: windows-latest
     permissions:
       contents: write
