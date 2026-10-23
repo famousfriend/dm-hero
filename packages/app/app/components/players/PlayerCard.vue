@@ -91,35 +91,6 @@
       </div>
 
       <div class="d-flex flex-wrap" style="gap: 6px">
-        <!-- Characters Count Badge -->
-        <SharedLazyTooltip location="top">
-          <template #activator="{ props: tooltipProps }">
-            <v-chip
-              v-if="counts"
-              v-bind="tooltipProps"
-              prepend-icon="mdi-account-group"
-              size="small"
-              variant="outlined"
-              :color="counts.characters > 0 ? 'primary' : undefined"
-              class="clickable-chip"
-              @click.stop="$emit('open-tab', player, 'characters')"
-            >
-              {{ counts.characters }}
-            </v-chip>
-            <v-chip
-              v-else
-              v-bind="tooltipProps"
-              prepend-icon="mdi-account-group"
-              size="small"
-              variant="outlined"
-              disabled
-            >
-              <v-progress-circular indeterminate size="12" width="2" />
-            </v-chip>
-          </template>
-          <span>{{ $t('players.badgeTooltips.characters') }}</span>
-        </SharedLazyTooltip>
-
         <!-- Items Count Badge -->
         <SharedLazyTooltip location="top">
           <template #activator="{ props: tooltipProps }">

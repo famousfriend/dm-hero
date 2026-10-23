@@ -31,11 +31,6 @@
           {{ $t('common.notes') }}
           <v-chip size="x-small" class="ml-2">{{ counts.documents }}</v-chip>
         </v-tab>
-        <v-tab value="characters">
-          <v-icon start>mdi-account-group</v-icon>
-          {{ $t('players.characters') }}
-          <v-chip size="x-small" class="ml-2">{{ counts.characters }}</v-chip>
-        </v-tab>
         <v-tab value="items">
           <v-icon start>mdi-sword</v-icon>
           {{ $t('nav.items') }}
@@ -264,15 +259,6 @@
             />
           </v-tabs-window-item>
 
-          <!-- Characters (NPCs) Tab -->
-          <v-tabs-window-item value="characters">
-            <PlayerCharactersTab
-              v-if="player"
-              :entity-id="player.id"
-              @changed="playerStore.loadCounts(player!.id)"
-            />
-          </v-tabs-window-item>
-
           <!-- Items Tab -->
           <v-tabs-window-item value="items">
             <PlayerItemsTab
@@ -452,7 +438,6 @@ import EntityDocuments from '../shared/EntityDocuments.vue'
 import SharedEntityStatsTab from '../shared/EntityStatsTab.vue'
 import EntityLocationsTab from '../shared/EntityLocationsTab.vue'
 import EntityFactionsTab from '../shared/EntityFactionsTab.vue'
-import PlayerCharactersTab from './PlayerCharactersTab.vue'
 import PlayerItemsTab from './PlayerItemsTab.vue'
 import PlayerLoreTab from './PlayerLoreTab.vue'
 import ImagePreviewDialog from '../shared/ImagePreviewDialog.vue'

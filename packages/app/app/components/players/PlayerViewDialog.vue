@@ -50,11 +50,6 @@
             <v-icon size="x-small">mdi-check</v-icon>
           </v-chip>
         </v-tab>
-        <v-tab value="characters">
-          <v-icon start>mdi-account-group</v-icon>
-          {{ $t('players.characters') }}
-          <v-chip v-if="counts" size="x-small" class="ml-2">{{ counts.characters }}</v-chip>
-        </v-tab>
         <v-tab value="items">
           <v-icon start>mdi-sword</v-icon>
           {{ $t('nav.items') }}
@@ -163,17 +158,6 @@
               v-if="player"
               :entity-id="player.id"
               readonly
-            />
-          </v-window-item>
-
-          <!-- Characters (NPCs) Tab -->
-          <v-window-item value="characters">
-            <EntityRelationsList
-              :entities="characters"
-              :loading="loading"
-              entity-type="npc"
-              :empty-message="$t('players.noCharacters')"
-              @click="$emit('view-npc', $event)"
             />
           </v-window-item>
 
