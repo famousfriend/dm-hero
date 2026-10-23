@@ -2086,7 +2086,7 @@
       "record": "Grabar 15 segundos",
       "recording": "Grabando… desplázate y mueve el ratón ahora",
       "mainProcessGpu": "Dibujar desde la propia ventana de la app",
-      "mainProcessGpuHint": "Evita que los controladores gráficos traten la app como un programa en segundo plano y la limiten a 20 fotogramas por segundo. Desactívalo solo si la app muestra una ventana vacía o negra."
+      "mainProcessGpuHint": "Se elige automáticamente: activado en tarjetas gráficas NVIDIA de sobremesa, que si no limitan la app a 20 fotogramas por segundo. Desactívalo si la app muestra una ventana vacía o negra."
     }
   },
   "players": {
