@@ -130,6 +130,14 @@ if (readGraphicsPrefs().forceGpu) {
   app.commandLine.appendSwitch('enable-zero-copy')
 }
 
+// Mouse-wheel scrolling like Chrome on Windows: Chrome turns these on for its own users
+// (scroll by a share of the page with a soft glide), Electron leaves them off, which made
+// wheel scrolling feel steppy even at full frame rate. Unknown names are ignored.
+if (process.platform === 'win32') {
+  app.commandLine.appendSwitch('enable-smooth-scrolling')
+  app.commandLine.appendSwitch('enable-features', 'WindowsScrollingPersonality,PercentBasedScrolling,ImpulseScrollAnimations')
+}
+
 let mainWindow = null
 let serverProcess = null
 let serverErrors = ''
