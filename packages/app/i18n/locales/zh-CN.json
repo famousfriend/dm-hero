@@ -2084,7 +2084,9 @@
       "recordTitle": "录制卡顿",
       "recordDescription": "点击录制，然后在 15 秒内滚动一个长页面并将鼠标移到文件夹上，在卡顿的地方操作。之后会在资源管理器中打开一个文件：把它发给 Claude。",
       "record": "录制 15 秒",
-      "recording": "正在录制… 现在滚动并移动鼠标"
+      "recording": "正在录制… 现在滚动并移动鼠标",
+      "mainProcessGpu": "从应用自己的窗口绘制",
+      "mainProcessGpuHint": "防止显卡驱动把本应用当作后台程序并将其限制为每秒 20 帧。仅当应用显示空白或黑色窗口时才关闭。"
     }
   },
   "players": {
@@ -2250,6 +2252,25 @@
       "misunderstands": "误解",
       "teaches": "教学",
       "studies": "研究"
+    },
+    "ddb": {
+      "title": "D&D Beyond 角色",
+      "linked": "已关联",
+      "refresh": "从 D&D Beyond 加载最新数据",
+      "open": "打开角色卡",
+      "unlink": "取消关联",
+      "intro": "粘贴角色的 D&D Beyond 链接，其生命值、护甲等级、被动值和状态会加载到队伍页面和战斗中。",
+      "introCreate": "粘贴角色的 D&D Beyond 链接：名字会自动填写，生命值、护甲等级、被动值和状态会加载到队伍页面和战斗中。",
+      "link": "关联并加载",
+      "loadsOnSave": "点击创建时从 D&D Beyond 加载",
+      "howTo": "如何获取链接？",
+      "step1": "在 D&D Beyond 上打开角色卡。",
+      "step2": "确保角色的隐私设置为公开。",
+      "step3": "复制浏览器地址栏中的地址（或 Share > Copy link）并粘贴到这里。",
+      "level": "等级",
+      "nameFromSheet": "留空即使用 D&D Beyond 上的名字",
+      "placeholderName": "新角色",
+      "addFromDdb": "从 D&D Beyond 添加"
     }
   },
   "calendar": {

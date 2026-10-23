@@ -63,6 +63,8 @@
         <v-tabs-window v-if="player" v-model="activeTab">
           <!-- Details Tab -->
           <v-tabs-window-item value="details">
+            <PlayerDdbSection :entity-id="player.id" />
+
             <!-- Hidden file input -->
             <input
               ref="fileInputRef"
@@ -310,11 +312,15 @@
 
         <!-- Create Form (no tabs) -->
         <div v-if="!player">
+          <PlayerDdbSection v-model:link="ddbLink" :autofocus="ddbFirst" />
+
           <v-text-field
             v-model="form.name"
             :label="$t('players.name')"
-            :placeholder="$t('players.namePlaceholder')"
-            :rules="[(v: string) => !!v || $t('players.nameRequired')]"
+            :placeholder="ddbLinkValid ? $t('players.ddb.nameFromSheet') : $t('players.namePlaceholder')"
+            :hint="ddbLinkValid ? $t('players.ddb.nameFromSheet') : undefined"
+            :persistent-hint="ddbLinkValid"
+            :rules="[(v: string) => !!v || ddbLinkValid || $t('players.nameRequired')]"
             variant="outlined"
             class="mb-3"
           />
@@ -403,7 +409,7 @@
         <div class="d-inline-block">
           <v-btn
             color="primary"
-            :disabled="!form.name || generatingImage || uploadingImage || hasDirtyTabs"
+            :disabled="(!form.name && !ddbLinkValid) || generatingImage || uploadingImage || hasDirtyTabs"
             :loading="saving"
             @click="save"
           >
@@ -427,6 +433,9 @@
 
 <script setup lang="ts">
 import type { Player } from '~~/types/player'
+import type { PartyMember } from '~~/types/party'
+import { parseDdbCharacterId } from '~~/types/party'
+import PlayerDdbSection from './PlayerDdbSection.vue'
 import EntityImageUpload from '../shared/EntityImageUpload.vue'
 import EntityImageGallery from '../shared/EntityImageGallery.vue'
 import EntityDocuments from '../shared/EntityDocuments.vue'
@@ -446,6 +455,7 @@ const props = defineProps<{
   show: boolean
   playerId?: number | null
   initialTab?: string // Tab to open when dialog opens (default: 'details')
+  ddbFirst?: boolean // Create: start in the D&D Beyond link field
 }>()
 
 const emit = defineEmits<{
@@ -478,6 +488,9 @@ const internalShow = computed({
 })
 
 const player = ref<Player | null>(null)
+// Create: D&D Beyond link to attach after saving (the sheet then fills the name if left empty)
+const ddbLink = ref('')
+const ddbLinkValid = computed(() => !!parseDdbCharacterId(ddbLink.value))
 const activeTab = ref('details')
 const saving = ref(false)
 
@@ -614,6 +627,7 @@ async function loadPlayer(playerId: number) {
 
 function resetForm() {
   player.value = null
+  ddbLink.value = ''
   form.value = {
     name: '',
     description: '',
@@ -636,7 +650,7 @@ function resetForm() {
 // Save & Close
 // ============================================================================
 async function save() {
-  if (!form.value.name) return
+  if (!form.value.name && !ddbLinkValid.value) return
 
   saving.value = true
 
@@ -679,13 +693,15 @@ async function save() {
     }
     else {
       // Create new player via store
-      const created = await entitiesStore.createPlayer(campaignId, {
-        name: form.value.name,
+      let created = await entitiesStore.createPlayer(campaignId, {
+        name: form.value.name || t('players.ddb.placeholderName'),
         description: form.value.description || null,
         location_id: form.value.location_id,
         metadata,
       })
       savedPlayerId = created.id
+
+      if (ddbLinkValid.value) created = await linkDdbAfterCreate(created)
 
       // Handle map sync if enabled
       if (mapSyncData.value && mapSyncData.value.locationId && mapSyncData.value.mapIds.length > 0) {
@@ -720,6 +736,25 @@ async function save() {
 
 function close() {
   internalShow.value = false
+}
+
+// Links the new player to D&D Beyond and loads the sheet; an empty name becomes the sheet's name.
+// A failed load keeps the link (the Party page retries) and tells the DM.
+async function linkDdbAfterCreate(created: Player): Promise<Player> {
+  try {
+    await $fetch(`/api/party/${created.id}`, { method: 'PATCH', body: { ddbLink: ddbLink.value } })
+    const member = await $fetch<PartyMember>(`/api/party/${created.id}/refresh`, { method: 'POST' })
+    if (!form.value.name && member.ddb?.name) {
+      form.value.name = member.ddb.name
+      return await entitiesStore.updatePlayer(created.id, { name: member.ddb.name })
+    }
+    if (member.ddbError) snackbarStore.error(member.ddbError)
+  }
+  catch {
+    snackbarStore.error(t('party.ddbNeverLoaded'))
+  }
+  if (!form.value.name) form.value.name = created.name
+  return created
 }
 
 // Sync Player marker to selected maps - place inside location circle if available

@@ -126,10 +126,36 @@ function readGraphicsPrefs() {
     return {}
   }
 }
+function writeGraphicsPrefs(changes) {
+  try {
+    writeFileSync(graphicsPrefsFile(), JSON.stringify({ ...readGraphicsPrefs(), ...changes }))
+  }
+  catch (err) {
+    console.error('[Electron] Saving graphics settings failed:', err)
+  }
+}
 if (readGraphicsPrefs().forceGpu) {
   app.commandLine.appendSwitch('ignore-gpu-blocklist')
   app.commandLine.appendSwitch('enable-gpu-rasterization')
   app.commandLine.appendSwitch('enable-zero-copy')
+}
+
+// mainProcessGpu (Windows, on unless switched off): draw from the window's own process.
+// Chromium normally draws from a separate helper process. Graphics drivers decide what is
+// "in the background" by which process owns the active window, so they appear to take the
+// helper for a background app: a trace showed every frame held for 50 ms (NVIDIA "Background Application Max Frame
+// Rate"), capping the app at 20 fps while Chrome, which drivers know, stayed smooth.
+// If a window ever fails to show with it, the next start switches it off.
+const isWindowsPlatform = process.platform === 'win32'
+if (isWindowsPlatform) {
+  const prefs = readGraphicsPrefs()
+  if (prefs.startPending && prefs.mainProcessGpu !== false) {
+    console.warn('[Electron] Last start did not reach the window, drawing from the helper process again')
+    writeGraphicsPrefs({ mainProcessGpu: false, startPending: false })
+  }
+  else if (prefs.mainProcessGpu !== false) {
+    app.commandLine.appendSwitch('in-process-gpu')
+  }
 }
 
 let mainWindow = null
@@ -420,10 +446,13 @@ function createWindow() {
     windowOptions.icon = nativeImage.createFromPath(iconPath)
   }
 
+  // Cleared once the window shows (see mainProcessGpu above)
+  if (app.commandLine.hasSwitch('in-process-gpu')) writeGraphicsPrefs({ startPending: true })
   mainWindow = new BrowserWindow(windowOptions)
 
   mainWindow.once('ready-to-show', () => {
     console.log('[Electron] Window ready to show')
+    if (readGraphicsPrefs().startPending) writeGraphicsPrefs({ startPending: false })
     mainWindow.show()
   })
 
@@ -470,6 +499,7 @@ ipcMain.handle('get-graphics-info', async () => {
     chrome: process.versions.chrome,
     electron: process.versions.electron,
     forceGpu: readGraphicsPrefs().forceGpu === true,
+    mainProcessGpu: isWindowsPlatform ? app.commandLine.hasSwitch('in-process-gpu') : null,
   }
 })
 
@@ -509,6 +539,7 @@ async function recordPerformanceTrace() {
       windows: os.release(),
       cpus: os.cpus().length,
       switches: process.argv.slice(1),
+      mainProcessGpu: app.commandLine.hasSwitch('in-process-gpu'),
       renderer: gpu?.auxAttributes?.glRenderer ?? null,
       featureStatus: app.getGPUFeatureStatus(),
       displays: screen.getAllDisplays().map(d => ({ hz: d.displayFrequency, scale: d.scaleFactor, width: d.size.width, primary: d.id === screen.getPrimaryDisplay().id })),
@@ -540,7 +571,10 @@ ipcMain.handle('record-performance-trace', () => {
 
 // Saves the choice and restarts, since Chromium reads these switches only at startup
 ipcMain.handle('set-graphics-prefs', (event, prefs = {}) => {
-  writeFileSync(graphicsPrefsFile(), JSON.stringify({ ...readGraphicsPrefs(), forceGpu: prefs.forceGpu === true }))
+  const changes = {}
+  if (typeof prefs.forceGpu === 'boolean') changes.forceGpu = prefs.forceGpu
+  if (typeof prefs.mainProcessGpu === 'boolean') changes.mainProcessGpu = prefs.mainProcessGpu
+  writeGraphicsPrefs(changes)
   app.relaunch()
   app.quit()
   return { success: true }

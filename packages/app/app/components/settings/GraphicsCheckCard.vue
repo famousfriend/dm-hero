@@ -22,6 +22,20 @@
       </v-btn>
 
       <v-switch
+        v-if="info && info.mainProcessGpu !== null"
+        :model-value="info.mainProcessGpu"
+        :label="$t('settings.graphics.mainProcessGpu')"
+        :hint="$t('settings.graphics.mainProcessGpuHint')"
+        persistent-hint
+        :loading="saving"
+        :disabled="saving"
+        color="primary"
+        inset
+        density="comfortable"
+        class="mb-2"
+        @update:model-value="saveMainProcessGpu"
+      />
+      <v-switch
         :model-value="info?.forceGpu ?? false"
         :label="$t('settings.graphics.forceGpu')"
         :loading="saving"
@@ -111,5 +125,10 @@ async function record() {
 async function save(value: boolean | null) {
   saving.value = true
   await electronAPI!.setGraphicsPrefs!({ forceGpu: value === true })
+}
+
+async function saveMainProcessGpu(value: boolean | null) {
+  saving.value = true
+  await electronAPI!.setGraphicsPrefs!({ mainProcessGpu: value === true })
 }
 </script>

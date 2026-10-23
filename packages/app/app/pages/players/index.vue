@@ -2,9 +2,14 @@
   <v-container>
     <UiPageHeader :title="$t('players.title')" :subtitle="$t('players.subtitle')">
       <template #actions>
-        <v-btn color="primary" prepend-icon="mdi-plus" size="large" @click="openCreateDialog">
-          {{ $t('players.create') }}
-        </v-btn>
+        <div class="d-flex flex-wrap ga-2">
+          <v-btn variant="tonal" color="primary" prepend-icon="mdi-link-variant" size="large" @click="openCreateDialog(true)">
+            {{ $t('players.ddb.addFromDdb') }}
+          </v-btn>
+          <v-btn color="primary" prepend-icon="mdi-plus" size="large" @click="openCreateDialog()">
+            {{ $t('players.create') }}
+          </v-btn>
+        </div>
       </template>
     </UiPageHeader>
 
@@ -88,7 +93,7 @@
           :text="$t('players.emptyText')"
         >
           <template #actions>
-            <v-btn color="primary" prepend-icon="mdi-plus" @click="openCreateDialog">
+            <v-btn color="primary" prepend-icon="mdi-plus" @click="openCreateDialog()">
               {{ $t('players.create') }}
             </v-btn>
           </template>
@@ -109,6 +114,7 @@
       :show="showEditDialog"
       :player-id="editingPlayerId"
       :initial-tab="editDialogInitialTab"
+      :ddb-first="createFromDdb"
       @update:show="handleDialogClose"
       @saved="handlePlayerSaved"
       @created="handlePlayerCreated"
@@ -143,7 +149,7 @@
       icon="mdi-plus"
       size="large"
       class="fab-create"
-      @click="openCreateDialog"
+      @click="openCreateDialog()"
     />
   </v-container>
 </template>
@@ -243,7 +249,10 @@ onMounted(async () => {
 })
 
 // Methods
-function openCreateDialog() {
+// fromDdb: the D&D Beyond link field gets the focus
+const createFromDdb = ref(false)
+function openCreateDialog(fromDdb = false) {
+  createFromDdb.value = fromDdb
   editingPlayerId.value = null
   editDialogInitialTab.value = undefined
   showEditDialog.value = true
