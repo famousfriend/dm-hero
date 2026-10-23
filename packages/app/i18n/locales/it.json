@@ -2086,7 +2086,7 @@
       "record": "Registra 15 secondi",
       "recording": "Registrazione… scorri e passa il mouse ora",
       "mainProcessGpu": "Disegna dalla finestra dell'app",
-      "mainProcessGpuHint": "Impedisce ai driver grafici di trattare l'app come un programma in background e di limitarla a 20 fotogrammi al secondo. Disattivalo solo se l'app mostra una finestra vuota o nera."
+      "mainProcessGpuHint": "Scelto automaticamente: attivo con le schede grafiche NVIDIA dei PC desktop, che altrimenti limitano l'app a 20 fotogrammi al secondo. Disattivalo se l'app mostra una finestra vuota o nera."
     }
   },
   "players": {

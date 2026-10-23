@@ -2086,7 +2086,7 @@
       "record": "15 Sekunden aufzeichnen",
       "recording": "Zeichnet auf… jetzt scrollen und Maus bewegen",
       "mainProcessGpu": "Aus dem eigenen Fenster der App zeichnen",
-      "mainProcessGpuHint": "Verhindert, dass Grafiktreiber die App als Hintergrundprogramm behandeln und sie auf 20 Bilder pro Sekunde begrenzen. Nur ausschalten, wenn die App ein leeres oder schwarzes Fenster zeigt."
+      "mainProcessGpuHint": "Wird automatisch gewählt: an bei NVIDIA-Grafikkarten in Desktop-PCs, die die App sonst auf 20 Bilder pro Sekunde begrenzen. Ausschalten, wenn die App ein leeres oder schwarzes Fenster zeigt."
     }
   },
   "players": {

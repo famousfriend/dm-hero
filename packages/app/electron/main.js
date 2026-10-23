@@ -140,22 +140,44 @@ if (readGraphicsPrefs().forceGpu) {
   app.commandLine.appendSwitch('enable-zero-copy')
 }
 
-// mainProcessGpu (Windows, on unless switched off): draw from the window's own process.
+// mainProcessGpu (Windows): draw from the window's own process.
 // Chromium normally draws from a separate helper process. Graphics drivers decide what is
 // "in the background" by which process owns the active window, so they appear to take the
 // helper for a background app: a trace showed every frame held for 50 ms (NVIDIA "Background Application Max Frame
 // Rate"), capping the app at 20 fps while Chrome, which drivers know, stayed smooth.
+// That limit is NVIDIA's, and on a laptop the same switch left the window empty, so it is
+// automatic only where it is needed: an NVIDIA card with no Intel/AMD chip beside it (a
+// desktop). The cards are read after each start (gpus) and used from the next start, so a
+// new PC starts the safe way once. The Settings switch overrides this (true/false).
 // If a window ever fails to show with it, the next start switches it off.
 const isWindowsPlatform = process.platform === 'win32'
+const VENDOR_NVIDIA = 0x10DE
+const VENDOR_INTEL = 0x8086
+const VENDOR_AMD = 0x1002
+
+function wantsMainProcessGpu(prefs) {
+  if (typeof prefs.mainProcessGpu === 'boolean') return prefs.mainProcessGpu
+  const gpus = Array.isArray(prefs.gpus) ? prefs.gpus : []
+  return gpus.some(g => g.active && g.vendorId === VENDOR_NVIDIA)
+    && !gpus.some(g => g.vendorId === VENDOR_INTEL || g.vendorId === VENDOR_AMD)
+}
+
 if (isWindowsPlatform) {
   const prefs = readGraphicsPrefs()
-  if (prefs.startPending && prefs.mainProcessGpu !== false) {
+  if (prefs.startPending && wantsMainProcessGpu(prefs)) {
     console.warn('[Electron] Last start did not reach the window, drawing from the helper process again')
     writeGraphicsPrefs({ mainProcessGpu: false, startPending: false })
   }
-  else if (prefs.mainProcessGpu !== false) {
+  else if (wantsMainProcessGpu(prefs)) {
     app.commandLine.appendSwitch('in-process-gpu')
   }
+}
+
+// Remembers this PC's graphics cards for the automatic choice above
+async function rememberGpus() {
+  const info = await app.getGPUInfo('basic').catch(() => null)
+  const gpus = (info?.gpuDevice ?? []).map(d => ({ vendorId: d.vendorId, deviceId: d.deviceId, active: !!d.active }))
+  if (gpus.length) writeGraphicsPrefs({ gpus })
 }
 
 let mainWindow = null
@@ -454,6 +476,7 @@ function createWindow() {
     console.log('[Electron] Window ready to show')
     if (readGraphicsPrefs().startPending) writeGraphicsPrefs({ startPending: false })
     mainWindow.show()
+    if (isWindowsPlatform) rememberGpus()
   })
 
   mainWindow.webContents.on('did-fail-load', (_, errorCode, errorDescription) => {

@@ -2086,7 +2086,7 @@
       "record": "Record 15 seconds",
       "recording": "Recording… scroll and hover now",
       "mainProcessGpu": "Draw from the app's own window",
-      "mainProcessGpuHint": "Keeps graphics drivers from treating the app as a background program and limiting it to 20 frames a second. Turn off only if the app shows a blank or black window."
+      "mainProcessGpuHint": "Chosen automatically: on for desktop NVIDIA graphics cards, which otherwise limit the app to 20 frames a second. Turn it off if the app shows a blank or black window."
     }
   },
   "players": {
