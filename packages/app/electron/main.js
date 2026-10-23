@@ -1,7 +1,7 @@
-import { app, BrowserWindow, utilityProcess, ipcMain, dialog, shell, Menu, nativeImage } from 'electron'
+import { app, BrowserWindow, utilityProcess, ipcMain, dialog, shell, Menu, nativeImage, screen } from 'electron'
 import pkg from 'electron-updater'
 import path from 'path'
-import { existsSync, mkdirSync, copyFileSync, cpSync, writeFileSync, appendFileSync, readdirSync, renameSync, rmSync } from 'fs'
+import { existsSync, mkdirSync, copyFileSync, cpSync, writeFileSync, appendFileSync, readdirSync, readFileSync, renameSync, rmSync } from 'fs'
 import { fileURLToPath } from 'url'
 
 const { autoUpdater } = pkg
@@ -110,6 +110,25 @@ function useRenamedDataFolder() {
   }
 }
 useRenamedDataFolder()
+
+// Graphics options from Settings > More > Graphics check (they need a restart)
+// forceGpu: use the graphics card even where Chromium would fall back to slower drawing
+function graphicsPrefsFile() {
+  return path.join(app.getPath('userData'), 'graphics.json')
+}
+function readGraphicsPrefs() {
+  try {
+    return JSON.parse(readFileSync(graphicsPrefsFile(), 'utf-8'))
+  }
+  catch {
+    return {}
+  }
+}
+if (readGraphicsPrefs().forceGpu) {
+  app.commandLine.appendSwitch('ignore-gpu-blocklist')
+  app.commandLine.appendSwitch('enable-gpu-rasterization')
+  app.commandLine.appendSwitch('enable-zero-copy')
+}
 
 let mainWindow = null
 let serverProcess = null
@@ -436,6 +455,30 @@ function createWindow() {
 }
 
 // IPC Handlers for data management
+// What the window draws with: tells a slow window (software drawing, blocked GPU) apart
+// from a slow page, which Chrome would show too
+ipcMain.handle('get-graphics-info', async () => {
+  const gpu = await app.getGPUInfo('complete').catch(() => null)
+  return {
+    featureStatus: app.getGPUFeatureStatus(),
+    renderer: gpu?.auxAttributes?.glRenderer ?? null,
+    devices: (gpu?.gpuDevice ?? []).map(d => ({ active: d.active, vendorId: d.vendorId, deviceId: d.deviceId, driver: d.driverVersion })),
+    displays: screen.getAllDisplays().map(d => ({ hz: d.displayFrequency, scale: d.scaleFactor, width: d.size.width, primary: d.id === screen.getPrimaryDisplay().id })),
+    windowDisplayHz: mainWindow ? screen.getDisplayMatching(mainWindow.getBounds()).displayFrequency : null,
+    chrome: process.versions.chrome,
+    electron: process.versions.electron,
+    forceGpu: readGraphicsPrefs().forceGpu === true,
+  }
+})
+
+// Saves the choice and restarts, since Chromium reads these switches only at startup
+ipcMain.handle('set-graphics-prefs', (event, prefs = {}) => {
+  writeFileSync(graphicsPrefsFile(), JSON.stringify({ ...readGraphicsPrefs(), forceGpu: prefs.forceGpu === true }))
+  app.relaunch()
+  app.quit()
+  return { success: true }
+})
+
 ipcMain.handle('get-data-paths', () => {
   if (isDev) {
     // Dev mode uses project-local paths

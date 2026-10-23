@@ -2069,6 +2069,18 @@
       "ai": "IA",
       "data": "Sauvegardes et données",
       "more": "Plus"
+    },
+    "graphics": {
+      "title": "Vérification graphique",
+      "description": "Si l'app défile moins bien qu'un navigateur, ceci montre avec quoi sa fenêtre dessine. Clique sur Copier et colle-le pour Claude.",
+      "copy": "Copier les détails",
+      "copied": "Copié",
+      "forceGpu": "Utiliser la carte graphique même si Windows ou le pilote est bloqué",
+      "restartHint": "L'app redémarre quand tu changes ce réglage.",
+      "compositing": "Composition GPU",
+      "rasterization": "Rastérisation GPU",
+      "card": "Carte graphique",
+      "refresh": "Fréquence de l'écran"
     }
   },
   "players": {

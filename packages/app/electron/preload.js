@@ -26,6 +26,10 @@ contextBridge.exposeInMainWorld('electronAPI', {
   // Pick a folder (music library)
   selectFolderDialog: options => ipcRenderer.invoke('select-folder-dialog', options),
 
+  // Graphics check (Settings > More): what the window draws with; saving prefs restarts the app
+  getGraphicsInfo: () => ipcRenderer.invoke('get-graphics-info'),
+  setGraphicsPrefs: prefs => ipcRenderer.invoke('set-graphics-prefs', prefs),
+
   // Open external URL in system browser
   openExternalUrl: url => ipcRenderer.invoke('open-external-url', url),
 

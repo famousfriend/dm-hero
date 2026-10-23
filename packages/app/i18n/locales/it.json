@@ -2069,6 +2069,18 @@
       "ai": "IA",
       "data": "Backup e dati",
       "more": "Altro"
+    },
+    "graphics": {
+      "title": "Controllo grafica",
+      "description": "Se l'app scorre meno fluida di un browser, qui vedi con cosa disegna la sua finestra. Clicca Copia e incollalo per Claude.",
+      "copy": "Copia dettagli",
+      "copied": "Copiato",
+      "forceGpu": "Usa la scheda grafica anche se Windows o il driver sono bloccati",
+      "restartHint": "L'app si riavvia quando cambi questa opzione.",
+      "compositing": "Composizione GPU",
+      "rasterization": "Rasterizzazione GPU",
+      "card": "Scheda grafica",
+      "refresh": "Frequenza dello schermo"
     }
   },
   "players": {

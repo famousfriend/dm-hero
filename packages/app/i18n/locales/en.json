@@ -2069,6 +2069,18 @@
       "ai": "AI",
       "data": "Backups & data",
       "more": "More"
+    },
+    "graphics": {
+      "title": "Graphics check",
+      "description": "If the app scrolls less smoothly than a web browser, this shows what its window draws with. Click Copy and paste it to Claude.",
+      "copy": "Copy details",
+      "copied": "Copied",
+      "forceGpu": "Use the graphics card even if Windows or the driver is on a blocklist",
+      "restartHint": "The app restarts when you change this.",
+      "compositing": "GPU compositing",
+      "rasterization": "GPU rasterization",
+      "card": "Graphics card",
+      "refresh": "Screen refresh rate"
     }
   },
   "players": {

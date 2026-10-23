@@ -2069,6 +2069,18 @@
       "ai": "AI",
       "data": "备份与数据",
       "more": "更多"
+    },
+    "graphics": {
+      "title": "图形检查",
+      "description": "如果应用滚动不如浏览器流畅，这里会显示窗口的绘制方式。点击复制并粘贴给 Claude。",
+      "copy": "复制详情",
+      "copied": "已复制",
+      "forceGpu": "即使 Windows 或驱动在黑名单中也使用显卡",
+      "restartHint": "更改此项后应用会重新启动。",
+      "compositing": "GPU 合成",
+      "rasterization": "GPU 光栅化",
+      "card": "显卡",
+      "refresh": "屏幕刷新率"
     }
   },
   "players": {
