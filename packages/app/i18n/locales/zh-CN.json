@@ -2289,7 +2289,8 @@
       "passivePerception": "被动察觉",
       "abilities": "属性值",
       "saveFailed": "无法保存角色数值"
-    }
+    },
+    "quickInfo": "速览"
   },
   "calendar": {
     "title": "日历",

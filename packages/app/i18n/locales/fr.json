@@ -2289,7 +2289,8 @@
       "passivePerception": "Perception passive",
       "abilities": "Valeurs de caractéristique",
       "saveFailed": "Les caractéristiques du personnage n’ont pas pu être enregistrées"
-    }
+    },
+    "quickInfo": "Infos rapides"
   },
   "calendar": {
     "title": "Calendrier",

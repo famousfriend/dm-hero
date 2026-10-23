@@ -2289,7 +2289,8 @@
       "passivePerception": "Percepción pasiva",
       "abilities": "Puntuaciones de característica",
       "saveFailed": "No se pudieron guardar las estadísticas del personaje"
-    }
+    },
+    "quickInfo": "Resumen rápido"
   },
   "calendar": {
     "title": "Calendario",
