@@ -278,8 +278,8 @@
     </template>
 
     <template v-else>
-      <!-- Standard Windows title bar (desktop app) -->
-      <WindowFrameCard />
+      <!-- Desktop app: does the window draw with the graphics card? -->
+      <GraphicsCheckCard />
 
       <!-- Playfulness / Easter eggs -->
       <v-card class="mt-6">
@@ -319,7 +319,7 @@
 <script setup lang="ts">
 import BackupsCard from '~/components/settings/BackupsCard.vue'
 import TaleSpireCard from '~/components/settings/TaleSpireCard.vue'
-import WindowFrameCard from '~/components/settings/WindowFrameCard.vue'
+import GraphicsCheckCard from '~/components/settings/GraphicsCheckCard.vue'
 import { useElectron } from '~/composables/useElectron'
 import { useFolderAnimationSettings } from '~/composables/useFolderAnimations'
 

@@ -2070,11 +2070,17 @@
       "data": "Backups & data",
       "more": "More"
     },
-    "window": {
-      "title": "Window",
-      "description": "If scrolling feels less smooth in the app than in a web browser, try the standard Windows title bar.",
-      "nativeFrame": "Use the standard Windows title bar",
-      "restartHint": "The app restarts when you change this."
+    "graphics": {
+      "title": "Graphics check",
+      "description": "If the app scrolls less smoothly than a web browser, this shows what its window draws with. Click Copy and paste it to Claude.",
+      "copy": "Copy details",
+      "copied": "Copied",
+      "forceGpu": "Use the graphics card even if Windows or the driver is on a blocklist",
+      "restartHint": "The app restarts when you change this.",
+      "compositing": "GPU compositing",
+      "rasterization": "GPU rasterization",
+      "card": "Graphics card",
+      "refresh": "Screen refresh rate"
     }
   },
   "players": {

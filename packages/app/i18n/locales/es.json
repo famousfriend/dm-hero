@@ -2070,11 +2070,17 @@
       "data": "Copias y datos",
       "more": "Más"
     },
-    "window": {
-      "title": "Ventana",
-      "description": "Si el desplazamiento es menos fluido en la app que en un navegador, prueba la barra de título estándar de Windows.",
-      "nativeFrame": "Usar la barra de título estándar de Windows",
-      "restartHint": "La app se reinicia al cambiar esto."
+    "graphics": {
+      "title": "Comprobación gráfica",
+      "description": "Si la app se desplaza con menos fluidez que un navegador, aquí ves con qué dibuja su ventana. Pulsa Copiar y pégalo para Claude.",
+      "copy": "Copiar detalles",
+      "copied": "Copiado",
+      "forceGpu": "Usar la tarjeta gráfica aunque Windows o el controlador estén bloqueados",
+      "restartHint": "La app se reinicia al cambiar esto.",
+      "compositing": "Composición por GPU",
+      "rasterization": "Rasterización por GPU",
+      "card": "Tarjeta gráfica",
+      "refresh": "Frecuencia de la pantalla"
     }
   },
   "players": {

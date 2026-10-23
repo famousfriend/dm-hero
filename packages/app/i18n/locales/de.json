@@ -2070,11 +2070,17 @@
       "data": "Backups & Daten",
       "more": "Mehr"
     },
-    "window": {
-      "title": "Fenster",
-      "description": "Wenn das Scrollen in der App weniger flüssig ist als im Browser, probier die normale Windows-Titelleiste.",
-      "nativeFrame": "Normale Windows-Titelleiste verwenden",
-      "restartHint": "Die App startet beim Umschalten neu."
+    "graphics": {
+      "title": "Grafik-Check",
+      "description": "Wenn die App weniger flüssig scrollt als ein Browser, zeigt das hier, womit ihr Fenster zeichnet. Klicke auf Kopieren und füge es bei Claude ein.",
+      "copy": "Details kopieren",
+      "copied": "Kopiert",
+      "forceGpu": "Grafikkarte auch nutzen, wenn Windows oder der Treiber gesperrt ist",
+      "restartHint": "Die App startet beim Umschalten neu.",
+      "compositing": "GPU-Compositing",
+      "rasterization": "GPU-Rasterisierung",
+      "card": "Grafikkarte",
+      "refresh": "Bildwiederholrate"
     }
   },
   "players": {
