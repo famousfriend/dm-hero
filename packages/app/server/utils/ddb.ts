@@ -65,6 +65,9 @@ export interface DdbCharacter {
   pactMagic?: Array<{ level: number, used?: number, available?: number }>
   /** Hand edits made on the sheet ("customize"): { typeId, value, valueId } */
   characterValues?: Array<{ typeId: number, value: unknown, valueId?: string | number | null }>
+  race?: { fullName?: string, weightSpeeds?: { normal?: { walk?: number | null } | null } | null } | null
+  background?: { definition?: { name?: string } | null } | null
+  decorations?: { avatarUrl?: string | null } | null
 }
 
 // characterValues typeIds we honour (sheet "customize" fields)
@@ -114,9 +117,45 @@ const PACT_TABLE: Array<[number, number]> = [
   [2, 5], [3, 5], [3, 5], [3, 5], [3, 5], [3, 5], [3, 5], [4, 5], [4, 5], [4, 5], [4, 5],
 ]
 
+/** Full sheet numbers for the player's D&D 5e stat block (field names of the dnd5e preset). */
+export interface DdbSheet {
+  scores: Record<(typeof ABILITY_FIELDS)[number], number>
+  saves: Record<string, number>
+  skills: Record<string, number>
+  speed: number
+  initiative: number
+  race: string
+  background: string
+  avatarUrl: string | null
+}
+
 export interface MappedCharacter {
   stats: PartyStats
   explain: Partial<Record<PartyField, string>>
+  sheet: DdbSheet
+}
+
+const ABILITY_FIELDS = ['str', 'dex', 'con', 'int', 'wis', 'cha'] as const
+// Stat block skill field → [D&D Beyond subType, ability id]
+const SKILLS: Record<string, [string, number]> = {
+  acrobatics: ['acrobatics', 2],
+  animal_handling: ['animal-handling', 5],
+  arcana: ['arcana', 4],
+  athletics: ['athletics', 1],
+  deception: ['deception', 6],
+  history: ['history', 4],
+  insight: ['insight', 5],
+  intimidation: ['intimidation', 6],
+  investigation: ['investigation', 4],
+  medicine: ['medicine', 5],
+  nature: ['nature', 4],
+  perception: ['perception', 5],
+  performance: ['performance', 6],
+  persuasion: ['persuasion', 6],
+  religion: ['religion', 4],
+  sleight_of_hand: ['sleight-of-hand', 2],
+  stealth: ['stealth', 2],
+  survival: ['survival', 5],
 }
 
 export function mapDdbCharacter(character: DdbCharacter): MappedCharacter {
@@ -253,11 +292,11 @@ export function mapDdbCharacter(character: DdbCharacter): MappedCharacter {
   }
   explain.ac = acParts.join(', ')
 
-  // Passive skills: 10 + ability + proficiency (expertise doubles, Jack of All Trades/half adds half)
-  const passive = (skill: string, statId: number, label: string): number => {
+  // Skill check bonus: ability + proficiency (expertise doubles, Jack of All Trades/half adds half)
+  const skillParts = (skill: string, statId: number) => {
     const abilityPart = abilityMod(statId)
     let profPart = 0
-    const customLevel = customValue(CV_SKILL_PROFICIENCY, SKILL_IDS[skill])
+    const customLevel = SKILL_IDS[skill] ? customValue(CV_SKILL_PROFICIENCY, SKILL_IDS[skill]) : null
     if (customLevel !== null) {
       profPart = customLevel === 4 ? proficiency * 2 : customLevel === 3 ? proficiency : customLevel === 2 ? Math.floor(proficiency / 2) : 0
     }
@@ -266,7 +305,12 @@ export function mapDdbCharacter(character: DdbCharacter): MappedCharacter {
     else if (has('half-proficiency', skill) || has('half-proficiency', 'ability-checks')) {
       profPart = Math.floor(proficiency / 2)
     }
-    const bonus = sumBonus(skill) + sumBonus(`passive-${skill}`)
+    return { abilityPart, profPart, bonus: sumBonus(skill) + sumBonus('ability-checks') }
+  }
+  // Passive skills: 10 + skill bonus
+  const passive = (skill: string, statId: number, label: string): number => {
+    const { abilityPart, profPart, bonus: checkBonus } = skillParts(skill, statId)
+    const bonus = checkBonus + sumBonus(`passive-${skill}`)
     const total = 10 + abilityPart + profPart + bonus
     explain[label as PartyField] = `10 + ${ABILITY_SHORT[statId - 1]} ${signed(abilityPart)}`
       + (profPart ? ` + proficiency ${signed(profPart)}` : '') + (bonus ? ` + ${bonus} (bonus)` : '')
@@ -337,7 +381,38 @@ export function mapDdbCharacter(character: DdbCharacter): MappedCharacter {
     })
     .filter((c): c is string => !!c)
 
+  // Stat block: saves, all skills, speed, initiative
+  const saves: Record<string, number> = {}
+  ABILITIES.forEach((ability, index) => {
+    const prof = has('proficiency', `${ability}-saving-throws`) ? proficiency : 0
+    saves[`save_${ABILITY_FIELDS[index]}`] = abilityMod(index + 1) + prof
+      + sumBonus('saving-throws') + sumBonus(`${ability}-saving-throws`)
+  })
+  const skills: Record<string, number> = {}
+  for (const [field, [skill, statId]] of Object.entries(SKILLS)) {
+    const { abilityPart, profPart, bonus } = skillParts(skill, statId)
+    skills[field] = abilityPart + profPart + bonus
+  }
+  const halfProfChecks = has('half-proficiency', 'ability-checks') || has('half-proficiency', 'initiative')
+  const initiative = dexMod + sumBonus('initiative') + (halfProfChecks ? Math.floor(proficiency / 2) : 0)
+  let speed = character.race?.weightSpeeds?.normal?.walk || 30
+  for (const m of modifiers) {
+    if (m.type === 'set' && m.subType === 'innate-speed-walking' && (m.value ?? 0) > speed) speed = m.value ?? speed
+  }
+  speed += sumBonus('speed') + sumBonus('speed-walking')
+  if (!armor && !shield) speed += sumBonus('unarmored-movement')
+
   return {
+    sheet: {
+      scores: Object.fromEntries(ABILITY_FIELDS.map((f, i) => [f, scores[i] ?? 10])) as DdbSheet['scores'],
+      saves,
+      skills,
+      speed,
+      initiative,
+      race: character.race?.fullName?.trim() || '',
+      background: character.background?.definition?.name?.trim() || '',
+      avatarUrl: character.decorations?.avatarUrl || null,
+    },
     stats: {
       name: (character.name || '').trim(),
       classLabel,

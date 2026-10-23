@@ -2259,8 +2259,8 @@
       "refresh": "Neueste Daten von D&D Beyond laden",
       "open": "Bogen öffnen",
       "unlink": "Verknüpfung lösen",
-      "intro": "Füge den D&D-Beyond-Link des Charakters ein, dann werden TP, RK, passive Werte und Zustände in die Party-Seite und Kämpfe geladen.",
-      "introCreate": "Füge den D&D-Beyond-Link des Charakters ein: Der Name wird automatisch ausgefüllt und TP, RK, passive Werte und Zustände werden in die Party-Seite und Kämpfe geladen.",
+      "intro": "Füge den D&D-Beyond-Link des Charakters ein: Attributswerte, Rettungswürfe, Fertigkeiten, TP, RK und Zustände werden in den Werteblock, die Gruppen-Seite und Kämpfe geladen.",
+      "introCreate": "Füge den D&D-Beyond-Link des Charakters ein: Name, Bild und Beschreibung werden automatisch ausgefüllt, und Attributswerte, Rettungswürfe, Fertigkeiten, TP, RK und Zustände werden in den Werteblock, die Gruppen-Seite und Kämpfe geladen.",
       "link": "Verknüpfen und laden",
       "loadsOnSave": "Wird beim Klick auf Erstellen von D&D Beyond geladen",
       "howTo": "Wie bekomme ich den Link?",
@@ -2271,6 +2271,24 @@
       "nameFromSheet": "Leer lassen, um den Namen von D&D Beyond zu übernehmen",
       "placeholderName": "Neuer Charakter",
       "addFromDdb": "Von D&D Beyond hinzufügen"
+    },
+    "addMode": {
+      "label": "Wie möchtest du diesen Charakter hinzufügen?",
+      "manual": "Von Hand eingeben",
+      "ddb": "D&D-Beyond-Link"
+    },
+    "manual": {
+      "title": "Charakterwerte",
+      "intro": "Trag ein, was du weißt. Alles lässt sich später im Tab Werteblock und auf der Gruppen-Seite ändern.",
+      "classLabel": "Klasse und Stufe",
+      "classPlaceholder": "z. B. Mönch 7",
+      "level": "Stufe",
+      "hpMax": "Max. TP",
+      "ac": "Rüstungsklasse",
+      "speed": "Bewegungsrate (ft)",
+      "passivePerception": "Passive Wahrnehmung",
+      "abilities": "Attributswerte",
+      "saveFailed": "Die Charakterwerte konnten nicht gespeichert werden"
     }
   },
   "calendar": {
@@ -2868,7 +2886,8 @@
     "uploadCharacterSheet": "Charakterbogen hochladen",
     "replaceCharacterSheet": "Ersetzen",
     "noCharacterSheet": "Kein Charakterbogen hochgeladen",
-    "modifier": "Mod"
+    "modifier": "Mod",
+    "useDnd5e": "D&D-5e-Werteblock verwenden"
   },
   "statTemplates": {
     "title": "Werteblöcke",

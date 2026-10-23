@@ -2259,8 +2259,8 @@
       "refresh": "从 D&D Beyond 加载最新数据",
       "open": "打开角色卡",
       "unlink": "取消关联",
-      "intro": "粘贴角色的 D&D Beyond 链接，其生命值、护甲等级、被动值和状态会加载到队伍页面和战斗中。",
-      "introCreate": "粘贴角色的 D&D Beyond 链接：名字会自动填写，生命值、护甲等级、被动值和状态会加载到队伍页面和战斗中。",
+      "intro": "粘贴角色的 D&D Beyond 链接：属性值、豁免、技能、生命值、护甲等级和状态会载入数值表、队伍页面和战斗。",
+      "introCreate": "粘贴角色的 D&D Beyond 链接：名称、图片和描述会自动填写，属性值、豁免、技能、生命值、护甲等级和状态会载入数值表、队伍页面和战斗。",
       "link": "关联并加载",
       "loadsOnSave": "点击创建时从 D&D Beyond 加载",
       "howTo": "如何获取链接？",
@@ -2271,6 +2271,24 @@
       "nameFromSheet": "留空即使用 D&D Beyond 上的名字",
       "placeholderName": "新角色",
       "addFromDdb": "从 D&D Beyond 添加"
+    },
+    "addMode": {
+      "label": "你想如何添加这个角色？",
+      "manual": "手动输入",
+      "ddb": "D&D Beyond 链接"
+    },
+    "manual": {
+      "title": "角色数值",
+      "intro": "填写你知道的内容。之后可以在数值表标签页和队伍页面中修改所有内容。",
+      "classLabel": "职业和等级",
+      "classPlaceholder": "例如 武僧 7",
+      "level": "等级",
+      "hpMax": "最大生命值",
+      "ac": "护甲等级",
+      "speed": "速度（尺）",
+      "passivePerception": "被动察觉",
+      "abilities": "属性值",
+      "saveFailed": "无法保存角色数值"
     }
   },
   "calendar": {
@@ -2868,7 +2886,8 @@
     "uploadCharacterSheet": "上传角色表",
     "replaceCharacterSheet": "更换",
     "noCharacterSheet": "没有上传角色表",
-    "modifier": "模组"
+    "modifier": "模组",
+    "useDnd5e": "使用 D&D 5e 数值表"
   },
   "statTemplates": {
     "title": "统计块",

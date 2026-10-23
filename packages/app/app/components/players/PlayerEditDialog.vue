@@ -63,7 +63,7 @@
         <v-tabs-window v-if="player" v-model="activeTab">
           <!-- Details Tab -->
           <v-tabs-window-item value="details">
-            <PlayerDdbSection :entity-id="player.id" />
+            <PlayerDdbSection :entity-id="player.id" @updated="onDdbUpdated" />
 
             <!-- Hidden file input -->
             <input
@@ -312,7 +312,13 @@
 
         <!-- Create Form (no tabs) -->
         <div v-if="!player">
-          <PlayerDdbSection v-model:link="ddbLink" :autofocus="ddbFirst" />
+          <div class="text-body-medium mb-2">{{ $t('players.addMode.label') }}</div>
+          <v-btn-toggle v-model="addMode" mandatory color="primary" variant="outlined" divided class="mb-4">
+            <v-btn value="manual" prepend-icon="mdi-pencil">{{ $t('players.addMode.manual') }}</v-btn>
+            <v-btn value="ddb" prepend-icon="mdi-link-variant">{{ $t('players.addMode.ddb') }}</v-btn>
+          </v-btn-toggle>
+
+          <PlayerDdbSection v-if="addMode === 'ddb'" v-model:link="ddbLink" :autofocus="ddbFirst" />
 
           <v-text-field
             v-model="form.name"
@@ -332,6 +338,8 @@
             variant="outlined"
             class="mb-3"
           />
+
+          <PlayerCharacterFields v-if="addMode === 'manual'" v-model="manualCharacter" />
 
           <v-textarea
             v-model="form.description"
@@ -436,6 +444,8 @@ import type { Player } from '~~/types/player'
 import type { PartyMember } from '~~/types/party'
 import { parseDdbCharacterId } from '~~/types/party'
 import PlayerDdbSection from './PlayerDdbSection.vue'
+import PlayerCharacterFields from './PlayerCharacterFields.vue'
+import { emptyManualCharacter, manualCharacterPatch } from './manual-character'
 import EntityImageUpload from '../shared/EntityImageUpload.vue'
 import EntityImageGallery from '../shared/EntityImageGallery.vue'
 import EntityDocuments from '../shared/EntityDocuments.vue'
@@ -469,6 +479,7 @@ const { downloadImage: downloadImageFile } = useImageDownload()
 const entitiesStore = useEntitiesStore()
 const campaignStore = useCampaignStore()
 const playerStore = usePlayerStore()
+const entityStatsStore = useEntityStatsStore()
 const snackbarStore = useSnackbarStore()
 const { showError, showUploadError, showImageError } = useErrorHandler()
 
@@ -490,7 +501,10 @@ const internalShow = computed({
 const player = ref<Player | null>(null)
 // Create: D&D Beyond link to attach after saving (the sheet then fills the name if left empty)
 const ddbLink = ref('')
-const ddbLinkValid = computed(() => !!parseDdbCharacterId(ddbLink.value))
+// Create: type the character in by hand, or load it from a D&D Beyond link
+const addMode = ref<'manual' | 'ddb'>('manual')
+const manualCharacter = ref(emptyManualCharacter())
+const ddbLinkValid = computed(() => addMode.value === 'ddb' && !!parseDdbCharacterId(ddbLink.value))
 const activeTab = ref('details')
 const saving = ref(false)
 
@@ -628,6 +642,8 @@ async function loadPlayer(playerId: number) {
 function resetForm() {
   player.value = null
   ddbLink.value = ''
+  addMode.value = props.ddbFirst ? 'ddb' : 'manual'
+  manualCharacter.value = emptyManualCharacter()
   form.value = {
     name: '',
     description: '',
@@ -702,6 +718,7 @@ async function save() {
       savedPlayerId = created.id
 
       if (ddbLinkValid.value) created = await linkDdbAfterCreate(created)
+      else if (addMode.value === 'manual') await saveManualCharacter(created.id)
 
       // Handle map sync if enabled
       if (mapSyncData.value && mapSyncData.value.locationId && mapSyncData.value.mapIds.length > 0) {
@@ -755,6 +772,38 @@ async function linkDdbAfterCreate(created: Player): Promise<Player> {
   }
   if (!form.value.name) form.value.name = created.name
   return created
+}
+
+// Typed-in numbers go to the Party page (manual values) and the Stat Block
+async function saveManualCharacter(entityId: number) {
+  const patch = manualCharacterPatch(manualCharacter.value)
+  if (!patch) return
+  try {
+    await $fetch(`/api/party/${entityId}`, { method: 'PATCH', body: patch })
+  }
+  catch {
+    snackbarStore.error(t('players.manual.saveFailed'))
+  }
+}
+
+// Edit: a D&D Beyond load also filled the Stat Block, an empty description and maybe the picture
+async function onDdbUpdated() {
+  if (!player.value) return
+  const id = player.value.id
+  try {
+    const fresh = await $fetch<Player>(`/api/players/${id}`)
+    if (fresh.image_url !== player.value.image_url) player.value = { ...player.value, image_url: fresh.image_url }
+    if (!form.value.description.trim() && fresh.description) {
+      form.value.description = fresh.description
+      originalImageData.value.description = fresh.description
+    }
+  }
+  catch {
+    // The Details tab still shows what it had
+  }
+  if (entityStatsStore.entityId === id) await entityStatsStore.loadStats(id)
+  await entitiesStore.refreshPlayer(id)
+  await playerStore.loadCounts(id)
 }
 
 // Sync Player marker to selected maps - place inside location circle if available

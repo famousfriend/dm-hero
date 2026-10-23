@@ -2259,8 +2259,8 @@
       "refresh": "Load latest from D&D Beyond",
       "open": "Open sheet",
       "unlink": "Unlink",
-      "intro": "Paste the character's D&D Beyond link and its HP, AC, passives and conditions load into the Party page and fights.",
-      "introCreate": "Paste the character's D&D Beyond link: the name fills in by itself and HP, AC, passives and conditions load into the Party page and fights.",
+      "intro": "Paste the character's D&D Beyond link: ability scores, saves, skills, HP, AC and conditions load into the Stat Block, the Party page and fights.",
+      "introCreate": "Paste the character's D&D Beyond link: the name, picture and description fill in by themselves, and ability scores, saves, skills, HP, AC and conditions load into the Stat Block, the Party page and fights.",
       "link": "Link and load",
       "loadsOnSave": "Loads from D&D Beyond when you click Create",
       "howTo": "How do I get the link?",
@@ -2271,6 +2271,24 @@
       "nameFromSheet": "Leave empty to use the name from D&D Beyond",
       "placeholderName": "New character",
       "addFromDdb": "Add from D&D Beyond"
+    },
+    "addMode": {
+      "label": "How do you want to add this character?",
+      "manual": "Enter by hand",
+      "ddb": "D&D Beyond link"
+    },
+    "manual": {
+      "title": "Character stats",
+      "intro": "Fill in what you know. You can change everything later in the Stat Block tab and on the Party page.",
+      "classLabel": "Class and level",
+      "classPlaceholder": "e.g. Monk 7",
+      "level": "Level",
+      "hpMax": "Max HP",
+      "ac": "Armor Class",
+      "speed": "Speed (ft)",
+      "passivePerception": "Passive Perception",
+      "abilities": "Ability scores",
+      "saveFailed": "The character stats could not be saved"
     }
   },
   "calendar": {
@@ -2868,7 +2886,8 @@
     "uploadCharacterSheet": "Upload Character Sheet",
     "replaceCharacterSheet": "Replace",
     "noCharacterSheet": "No character sheet uploaded",
-    "modifier": "Mod"
+    "modifier": "Mod",
+    "useDnd5e": "Use D&D 5e stat block"
   },
   "statTemplates": {
     "title": "Stat Blocks",

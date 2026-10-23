@@ -2259,8 +2259,8 @@
       "refresh": "Carica gli ultimi dati da D&D Beyond",
       "open": "Apri scheda",
       "unlink": "Scollega",
-      "intro": "Incolla il link D&D Beyond del personaggio: PF, CA, valori passivi e condizioni vengono caricati nella pagina Gruppo e negli scontri.",
-      "introCreate": "Incolla il link D&D Beyond del personaggio: il nome si compila da solo e PF, CA, valori passivi e condizioni vengono caricati nella pagina Gruppo e negli scontri.",
+      "intro": "Incolla il link D&D Beyond del personaggio: caratteristiche, tiri salvezza, abilità, PF, CA e condizioni vengono caricati nelle statistiche, nella pagina del gruppo e nei combattimenti.",
+      "introCreate": "Incolla il link D&D Beyond del personaggio: nome, immagine e descrizione si compilano da soli, e caratteristiche, tiri salvezza, abilità, PF, CA e condizioni vengono caricati nelle statistiche, nella pagina del gruppo e nei combattimenti.",
       "link": "Collega e carica",
       "loadsOnSave": "Viene caricato da D&D Beyond quando fai clic su Crea",
       "howTo": "Come ottengo il link?",
@@ -2271,6 +2271,24 @@
       "nameFromSheet": "Lascia vuoto per usare il nome di D&D Beyond",
       "placeholderName": "Nuovo personaggio",
       "addFromDdb": "Aggiungi da D&D Beyond"
+    },
+    "addMode": {
+      "label": "Come vuoi aggiungere questo personaggio?",
+      "manual": "Inserisci a mano",
+      "ddb": "Link D&D Beyond"
+    },
+    "manual": {
+      "title": "Statistiche del personaggio",
+      "intro": "Compila ciò che sai. Puoi cambiare tutto più tardi nella scheda statistiche e nella pagina del gruppo.",
+      "classLabel": "Classe e livello",
+      "classPlaceholder": "es. Monaco 7",
+      "level": "Livello",
+      "hpMax": "PF max",
+      "ac": "Classe Armatura",
+      "speed": "Velocità (ft)",
+      "passivePerception": "Percezione passiva",
+      "abilities": "Punteggi di caratteristica",
+      "saveFailed": "Impossibile salvare le statistiche del personaggio"
     }
   },
   "calendar": {
@@ -2868,7 +2886,8 @@
     "uploadCharacterSheet": "Carica scheda del personaggio",
     "replaceCharacterSheet": "Sostituisci",
     "noCharacterSheet": "Nessuna scheda del personaggio caricata",
-    "modifier": "Mod"
+    "modifier": "Mod",
+    "useDnd5e": "Usa statistiche D&D 5e"
   },
   "statTemplates": {
     "title": "Blocchi statistiche",

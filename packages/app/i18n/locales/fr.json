@@ -2259,8 +2259,8 @@
       "refresh": "Charger les dernières données de D&D Beyond",
       "open": "Ouvrir la fiche",
       "unlink": "Délier",
-      "intro": "Collez le lien D&D Beyond du personnage : ses PV, CA, valeurs passives et états se chargent dans la page Groupe et les combats.",
-      "introCreate": "Collez le lien D&D Beyond du personnage : le nom se remplit tout seul et ses PV, CA, valeurs passives et états se chargent dans la page Groupe et les combats.",
+      "intro": "Colle le lien D&D Beyond du personnage : caractéristiques, sauvegardes, compétences, PV, CA et états se chargent dans les statistiques, la page du groupe et les combats.",
+      "introCreate": "Colle le lien D&D Beyond du personnage : le nom, l’image et la description se remplissent tout seuls, et caractéristiques, sauvegardes, compétences, PV, CA et états se chargent dans les statistiques, la page du groupe et les combats.",
       "link": "Lier et charger",
       "loadsOnSave": "Chargé depuis D&D Beyond quand vous cliquez sur Créer",
       "howTo": "Comment obtenir le lien ?",
@@ -2271,6 +2271,24 @@
       "nameFromSheet": "Laissez vide pour utiliser le nom de D&D Beyond",
       "placeholderName": "Nouveau personnage",
       "addFromDdb": "Ajouter depuis D&D Beyond"
+    },
+    "addMode": {
+      "label": "Comment veux-tu ajouter ce personnage ?",
+      "manual": "Saisir à la main",
+      "ddb": "Lien D&D Beyond"
+    },
+    "manual": {
+      "title": "Caractéristiques du personnage",
+      "intro": "Remplis ce que tu sais. Tout peut être modifié plus tard dans l’onglet des statistiques et sur la page du groupe.",
+      "classLabel": "Classe et niveau",
+      "classPlaceholder": "ex. Moine 7",
+      "level": "Niveau",
+      "hpMax": "PV max",
+      "ac": "Classe d’armure",
+      "speed": "Vitesse (ft)",
+      "passivePerception": "Perception passive",
+      "abilities": "Valeurs de caractéristique",
+      "saveFailed": "Les caractéristiques du personnage n’ont pas pu être enregistrées"
     }
   },
   "calendar": {
@@ -2868,7 +2886,8 @@
     "uploadCharacterSheet": "Téléverser une feuille de personnage",
     "replaceCharacterSheet": "Remplacer",
     "noCharacterSheet": "Aucune feuille de personnage téléversée",
-    "modifier": "Mod"
+    "modifier": "Mod",
+    "useDnd5e": "Utiliser les statistiques D&D 5e"
   },
   "statTemplates": {
     "title": "Blocs de stats",
