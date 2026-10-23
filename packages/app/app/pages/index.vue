@@ -1,11 +1,5 @@
 <template>
   <v-container>
-    <!-- Per-theme dashboard ambience (#322) — picks the right animation for the
-         active theme; self-gates on theme + the "Spielereien" setting. -->
-    <ClientOnly>
-      <SharedDashboardAmbient />
-    </ClientOnly>
-
     <!-- Redirect to campaigns if no campaign selected -->
     <div v-if="!activeCampaignId" class="text-center py-16 position-relative content-above">
       <v-icon icon="mdi-sword-cross" size="64" class="mb-4" color="primary" />

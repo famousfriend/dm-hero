@@ -2084,7 +2084,9 @@
       "recordTitle": "Ruckeln aufzeichnen",
       "recordDescription": "Klicke auf Aufzeichnen und scrolle dann 15 Sekunden lang durch eine lange Seite und fahre mit der Maus über Ordner, dort wo es ruckelt. Danach öffnet sich eine Datei im Explorer: Schicke sie an Claude.",
       "record": "15 Sekunden aufzeichnen",
-      "recording": "Zeichnet auf… jetzt scrollen und Maus bewegen"
+      "recording": "Zeichnet auf… jetzt scrollen und Maus bewegen",
+      "mainProcessGpu": "Aus dem eigenen Fenster der App zeichnen",
+      "mainProcessGpuHint": "Verhindert, dass Grafiktreiber die App als Hintergrundprogramm behandeln und sie auf 20 Bilder pro Sekunde begrenzen. Nur ausschalten, wenn die App ein leeres oder schwarzes Fenster zeigt."
     }
   },
   "players": {

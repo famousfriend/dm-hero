@@ -2084,7 +2084,9 @@
       "recordTitle": "Grabar un tirón",
       "recordDescription": "Haz clic en Grabar y durante 15 segundos desplázate por una página larga y pasa el ratón sobre las carpetas, donde vaya a tirones. Luego se abre un archivo en el Explorador: envíaselo a Claude.",
       "record": "Grabar 15 segundos",
-      "recording": "Grabando… desplázate y mueve el ratón ahora"
+      "recording": "Grabando… desplázate y mueve el ratón ahora",
+      "mainProcessGpu": "Dibujar desde la propia ventana de la app",
+      "mainProcessGpuHint": "Evita que los controladores gráficos traten la app como un programa en segundo plano y la limiten a 20 fotogramas por segundo. Desactívalo solo si la app muestra una ventana vacía o negra."
     }
   },
   "players": {

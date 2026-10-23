@@ -17,6 +17,12 @@
       @search-click="showSearch = true"
     />
 
+    <!-- Per-theme ambience (embers, fireflies, ...) behind every page, under the content;
+         self-gates on theme + the Playfulness setting -->
+    <ClientOnly>
+      <SharedDashboardAmbient />
+    </ClientOnly>
+
     <v-main class="main-no-scroll">
       <div class="content-scrollable">
         <v-container fluid>
@@ -234,8 +240,10 @@ html {
   overflow: hidden;
 }
 
-/* v-main should not scroll itself */
+/* v-main should not scroll itself; it sits above the fixed ambience layer (z-index 0) */
 .main-no-scroll {
+  position: relative;
+  z-index: 1;
   overflow: hidden !important;
   /* 64px = AppBar height; --v-layout-bottom = music player bar when visible */
   height: calc(100vh - 64px - var(--v-layout-bottom, 0px));
@@ -246,14 +254,6 @@ html {
   height: 100%;
   overflow-y: auto;
   overflow-x: hidden;
-}
-
-/* Hover highlights on clickable cards switch instantly instead of fading.
-   While scrolling, cards slide under the mouse one after another, and each
-   fade redrew the page on every frame. Click ripples still animate. */
-.v-card--hover,
-.v-card--hover :not(.v-ripple__animation) {
-  transition: none !important;
 }
 
 /* Long words and names wrap instead of running out of their box */

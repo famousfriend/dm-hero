@@ -2084,7 +2084,9 @@
       "recordTitle": "Record a stutter",
       "recordDescription": "Click Record, then for 15 seconds scroll a long page and move the mouse over folders, wherever it stutters. A file then opens in Explorer: send it to Claude.",
       "record": "Record 15 seconds",
-      "recording": "Recording… scroll and hover now"
+      "recording": "Recording… scroll and hover now",
+      "mainProcessGpu": "Draw from the app's own window",
+      "mainProcessGpuHint": "Keeps graphics drivers from treating the app as a background program and limiting it to 20 frames a second. Turn off only if the app shows a blank or black window."
     }
   },
   "players": {

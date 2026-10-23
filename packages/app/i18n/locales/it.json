@@ -2084,7 +2084,9 @@
       "recordTitle": "Registra uno scatto",
       "recordDescription": "Fai clic su Registra, poi per 15 secondi scorri una pagina lunga e passa il mouse sulle cartelle, dove va a scatti. Poi si apre un file in Esplora risorse: invialo a Claude.",
       "record": "Registra 15 secondi",
-      "recording": "Registrazione… scorri e passa il mouse ora"
+      "recording": "Registrazione… scorri e passa il mouse ora",
+      "mainProcessGpu": "Disegna dalla finestra dell'app",
+      "mainProcessGpuHint": "Impedisce ai driver grafici di trattare l'app come un programma in background e di limitarla a 20 fotogrammi al secondo. Disattivalo solo se l'app mostra una finestra vuota o nera."
     }
   },
   "players": {

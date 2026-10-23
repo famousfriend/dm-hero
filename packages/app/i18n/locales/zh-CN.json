@@ -2084,7 +2084,9 @@
       "recordTitle": "录制卡顿",
       "recordDescription": "点击录制，然后在 15 秒内滚动一个长页面并将鼠标移到文件夹上，在卡顿的地方操作。之后会在资源管理器中打开一个文件：把它发给 Claude。",
       "record": "录制 15 秒",
-      "recording": "正在录制… 现在滚动并移动鼠标"
+      "recording": "正在录制… 现在滚动并移动鼠标",
+      "mainProcessGpu": "从应用自己的窗口绘制",
+      "mainProcessGpuHint": "防止显卡驱动把本应用当作后台程序并将其限制为每秒 20 帧。仅当应用显示空白或黑色窗口时才关闭。"
     }
   },
   "players": {
