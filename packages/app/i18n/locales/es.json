@@ -3348,6 +3348,27 @@
       "conditions": "Estados",
       "spellSlots": "Espacios de conjuro",
       "inspiration": "Inspiración"
+    },
+    "pack": {
+      "button": "Diario de jugadores",
+      "title": "Diario de jugadores",
+      "intro": "Marca lo que los jugadores conocen. Obtienes un archivo para enviarles (Discord, correo, USB). La página web se abre en cualquier navegador, funciona sin conexión y los jugadores pueden tomar sus propias notas. Envía una nueva después de cada sesión; sus notas se conservan.",
+      "forCharacter": "Para",
+      "dmName": "Tu nombre (visible para jugadores)",
+      "search": "Buscar",
+      "none": "Ninguno",
+      "all": "Todos",
+      "nothing": "Aún no hay nada",
+      "includeDescriptions": "Incluir descripciones",
+      "secretsWarning": "Las descripciones pueden contener secretos del DM. Actívalo solo si todo lo que contienen es apto para los jugadores.",
+      "export": "Guardar página web",
+      "wholeParty": "Todo el grupo",
+      "quests": "Misiones",
+      "npcs": "PNJ",
+      "places": "Lugares",
+      "loadFailed": "No se pudieron cargar los datos de la campaña.",
+      "exportFailed": "No se pudo crear el archivo.",
+      "exportText": "Guardar archivo de texto"
     }
   },
   "palette": {

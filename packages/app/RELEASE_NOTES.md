@@ -4,6 +4,10 @@ Newest version first. Each "## version" section becomes the text of that GitHub 
 and the app shows it when it offers the update. Add a section and raise "version" in
 package.json to publish an update.
 
+## 1.1.0
+
+- **Player journal:** on the Party page, tick the quests, NPCs and places your players know about and save them as a web page (or a plain text file). Send it to your players on Discord, email or USB. The page opens in any browser, works offline, shows who they met where, and lets each player keep their own notes. Send a newer page after each session and their notes carry over. Descriptions are left out unless you switch them on, so your secrets stay yours.
+
 ## 1.0.0
 
 The first official release of DM Command Center, a desktop app for running Dungeons & Dragons 5th Edition (2014) games.

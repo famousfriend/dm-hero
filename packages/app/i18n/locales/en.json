@@ -3348,6 +3348,27 @@
       "conditions": "Conditions",
       "spellSlots": "Spell slots",
       "inspiration": "Inspiration"
+    },
+    "pack": {
+      "button": "Player journal",
+      "title": "Player journal",
+      "intro": "Tick what the players know about. You get a file to send them (Discord, email, USB). The web page opens in any browser, works offline and lets players keep their own notes. Send a newer one after each session; their notes carry over.",
+      "forCharacter": "For",
+      "dmName": "Your name (shown to players)",
+      "search": "Search",
+      "none": "None",
+      "all": "All",
+      "nothing": "Nothing here yet",
+      "includeDescriptions": "Include descriptions",
+      "secretsWarning": "Descriptions can contain DM secrets. Only turn this on if everything written there is safe for players to read.",
+      "export": "Save web page",
+      "wholeParty": "Whole party",
+      "quests": "Quests",
+      "npcs": "NPCs",
+      "places": "Places",
+      "loadFailed": "Could not load campaign data.",
+      "exportFailed": "Could not create the file.",
+      "exportText": "Save text file"
     }
   },
   "palette": {
