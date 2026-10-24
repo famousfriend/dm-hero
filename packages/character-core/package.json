@@ -1,0 +1,17 @@
+{
+  "name": "@dmcc/character-core",
+  "version": "0.1.0",
+  "description": "Proof of concept: shared character model for DM Command Center and the Player Companion (layered values, refresh diff, import support report). No dependencies.",
+  "license": "MIT",
+  "type": "module",
+  "private": true,
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "test": "vitest run"
+  },
+  "devDependencies": {
+    "vitest": "^4.1.11"
+  }
+}
