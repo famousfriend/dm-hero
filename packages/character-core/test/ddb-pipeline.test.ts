@@ -4,7 +4,7 @@
  */
 import { describe, it, expect } from 'vitest'
 import { readFileSync } from 'node:fs'
-import { mapDdbCharacter, unwrapDdbResponse } from '../../app/server/utils/ddb'
+import { mapDdbCharacter, unwrapDdbResponse } from '../src'
 import { applySource, diffSource, resolve, setLayer, winningLayer, type LayeredRecord } from '../src'
 
 interface CharacterValues {

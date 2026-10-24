@@ -8,7 +8,7 @@
  * recalculated here, each with a short explanation for the UI. Everything that
  * touches the D&D Beyond format lives in this file (risk R14).
  */
-import { PARTY_CONDITIONS, type PartyField, type PartyStats, type SpellSlotLevel } from '../../types/party'
+import { PARTY_CONDITIONS, type PartyField, type PartyStats, type SpellSlotLevel } from './party'
 
 // ---------------------------------------------------------------------------
 // The parts of the D&D Beyond format we read (everything optional: it is unofficial)
