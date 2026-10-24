@@ -2,7 +2,7 @@ import { describe, it, expect, beforeAll } from 'vitest'
 import { readFileSync } from 'node:fs'
 import type Database from 'better-sqlite3'
 import { getTestDb } from '../utils/test-db'
-import { mapDdbCharacter, unwrapDdbResponse, DdbFetchError, type DdbCharacter } from '../../server/utils/ddb'
+import { mapDdbCharacter, unwrapDdbResponse, DdbFetchError, type DdbCharacter } from '@dmcc/character-core'
 import {
   listParty,
   getPartyMember,

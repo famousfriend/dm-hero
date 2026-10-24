@@ -18,6 +18,7 @@ on:
       - 'packages/app/scripts/electron-smoke.mjs'
       - 'packages/mcp/package.json'
       - 'packages/seal/**'
+      - 'packages/character-core/**'
       - '.github/workflows/electron-smoke.yml'
   pull_request:
     paths:
@@ -29,6 +30,7 @@ on:
       - 'packages/app/scripts/electron-smoke.mjs'
       - 'packages/mcp/package.json'
       - 'packages/seal/**'
+      - 'packages/character-core/**'
       - '.github/workflows/electron-smoke.yml'
   workflow_dispatch:
 

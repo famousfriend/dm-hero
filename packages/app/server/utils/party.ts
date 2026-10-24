@@ -7,7 +7,7 @@ import {
   type PartyStats,
 } from '../../types/party'
 import { fillEmptyDescription, saveDdbAvatar, writeDdbStatBlock } from './ddb-sheet'
-import { DdbFetchError, fetchDdbCharacter, mapDdbCharacter, unwrapDdbResponse, type DdbCharacter, type MappedCharacter } from './ddb'
+import { DdbFetchError, fetchDdbCharacter, mapDdbCharacter, unwrapDdbResponse, type DdbCharacter, type MappedCharacter } from '@dmcc/character-core'
 
 interface PartyRow {
   entity_id: number

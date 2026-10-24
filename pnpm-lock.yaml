@@ -27,6 +27,9 @@ importers:
       '@dm-hero/seal':
         specifier: workspace:*
         version: link:../seal
+      '@dmcc/character-core':
+        specifier: workspace:*
+        version: link:../character-core
       '@iconify/vue':
         specifier: ^5.0.3
         version: 5.0.3(vue@3.5.43(typescript@6.0.3))
@@ -202,6 +205,12 @@ importers:
       wait-on:
         specifier: ^9.5.1
         version: 9.5.1
+
+  packages/character-core:
+    devDependencies:
+      vitest:
+        specifier: ^4.1.11
+        version: 4.1.11(@types/node@26.6.4)(@vitest/coverage-v8@4.1.11)(happy-dom@20.14.5)(vite@8.3.2(@types/node@26.6.4)(esbuild@0.28.2)(jiti@2.7.0)(terser@5.51.2)(yaml@2.9.1))
 
   packages/landing:
     dependencies:
