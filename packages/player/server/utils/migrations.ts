@@ -73,6 +73,34 @@ const migrations: Migration[] = [
       `)
     },
   },
+  {
+    // Player packs from DM Command Center: dm_ref is the DM's stable reference,
+    // so importing a newer pack updates entries instead of duplicating them
+    version: 3,
+    up: (db) => {
+      db.exec(`
+        ALTER TABLE campaigns ADD COLUMN dm_ref TEXT;
+        CREATE UNIQUE INDEX idx_campaigns_dm_ref ON campaigns(dm_ref) WHERE dm_ref IS NOT NULL;
+        ALTER TABLE places ADD COLUMN dm_ref TEXT;
+        CREATE UNIQUE INDEX idx_places_dm_ref ON places(character_id, dm_ref) WHERE dm_ref IS NOT NULL;
+        ALTER TABLE npcs ADD COLUMN dm_ref TEXT;
+        CREATE UNIQUE INDEX idx_npcs_dm_ref ON npcs(character_id, dm_ref) WHERE dm_ref IS NOT NULL;
+        CREATE TABLE quests (
+          id INTEGER PRIMARY KEY AUTOINCREMENT,
+          character_id INTEGER NOT NULL REFERENCES characters(id) ON DELETE CASCADE,
+          dm_ref TEXT NOT NULL,
+          name TEXT NOT NULL,
+          description TEXT NOT NULL DEFAULT '',
+          status TEXT NOT NULL DEFAULT 'open' CHECK (status IN ('open', 'active', 'done', 'failed')),
+          reward TEXT NOT NULL DEFAULT '',
+          player_notes TEXT NOT NULL DEFAULT '',
+          created_at TEXT NOT NULL DEFAULT (datetime('now')),
+          updated_at TEXT NOT NULL DEFAULT (datetime('now')),
+          UNIQUE (character_id, dm_ref)
+        );
+      `)
+    },
+  },
 ]
 
 export function runMigrations(db: Database.Database) {

@@ -1,11 +1,12 @@
-import type { JournalNpc, JournalPlace, NoteVisibility, PlayerNote } from '@dmcc/character-core'
+import type { JournalNpc, JournalPlace, JournalQuest, NoteVisibility, PackImportResult, PlayerNote } from '@dmcc/character-core'
 
-/** Notes, places and NPCs of the active character; reloads when the character changes */
+/** Notes, places, NPCs and quests of the active character; reloads when the character changes */
 export function useJournal() {
   const { activeId } = useCharacters()
   const notes = useState<PlayerNote[]>('journalNotes', () => [])
   const places = useState<JournalPlace[]>('journalPlaces', () => [])
   const npcs = useState<JournalNpc[]>('journalNpcs', () => [])
+  const quests = useState<JournalQuest[]>('journalQuests', () => [])
   const loadedFor = useState<number | null>('journalLoadedFor', () => null)
 
   async function load() {
@@ -14,13 +15,15 @@ export function useJournal() {
       notes.value = []
       places.value = []
       npcs.value = []
+      quests.value = []
       loadedFor.value = null
       return
     }
-    const data = await $fetch<{ notes: PlayerNote[], places: JournalPlace[], npcs: JournalNpc[] }>('/api/journal', { query: { characterId } })
+    const data = await $fetch<{ notes: PlayerNote[], places: JournalPlace[], npcs: JournalNpc[], quests: JournalQuest[] }>('/api/journal', { query: { characterId } })
     notes.value = data.notes
     places.value = data.places
     npcs.value = data.npcs
+    quests.value = data.quests
     loadedFor.value = characterId
   }
 
@@ -44,10 +47,22 @@ export function useJournal() {
     await load()
   }
 
-  async function remove(kind: 'notes' | 'places' | 'npcs', id: number) {
+  async function saveQuestNotes(id: number, playerNotes: string) {
+    const updated = await $fetch<JournalQuest>(`/api/journal/quests/${id}`, { method: 'PATCH', body: { playerNotes } })
+    quests.value = quests.value.map(q => (q.id === id ? updated : q))
+  }
+
+  /** Player pack from the DM: apply false only previews */
+  async function importPack(pack: unknown, apply: boolean) {
+    const result = await $fetch<PackImportResult>('/api/journal/import-pack', { method: 'POST', body: { characterId: activeId.value, pack, apply } })
+    if (apply) await load()
+    return result
+  }
+
+  async function remove(kind: 'notes' | 'places' | 'npcs' | 'quests', id: number) {
     await $fetch(`/api/journal/${kind}/${id}`, { method: 'DELETE' })
     await load()
   }
 
-  return { notes, places, npcs, loadedFor, load, createNote, updateNote, saveEntry, remove }
+  return { notes, places, npcs, quests, loadedFor, load, createNote, updateNote, saveEntry, saveQuestNotes, importPack, remove }
 }

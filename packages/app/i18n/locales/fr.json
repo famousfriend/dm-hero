@@ -3348,6 +3348,26 @@
       "conditions": "États",
       "spellSlots": "Emplacements de sorts",
       "inspiration": "Inspiration"
+    },
+    "pack": {
+      "button": "Pack joueurs",
+      "title": "Envoyer au Player Companion",
+      "intro": "Choisissez ce que les joueurs ont appris. Vous obtenez un fichier à leur envoyer (Discord, e-mail, clé USB). Ils l’ouvrent dans le Player Companion et tout se range au bon endroit.",
+      "forCharacter": "Pour",
+      "dmName": "Votre nom (visible par les joueurs)",
+      "search": "Rechercher",
+      "none": "Aucun",
+      "all": "Tous",
+      "nothing": "Rien pour l’instant",
+      "includeDescriptions": "Inclure les descriptions",
+      "secretsWarning": "Les descriptions peuvent contenir des secrets du MJ. N’activez que si tout leur contenu peut être lu par les joueurs.",
+      "export": "Enregistrer le fichier",
+      "wholeParty": "Tout le groupe",
+      "quests": "Quêtes",
+      "npcs": "PNJ",
+      "places": "Lieux",
+      "loadFailed": "Impossible de charger les données de la campagne.",
+      "exportFailed": "Impossible de créer le fichier."
     }
   },
   "palette": {

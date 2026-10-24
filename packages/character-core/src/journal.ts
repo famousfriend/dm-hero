@@ -38,3 +38,29 @@ export interface JournalNpc extends JournalPlace {
   /** Where the character met them */
   placeId: number | null
 }
+
+export type JournalQuestStatus = 'open' | 'active' | 'done' | 'failed'
+
+/** A quest the DM sent in a player pack; the player keeps their own notes on it */
+export interface JournalQuest {
+  id: number
+  characterId: number
+  name: string
+  description: string
+  status: JournalQuestStatus
+  reward: string
+  playerNotes: string
+  createdAt: string
+  updatedAt: string
+}
+
+/** What importing a player pack would do (preview) or did (apply) */
+export interface PackImportResult {
+  applied: boolean
+  campaign: { name: string, dmName: string, isNew: boolean }
+  /** The DM made the pack for another character (a hint; it can still be imported) */
+  forCharacter: string | null
+  /** The character is in another campaign now and will be moved to this one */
+  changesCampaign: boolean
+  counts: Record<'places' | 'npcs' | 'quests', { added: number, updated: number, unchanged: number }>
+}

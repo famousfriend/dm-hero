@@ -46,6 +46,28 @@
       <v-card border class="mt-4">
         <v-card-item>
           <v-card-title class="text-subtitle-1">
+            <v-icon size="small" class="mr-1">mdi-script-text-outline</v-icon>
+            Current quests
+          </v-card-title>
+          <template #append>
+            <v-btn variant="text" size="small" to="/journal">Journal</v-btn>
+          </template>
+        </v-card-item>
+        <v-list v-if="currentQuests.length" density="compact" bg-color="transparent">
+          <v-list-item v-for="quest in currentQuests" :key="quest.id" to="/journal">
+            <v-list-item-title class="text-wrap">{{ quest.name }}</v-list-item-title>
+            <v-list-item-subtitle v-if="quest.reward" class="text-wrap">{{ quest.reward }}</v-list-item-subtitle>
+            <template #append>
+              <v-chip v-if="quest.status === 'active'" size="x-small" color="primary" variant="flat">Active</v-chip>
+            </template>
+          </v-list-item>
+        </v-list>
+        <v-card-text v-else class="text-medium-emphasis">No quests yet. Your DM can send them with a player pack (Import from DM, top right).</v-card-text>
+      </v-card>
+
+      <v-card border class="mt-4">
+        <v-card-item>
+          <v-card-title class="text-subtitle-1">
             <v-icon size="small" class="mr-1">mdi-notebook-outline</v-icon>
             Recent notes
           </v-card-title>
@@ -71,7 +93,8 @@
 
 <script setup lang="ts">
 const { active, activeSheet, loaded, campaignOf } = useCharacters()
-const { notes } = useJournal()
+const { notes, quests } = useJournal()
+const currentQuests = computed(() => quests.value.filter(q => q.status === 'active' || q.status === 'open').slice(0, 5))
 const formOpen = ref(false)
 const campaign = computed(() => campaignOf(active.value))
 

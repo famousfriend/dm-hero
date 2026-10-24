@@ -3348,6 +3348,26 @@
       "conditions": "Condizioni",
       "spellSlots": "Slot incantesimo",
       "inspiration": "Ispirazione"
+    },
+    "pack": {
+      "button": "Pacchetto giocatori",
+      "title": "Invia a Player Companion",
+      "intro": "Scegli cosa hanno scoperto i giocatori. Ottieni un file da inviare (Discord, email, USB). Lo aprono in Player Companion e tutto finisce al posto giusto.",
+      "forCharacter": "Per",
+      "dmName": "Il tuo nome (visibile ai giocatori)",
+      "search": "Cerca",
+      "none": "Nessuno",
+      "all": "Tutti",
+      "nothing": "Ancora niente",
+      "includeDescriptions": "Includi descrizioni",
+      "secretsWarning": "Le descrizioni possono contenere segreti del DM. Attiva solo se tutto ciò che contengono è adatto ai giocatori.",
+      "export": "Salva file",
+      "wholeParty": "Tutto il gruppo",
+      "quests": "Missioni",
+      "npcs": "PNG",
+      "places": "Luoghi",
+      "loadFailed": "Impossibile caricare i dati della campagna.",
+      "exportFailed": "Impossibile creare il file."
     }
   },
   "palette": {

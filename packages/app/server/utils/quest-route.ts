@@ -13,6 +13,7 @@ import {
   updateContinuityItem,
   updateQuest,
 } from './quests'
+import { PlayerPackInputError, buildPlayerPack } from './player-pack'
 
 /*
  * All quest and continuity endpoints live behind ONE route (/api/quests/**).
@@ -28,6 +29,8 @@ import {
  *   POST   /api/quests/continuity                    { campaignId, sessionId?, kind, text, ... }
  *   PATCH  /api/quests/continuity/:id                { kind?, text?, status?, nextSession?, entityIds? }
  *   DELETE /api/quests/continuity/:id
+ *   POST   /api/quests/player-pack                   { campaignId, npcIds, placeIds, questIds, includeDescriptions, ... }
+ *                                                     file for the Player Companion (server/utils/player-pack.ts)
  *   GET | PATCH | DELETE /api/quests/:id
  */
 
@@ -66,6 +69,9 @@ function dispatch(db: Database.Database, { method, segments, query, body }: Ques
   }
   else if (first === 'linkable' && !second && method === 'GET') {
     return listLinkable(db, campaignIdFrom(query))
+  }
+  else if (first === 'player-pack' && !second && method === 'POST') {
+    return buildPlayerPack(db, campaignIdFrom(input), input)
   }
   else if (first === 'last-met' && !second && method === 'GET') {
     return listLastMet(db, campaignIdFrom(query))
@@ -113,6 +119,7 @@ export function handleQuestRequest(db: Database.Database, request: QuestRequest)
     return dispatch(db, request)
   }
   catch (error) {
+    if (error instanceof PlayerPackInputError) throw new QuestRouteError(404, error.message)
     if (error instanceof QuestInputError) {
       throw new QuestRouteError(error.message.endsWith('not found') ? 404 : 400, error.message)
     }

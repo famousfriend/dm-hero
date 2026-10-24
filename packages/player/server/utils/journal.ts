@@ -1,5 +1,6 @@
 import type Database from 'better-sqlite3'
-import { NOTE_VISIBILITIES, type JournalNpc, type JournalPlace, type JournalSource, type NoteVisibility, type PlayerNote } from '@dmcc/character-core'
+import { NOTE_VISIBILITIES, type JournalNpc, type JournalPlace, type JournalQuest, type JournalQuestStatus, type JournalSource, type NoteVisibility, type PlayerNote } from '@dmcc/character-core'
+import { importPlayerPack } from './player-pack'
 import { RouteError, type RouteRequest } from './route-error'
 
 interface NoteRow {
@@ -117,8 +118,8 @@ export function listNpcs(db: Database.Database, characterId: number): JournalNpc
 }
 
 /**
- * Player-made entry. Entries from the DM come in through addDmEntry, never
- * through the API, so a player cannot pass their own text off as the DM's.
+ * Player-made entry. Entries from the DM come in only through a player pack
+ * (importPlayerPack), so a player cannot pass their own text off as the DM's.
  */
 function createEntry(db: Database.Database, table: EntryTable, body: Record<string, unknown>) {
   const characterId = characterIdOf(db, body.characterId)
@@ -156,26 +157,52 @@ function updateEntry(db: Database.Database, table: EntryTable, id: number, body:
   return toPlace(getEntry(db, table, id))
 }
 
-/** For the DM connection: the DM gives a character a place or an NPC (met at placeId) */
-export function addDmEntry(
-  db: Database.Database,
-  table: EntryTable,
-  characterId: number,
-  entry: { name: string, description?: string, placeId?: number | null },
-) {
-  const result = table === 'npcs'
-    ? db.prepare('INSERT INTO npcs (character_id, place_id, source, name, description) VALUES (?, ?, \'dm\', ?, ?)')
-        .run(characterId, entry.placeId ?? null, entry.name, entry.description ?? '')
-    : db.prepare('INSERT INTO places (character_id, source, name, description) VALUES (?, \'dm\', ?, ?)')
-        .run(characterId, entry.name, entry.description ?? '')
-  return Number(result.lastInsertRowid)
+// ---------------------------------------------------------------------------
+// Quests (only from the DM, through a player pack)
+// ---------------------------------------------------------------------------
+
+interface QuestRow {
+  id: number
+  character_id: number
+  name: string
+  description: string
+  status: JournalQuestStatus
+  reward: string
+  player_notes: string
+  created_at: string
+  updated_at: string
+}
+
+const toQuest = (r: QuestRow): JournalQuest => ({
+  id: r.id, characterId: r.character_id, name: r.name, description: r.description, status: r.status, reward: r.reward, playerNotes: r.player_notes, createdAt: r.created_at, updatedAt: r.updated_at,
+})
+
+const QUEST_ORDER = 'CASE status WHEN \'active\' THEN 0 WHEN \'open\' THEN 1 WHEN \'done\' THEN 2 ELSE 3 END'
+
+export function listQuests(db: Database.Database, characterId: number): JournalQuest[] {
+  return (db.prepare(`SELECT * FROM quests WHERE character_id = ? ORDER BY ${QUEST_ORDER}, name COLLATE NOCASE`).all(characterId) as QuestRow[]).map(toQuest)
+}
+
+function getQuest(db: Database.Database, id: number): JournalQuest {
+  const row = db.prepare('SELECT * FROM quests WHERE id = ?').get(id) as QuestRow | undefined
+  if (!row) throw new RouteError(404, 'Quest not found')
+  return toQuest(row)
+}
+
+function updateQuest(db: Database.Database, id: number, body: Record<string, unknown>): JournalQuest {
+  const quest = getQuest(db, id)
+  if (Object.keys(body).some(key => key !== 'playerNotes')) throw new RouteError(403, 'Quests come from your DM; only your notes can change')
+  db.prepare('UPDATE quests SET player_notes = ?, updated_at = datetime(\'now\') WHERE id = ?').run(str(body, 'playerNotes') ?? quest.playerNotes, id)
+  return getQuest(db, id)
 }
 
 /*
  *   GET    /api/journal?characterId=1         { notes, places, npcs } of a character
  *   POST   /api/journal/notes                 { characterId, title, body, visibility }
  *   POST   /api/journal/places | npcs         { characterId, name, description, playerNotes, placeId? }
- *   PATCH | DELETE /api/journal/notes|places|npcs/:id
+ *   PATCH | DELETE /api/journal/notes|places|npcs|quests/:id   (quests: playerNotes only)
+ *   POST   /api/journal/import-pack           { characterId, pack, apply } player pack from DM Command Center;
+ *                                             apply false only previews what would be added and updated
  */
 export function handleJournal(db: Database.Database, req: RouteRequest) {
   const [kind, idText, ...rest] = req.segments
@@ -183,19 +210,27 @@ export function handleJournal(db: Database.Database, req: RouteRequest) {
   if (!kind) {
     if (req.method !== 'GET') throw new RouteError(405, 'Method not allowed')
     const characterId = characterIdOf(db, req.query?.characterId)
-    return { notes: listNotes(db, characterId), places: listPlaces(db, characterId), npcs: listNpcs(db, characterId) }
+    return { notes: listNotes(db, characterId), places: listPlaces(db, characterId), npcs: listNpcs(db, characterId), quests: listQuests(db, characterId) }
   }
-  if (kind !== 'notes' && kind !== 'places' && kind !== 'npcs') throw new RouteError(404, 'Not found')
   const body = req.body ?? {}
-  if (!idText) {
+  if (kind === 'import-pack' && !idText) {
     if (req.method !== 'POST') throw new RouteError(405, 'Method not allowed')
+    return importPlayerPack(db, characterIdOf(db, body.characterId), body.pack, body.apply === true)
+  }
+  if (kind !== 'notes' && kind !== 'places' && kind !== 'npcs' && kind !== 'quests') throw new RouteError(404, 'Not found')
+  if (!idText) {
+    if (req.method !== 'POST' || kind === 'quests') throw new RouteError(405, 'Method not allowed')
     return kind === 'notes' ? createNote(db, body) : createEntry(db, kind, body)
   }
   const id = Number(idText)
   if (!Number.isInteger(id)) throw new RouteError(404, 'Not found')
-  if (req.method === 'PATCH') return kind === 'notes' ? updateNote(db, id, body) : updateEntry(db, kind, id, body)
+  if (req.method === 'PATCH') {
+    if (kind === 'notes') return updateNote(db, id, body)
+    return kind === 'quests' ? updateQuest(db, id, body) : updateEntry(db, kind, id, body)
+  }
   if (req.method === 'DELETE') {
     if (kind === 'notes') getNote(db, id)
+    else if (kind === 'quests') getQuest(db, id)
     else getEntry(db, kind, id)
     db.prepare(`DELETE FROM ${kind} WHERE id = ?`).run(id)
     return { ok: true }

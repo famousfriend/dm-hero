@@ -8,6 +8,17 @@
 
     <v-spacer />
 
+    <v-btn
+      variant="text"
+      prepend-icon="mdi-file-download-outline"
+      class="mr-2 import-btn"
+      :disabled="activeId === null"
+      @click="importOpen = true"
+    >
+      Import from DM
+    </v-btn>
+    <PackImportDialog v-model="importOpen" />
+
     <!-- Active character: always visible, one click to switch -->
     <v-menu location="bottom end">
       <template #activator="{ props: menuProps }">
@@ -58,6 +69,7 @@ interface WindowControlsOverlay extends EventTarget {
 const version = useRuntimeConfig().public.appVersion
 const { characters, activeId, activeSheet, active, campaignOf, setActive } = useCharacters()
 const activeCampaign = computed(() => campaignOf(active.value))
+const importOpen = ref(false)
 
 const initial = (name?: string) => (name?.trim()[0] ?? '?').toUpperCase()
 
@@ -89,6 +101,11 @@ if (import.meta.client) {
   height: 28px;
   border-radius: 6px;
   vertical-align: middle;
+}
+
+.import-btn {
+  text-transform: none;
+  letter-spacing: normal;
 }
 
 .character-switcher {
