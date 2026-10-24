@@ -1,6 +1,6 @@
 import type Database from 'better-sqlite3'
 import { getDb } from './db'
-import { RouteError, type RouteRequest } from './characters'
+import { RouteError, type RouteRequest } from './route-error'
 
 /** One catch-all route per feature: parse the request, map RouteError to HTTP */
 export function catchAllRoute(handler: (db: Database.Database, req: RouteRequest) => unknown) {
@@ -8,9 +8,10 @@ export function catchAllRoute(handler: (db: Database.Database, req: RouteRequest
     const method = event.method
     const body = ['POST', 'PATCH', 'PUT'].includes(method) ? ((await readBody(event)) ?? {}) : null
     try {
-      return handler(getDb(), {
+      return await handler(getDb(), {
         method,
         segments: (getRouterParam(event, 'path') ?? '').split('/').filter(Boolean),
+        query: getQuery(event),
         body,
       })
     }

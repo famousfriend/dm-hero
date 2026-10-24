@@ -2,30 +2,52 @@
   <v-dialog v-model="open" max-width="560">
     <v-card :title="character ? 'Edit character' : 'New character'">
       <v-card-text>
-        <v-text-field v-model="form.name" label="Name" autofocus :rules="[v => !!v?.trim() || 'Name is required']" />
-        <v-row dense>
-          <v-col cols="8">
-            <v-text-field v-model="form.classLabel" label="Class" placeholder="e.g. Monk or Fighter 3 / Wizard 2" />
-          </v-col>
-          <v-col cols="4">
-            <v-text-field v-model.number="form.level" label="Level" type="number" min="1" max="20" />
-          </v-col>
-          <v-col cols="6">
-            <v-text-field v-model="form.race" label="Species / race" />
-          </v-col>
-          <v-col cols="6">
-            <v-text-field v-model="form.background" label="Background" />
-          </v-col>
-          <v-col cols="4">
-            <v-text-field v-model.number="form.hpMax" label="Max HP" type="number" min="0" />
-          </v-col>
-          <v-col cols="4">
-            <v-text-field v-model.number="form.ac" label="AC" type="number" min="0" />
-          </v-col>
-          <v-col cols="4">
-            <v-text-field v-model.number="form.speed" label="Speed (ft)" type="number" min="0" />
-          </v-col>
-        </v-row>
+        <v-btn-toggle v-if="!character" v-model="mode" mandatory density="comfortable" variant="outlined" color="primary" class="mb-4">
+          <v-btn value="manual" prepend-icon="mdi-pencil">Enter by hand</v-btn>
+          <v-btn value="ddb" prepend-icon="mdi-link-variant">D&amp;D Beyond link</v-btn>
+        </v-btn-toggle>
+
+        <template v-if="mode === 'ddb' && !character">
+          <v-text-field
+            v-model="ddbLink"
+            label="D&D Beyond character link"
+            placeholder="https://www.dndbeyond.com/characters/12345678"
+            autofocus
+            hint="The sheet must be set to Public on D&D Beyond (Character Settings > Privacy)."
+            persistent-hint
+            class="mb-2"
+          />
+        </template>
+
+        <template v-else>
+          <v-text-field v-model="form.name" label="Name" autofocus :rules="[v => !!v?.trim() || 'Name is required']" />
+          <v-alert v-if="character?.ddbCharacterId" type="info" variant="tonal" density="compact" class="mb-3">
+            Imported from D&amp;D Beyond. What you change here is kept as your own value; a later refresh never overwrites it.
+          </v-alert>
+          <v-row dense>
+            <v-col cols="8">
+              <v-text-field v-model="form.classLabel" label="Class" placeholder="e.g. Monk or Fighter 3 / Wizard 2" />
+            </v-col>
+            <v-col cols="4">
+              <v-text-field v-model.number="form.level" label="Level" type="number" min="1" max="20" />
+            </v-col>
+            <v-col cols="6">
+              <v-text-field v-model="form.race" label="Species / race" />
+            </v-col>
+            <v-col cols="6">
+              <v-text-field v-model="form.background" label="Background" />
+            </v-col>
+            <v-col cols="4">
+              <v-text-field v-model.number="form.hpMax" label="Max HP" type="number" min="0" />
+            </v-col>
+            <v-col cols="4">
+              <v-text-field v-model.number="form.ac" label="AC" type="number" min="0" />
+            </v-col>
+            <v-col cols="4">
+              <v-text-field v-model.number="form.speed" label="Speed (ft)" type="number" min="0" />
+            </v-col>
+          </v-row>
+        </template>
         <v-select
           v-model="form.campaignId"
           :items="campaignItems"
@@ -38,7 +60,10 @@
       <v-card-actions>
         <v-spacer />
         <v-btn variant="text" @click="open = false">Cancel</v-btn>
-        <v-btn color="primary" variant="flat" :loading="saving" :disabled="!form.name.trim()" @click="save">
+        <v-btn v-if="mode === 'ddb' && !character" color="primary" variant="flat" :loading="saving" :disabled="!ddbLink.trim()" @click="importLink">
+          Import
+        </v-btn>
+        <v-btn v-else color="primary" variant="flat" :loading="saving" :disabled="!form.name.trim()" @click="save">
           {{ character ? 'Save' : 'Create' }}
         </v-btn>
       </v-card-actions>
@@ -52,7 +77,9 @@ import type { PlayerCharacter } from '@dmcc/character-core'
 const open = defineModel<boolean>({ required: true })
 const props = defineProps<{ character: PlayerCharacter | null }>()
 
-const { campaigns, createCharacter, updateCharacter, setActive } = useCharacters()
+const { campaigns, createCharacter, importDdb, updateCharacter, setActive } = useCharacters()
+const mode = ref<'manual' | 'ddb'>('manual')
+const ddbLink = ref('')
 const campaignItems = computed(() => [
   { title: 'No campaign', value: null },
   ...campaigns.value.map(c => ({ title: c.name, value: c.id })),
@@ -68,6 +95,7 @@ watch(open, (isOpen) => {
   error.value = ''
   if (!props.character) {
     form.value = blank()
+    ddbLink.value = ''
     return
   }
   const sheet = sheetOf(props.character)
@@ -85,6 +113,21 @@ watch(open, (isOpen) => {
 })
 
 const num = (value: unknown, fallback: number) => (Number.isFinite(Number(value)) && value !== '' ? Number(value) : fallback)
+
+async function importLink() {
+  saving.value = true
+  error.value = ''
+  try {
+    await importDdb(ddbLink.value.trim(), form.value.campaignId)
+    open.value = false
+  }
+  catch (e) {
+    error.value = (e as { data?: { message?: string } }).data?.message ?? 'Could not import the character.'
+  }
+  finally {
+    saving.value = false
+  }
+}
 
 async function save() {
   saving.value = true

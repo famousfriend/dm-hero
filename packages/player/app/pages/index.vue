@@ -3,7 +3,7 @@
     <v-card v-if="loaded && !activeSheet" class="mx-auto mt-8 text-center pa-8" max-width="520" border>
       <v-icon size="64" color="primary" class="mb-4">mdi-shield-account-outline</v-icon>
       <h1 class="text-h5 mb-2">Welcome to the Player Companion</h1>
-      <p class="text-medium-emphasis mb-6">Create your character to get started. Importing from D&amp;D Beyond comes in a later update.</p>
+      <p class="text-medium-emphasis mb-6">Create your character by hand, or paste the link to your public D&amp;D Beyond sheet.</p>
       <v-btn color="primary" variant="flat" size="large" prepend-icon="mdi-account-plus" @click="formOpen = true">
         Create a character
       </v-btn>
@@ -42,6 +42,27 @@
           </v-card>
         </v-col>
       </v-row>
+
+      <v-card border class="mt-4">
+        <v-card-item>
+          <v-card-title class="text-subtitle-1">
+            <v-icon size="small" class="mr-1">mdi-notebook-outline</v-icon>
+            Recent notes
+          </v-card-title>
+          <template #append>
+            <v-btn variant="text" size="small" to="/notes">All notes</v-btn>
+          </template>
+        </v-card-item>
+        <v-list v-if="notes.length" density="compact" bg-color="transparent">
+          <v-list-item v-for="note in notes.slice(0, 3)" :key="note.id" to="/notes">
+            <v-list-item-title class="text-wrap">{{ note.title || note.body.trim().split('\n')[0] || 'Untitled' }}</v-list-item-title>
+            <template #append>
+              <v-icon size="small">{{ note.visibility === 'party' ? 'mdi-account-group' : 'mdi-lock' }}</v-icon>
+            </template>
+          </v-list-item>
+        </v-list>
+        <v-card-text v-else class="text-medium-emphasis">No notes yet.</v-card-text>
+      </v-card>
     </template>
 
     <CharacterFormDialog v-model="formOpen" :character="activeSheet ? active : null" />
@@ -50,6 +71,7 @@
 
 <script setup lang="ts">
 const { active, activeSheet, loaded, campaignOf } = useCharacters()
+const { notes } = useJournal()
 const formOpen = ref(false)
 const campaign = computed(() => campaignOf(active.value))
 

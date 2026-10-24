@@ -1,18 +1,8 @@
 import type Database from 'better-sqlite3'
-import { EMPTY_PLAYER_SHEET, setLayer, type LayeredRecord, type PlayerCampaign, type PlayerCharacter, type PlayerSheet } from '@dmcc/character-core'
+import { DdbFetchError, EMPTY_PLAYER_SHEET, applySource, ddbToPlayerSheet, fetchDdbCharacter, mapDdbCharacter, parseDdbCharacterId, setLayer, type DdbCharacter, type LayeredRecord, type PlayerCampaign, type PlayerCharacter, type PlayerSheet } from '@dmcc/character-core'
+import { RouteError, type RouteRequest } from './route-error'
 
-export class RouteError extends Error {
-  constructor(public statusCode: number, message: string) {
-    super(message)
-  }
-}
-
-export interface RouteRequest {
-  method: string
-  /** Path below /api/<feature>, split on "/" */
-  segments: string[]
-  body: Record<string, unknown> | null
-}
+export { RouteError }
 
 interface CharacterRow {
   id: number
@@ -91,6 +81,35 @@ export function createCharacter(db: Database.Database, body: Record<string, unkn
 }
 
 /** PATCH: { values?: { field: value | null } } sets (null clears) the player's own layer; { campaignId? } */
+/**
+ * New character from a public D&D Beyond sheet: everything lands in the import
+ * (source) layer, so the player's own edits later sit on top of it.
+ */
+export async function importDdbCharacter(
+  db: Database.Database,
+  body: Record<string, unknown>,
+  fetchCharacter: (id: string) => Promise<DdbCharacter> = fetchDdbCharacter,
+): Promise<PlayerCharacter> {
+  const characterId = typeof body.link === 'string' ? parseDdbCharacterId(body.link) : null
+  if (!characterId) throw new RouteError(400, 'That doesn\'t look like a D&D Beyond character link.')
+  const campaignId = campaignIdOf(db, body.campaignId)
+  let ddb: DdbCharacter
+  try {
+    ddb = await fetchCharacter(characterId)
+  }
+  catch (error) {
+    if (error instanceof DdbFetchError) throw new RouteError(502, error.message)
+    throw error
+  }
+  const { values, explain } = ddbToPlayerSheet(mapDdbCharacter(ddb))
+  if (!values.name?.trim()) values.name = 'New character'
+  const result = db.prepare('INSERT INTO characters (campaign_id, ddb_character_id, values_json) VALUES (?, ?, ?)')
+    .run(campaignId, characterId, JSON.stringify(applySource({}, values, explain)))
+  const created = getCharacter(db, Number(result.lastInsertRowid))!
+  setActiveCharacterId(db, created.id)
+  return created
+}
+
 export function updateCharacter(db: Database.Database, id: number, body: Record<string, unknown>): PlayerCharacter {
   const character = getCharacter(db, id)
   if (!character) throw new RouteError(404, 'Character not found')
@@ -171,6 +190,7 @@ export function deleteCampaign(db: Database.Database, id: number) {
 /*
  *   GET    /api/characters              list + active id
  *   POST   /api/characters              { values: { name, ... }, campaignId? }
+ *   POST   /api/characters/ddb          { link, campaignId? } import a public D&D Beyond sheet
  *   PUT    /api/characters/active       { id }
  *   GET | PATCH | DELETE /api/characters/:id
  */
@@ -180,6 +200,9 @@ export function handleCharacters(db: Database.Database, req: RouteRequest) {
   if (!first) {
     if (req.method === 'GET') return { characters: listCharacters(db), activeId: getActiveCharacterId(db) }
     if (req.method === 'POST') return createCharacter(db, req.body ?? {})
+  }
+  else if (first === 'ddb') {
+    if (req.method === 'POST') return importDdbCharacter(db, req.body ?? {})
   }
   else if (first === 'active') {
     if (req.method === 'PUT') {

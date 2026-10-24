@@ -61,3 +61,31 @@ describe('characters', () => {
     expect(() => call('GET', 'a/b')).toThrow(/not found/i)
   })
 })
+
+describe('D&D Beyond import', () => {
+  it('creates an active character from a sheet link, values in the import layer', async () => {
+    const { readFileSync } = await import('node:fs')
+    const { importDdbCharacter } = await import('../server/utils/characters')
+    const { unwrapDdbResponse } = await import('@dmcc/character-core')
+    const json = JSON.parse(readFileSync(new URL('../../app/test/fixtures/ddb-monk-7.json', import.meta.url), 'utf8'))
+    let askedFor = ''
+    const created = await importDdbCharacter(db, { link: 'https://www.dndbeyond.com/characters/12345678' }, async (id) => {
+      askedFor = id
+      return unwrapDdbResponse(json)
+    })
+    expect(askedFor).toBe('12345678')
+    expect(created.ddbCharacterId).toBe('12345678')
+    expect(created.values.level?.source).toBe(7)
+    expect(created.values.level?.local).toBeUndefined()
+    expect((call('GET', '') as { activeId: number }).activeId).toBe(created.id)
+  })
+
+  it('explains a bad link and an unreachable D&D Beyond', async () => {
+    const { importDdbCharacter } = await import('../server/utils/characters')
+    const { DdbFetchError } = await import('@dmcc/character-core')
+    await expect(importDdbCharacter(db, { link: 'hello' })).rejects.toThrow(/link/)
+    await expect(importDdbCharacter(db, { link: '12345678' }, async () => {
+      throw new DdbFetchError('Character not found or not public.')
+    })).rejects.toMatchObject({ statusCode: 502 })
+  })
+})

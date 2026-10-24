@@ -36,6 +36,13 @@ export function useCharacters() {
     return created
   }
 
+  /** New character from a public D&D Beyond sheet link; it becomes the active one */
+  async function importDdb(link: string, campaignId: number | null) {
+    const created = await $fetch<PlayerCharacter>('/api/characters/ddb', { method: 'POST', body: { link, campaignId } })
+    await load()
+    return created
+  }
+
   async function updateCharacter(id: number, values: SheetEdits, campaignId?: number | null) {
     const body: Record<string, unknown> = { values }
     if (campaignId !== undefined) body.campaignId = campaignId
@@ -65,7 +72,7 @@ export function useCharacters() {
 
   return {
     characters, campaigns, activeId, active, activeSheet, loaded, campaignOf,
-    load, setActive, createCharacter, updateCharacter, deleteCharacter,
+    load, setActive, createCharacter, importDdb, updateCharacter, deleteCharacter,
     createCampaign, updateCampaign, deleteCampaign,
   }
 }

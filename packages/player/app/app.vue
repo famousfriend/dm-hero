@@ -40,6 +40,8 @@ const rail = ref(false)
 
 const nav = [
   { to: '/', icon: 'mdi-view-dashboard-outline', title: 'Dashboard' },
+  { to: '/notes', icon: 'mdi-notebook-outline', title: 'Notes' },
+  { to: '/journal', icon: 'mdi-account-group-outline', title: 'NPCs & Places' },
   { to: '/characters', icon: 'mdi-account-multiple-outline', title: 'Characters' },
   { to: '/campaigns', icon: 'mdi-map-legend', title: 'Campaigns' },
 ]

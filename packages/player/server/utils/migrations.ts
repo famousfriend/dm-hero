@@ -32,6 +32,47 @@ const migrations: Migration[] = [
       `)
     },
   },
+  {
+    // Journal: notes, places and NPCs per character (see character-core/src/journal.ts)
+    version: 2,
+    up: (db) => {
+      db.exec(`
+        CREATE TABLE notes (
+          id INTEGER PRIMARY KEY AUTOINCREMENT,
+          character_id INTEGER NOT NULL REFERENCES characters(id) ON DELETE CASCADE,
+          title TEXT NOT NULL DEFAULT '',
+          body TEXT NOT NULL DEFAULT '',
+          visibility TEXT NOT NULL DEFAULT 'private' CHECK (visibility IN ('private', 'party')),
+          created_at TEXT NOT NULL DEFAULT (datetime('now')),
+          updated_at TEXT NOT NULL DEFAULT (datetime('now'))
+        );
+        CREATE INDEX idx_notes_character ON notes(character_id);
+        CREATE TABLE places (
+          id INTEGER PRIMARY KEY AUTOINCREMENT,
+          character_id INTEGER NOT NULL REFERENCES characters(id) ON DELETE CASCADE,
+          source TEXT NOT NULL DEFAULT 'player' CHECK (source IN ('player', 'dm')),
+          name TEXT NOT NULL,
+          description TEXT NOT NULL DEFAULT '',
+          player_notes TEXT NOT NULL DEFAULT '',
+          created_at TEXT NOT NULL DEFAULT (datetime('now')),
+          updated_at TEXT NOT NULL DEFAULT (datetime('now'))
+        );
+        CREATE INDEX idx_places_character ON places(character_id);
+        CREATE TABLE npcs (
+          id INTEGER PRIMARY KEY AUTOINCREMENT,
+          character_id INTEGER NOT NULL REFERENCES characters(id) ON DELETE CASCADE,
+          place_id INTEGER REFERENCES places(id) ON DELETE SET NULL,
+          source TEXT NOT NULL DEFAULT 'player' CHECK (source IN ('player', 'dm')),
+          name TEXT NOT NULL,
+          description TEXT NOT NULL DEFAULT '',
+          player_notes TEXT NOT NULL DEFAULT '',
+          created_at TEXT NOT NULL DEFAULT (datetime('now')),
+          updated_at TEXT NOT NULL DEFAULT (datetime('now'))
+        );
+        CREATE INDEX idx_npcs_character ON npcs(character_id);
+      `)
+    },
+  },
 ]
 
 export function runMigrations(db: Database.Database) {
