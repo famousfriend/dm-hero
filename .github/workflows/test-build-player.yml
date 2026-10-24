@@ -1,0 +1,57 @@
+name: Test Build (Player Companion)
+
+# Windows installer of DM Command Center - Player Companion (packages/player).
+# Runs on pull requests and merges to main that touch the companion or the shared
+# package, or by hand.
+# Download: the run's "player-companion-windows-test" artifact.
+
+on:
+  pull_request:
+    paths:
+      - 'packages/player/**'
+      - 'packages/character-core/**'
+      - '.github/workflows/test-build-player.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'packages/player/**'
+      - 'packages/character-core/**'
+      - '.github/workflows/test-build-player.yml'
+  workflow_dispatch:
+
+jobs:
+  build-windows:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build Nuxt
+        run: pnpm --filter @dmcc/player build
+
+      - name: Rebuild better-sqlite3 for Electron
+        run: pnpm --filter @dmcc/player electron:rebuild
+
+      - name: Build Electron app
+        working-directory: packages/player
+        run: pnpm exec electron-builder --win --publish never
+
+      - name: Upload installer
+        uses: actions/upload-artifact@v4
+        with:
+          name: player-companion-windows-test
+          path: packages/player/dist-electron/*.exe
+          retention-days: 14
+          if-no-files-found: error

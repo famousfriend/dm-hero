@@ -74,3 +74,16 @@ describe('D&D Beyond -> layered character', () => {
     expect(diffSource(record, imported)).toEqual([])
   })
 })
+
+describe('D&D Beyond -> Player Companion sheet', async () => {
+  const { ddbToPlayerSheet, playerSheet, applySource } = await import('../src')
+  it('fills the source layer from the real Monk sheet', () => {
+    const { values, explain } = ddbToPlayerSheet(loadMonk())
+    const sheet = playerSheet({ values: applySource({}, values, explain) })
+    expect(sheet.name).toBeTruthy()
+    expect(sheet.level).toBe(7)
+    expect(sheet.classLabel).toContain('Monk')
+    expect(sheet.speed).toBeGreaterThanOrEqual(30)
+    expect(sheet.ac).toBeGreaterThan(10)
+  })
+})

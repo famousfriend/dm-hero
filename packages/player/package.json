@@ -1,0 +1,114 @@
+{
+  "name": "@dmcc/player",
+  "version": "0.1.0",
+  "description": "DM Command Center - Player Companion: character sheet and session companion for D&D 5e players",
+  "author": "famousfriend",
+  "license": "MIT",
+  "type": "module",
+  "private": true,
+  "main": "electron/main.js",
+  "scripts": {
+    "build": "cross-env NODE_OPTIONS=--max-old-space-size=4096 nuxt build",
+    "dev": "nuxt dev --port 3001",
+    "dev:electron": "concurrently \"nuxt dev --port 3001\" \"wait-on http://localhost:3001 && cross-env NODE_ENV=development electron . --ozone-platform=x11 --no-sandbox\"",
+    "postinstall": "nuxt prepare",
+    "test": "vitest run",
+    "lint": "eslint .",
+    "typecheck": "nuxi typecheck",
+    "electron:rebuild": "node scripts/electron-rebuild.js",
+    "electron:build:win": "nuxt build && pnpm electron:rebuild && electron-builder --win"
+  },
+  "build": {
+    "appId": "com.dmcc.player-companion",
+    "productName": "DM Command Center - Player Companion",
+    "copyright": "Copyright © 2026 famousfriend. Based on DM Hero by Florian Heuberger (MIT License).",
+    "directories": {
+      "output": "dist-electron",
+      "buildResources": "electron/icons"
+    },
+    "files": [
+      "electron/**/*"
+    ],
+    "extraResources": [
+      {
+        "from": "electron/icons/icon-256.png",
+        "to": "icon-256.png"
+      },
+      {
+        "from": ".output",
+        "to": ".output",
+        "filter": [
+          "**/*"
+        ]
+      },
+      {
+        "from": "node_modules/better-sqlite3",
+        "to": ".output/server/node_modules/better-sqlite3",
+        "filter": [
+          "**/*",
+          "!build/Release/obj.target/**",
+          "!prebuilds/**",
+          "!src/**",
+          "!deps/**"
+        ]
+      },
+      {
+        "from": "node_modules/bindings",
+        "to": ".output/server/node_modules/bindings",
+        "filter": [
+          "**/*"
+        ]
+      },
+      {
+        "from": "node_modules/file-uri-to-path",
+        "to": ".output/server/node_modules/file-uri-to-path",
+        "filter": [
+          "**/*"
+        ]
+      }
+    ],
+    "asar": true,
+    "win": {
+      "target": [
+        "nsis"
+      ],
+      "artifactName": "DM-CC-Player-Companion-${version}-win.${ext}"
+    },
+    "nsis": {
+      "artifactName": "DM-CC-Player-Companion-Setup-${version}.${ext}"
+    },
+    "linux": {
+      "target": [
+        "AppImage"
+      ],
+      "category": "Game",
+      "icon": "electron/icons/icon-256.png",
+      "artifactName": "DM-CC-Player-Companion-${version}.${ext}",
+      "executableName": "dmcc-player-companion"
+    }
+  },
+  "dependencies": {
+    "@dmcc/character-core": "workspace:*",
+    "@mdi/font": "^7.4.47",
+    "better-sqlite3": "^12.11.1",
+    "nuxt": "^4.5.2",
+    "vite-plugin-vuetify": "^2.1.3",
+    "vue": "^3.5.43",
+    "vue-router": "^5.3.1",
+    "vuetify": "^4.2.3"
+  },
+  "devDependencies": {
+    "@nuxt/eslint": "1.10.0",
+    "@types/better-sqlite3": "^7.6.13",
+    "@types/node": "^25.9.9",
+    "concurrently": "^9.2.4",
+    "cross-env": "^10.1.0",
+    "electron": "^41.10.7",
+    "electron-builder": "^26.15.3",
+    "eslint": "^9.39.5",
+    "typescript": "^6.0.3",
+    "vitest": "^4.1.11",
+    "vue-tsc": "^3.3.12",
+    "wait-on": "^9.5.1"
+  }
+}

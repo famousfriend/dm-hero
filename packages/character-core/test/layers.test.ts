@@ -24,3 +24,15 @@ describe('layers', () => {
     ])).toEqual({ full: 1, partial: 1, none: 1 })
   })
 })
+
+describe('player sheet', async () => {
+  const { playerSheet, applySource, setLayer } = await import('../src')
+  it('fills defaults and honours layers', () => {
+    let values = applySource({}, { name: 'Kara', ac: 15 })
+    values = setLayer(values, 'ac', 'local', 17)
+    const sheet = playerSheet({ values })
+    expect(sheet.name).toBe('Kara')
+    expect(sheet.ac).toBe(17)
+    expect(sheet.level).toBe(1)
+  })
+})

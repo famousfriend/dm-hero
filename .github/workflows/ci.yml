@@ -1,7 +1,7 @@
 name: CI
 
 # Lint, typecheck and unit tests of DM Hero, the game table (player app + relay)
-# and the shared seal and character-core packages
+# the shared seal and character-core packages and the Player Companion
 # on every PR and on main. Never builds or publishes anything.
 
 on:
@@ -49,6 +49,15 @@ jobs:
 
       - name: Unit tests (character-core)
         run: pnpm --filter @dmcc/character-core test
+
+      - name: Lint (Player Companion)
+        run: pnpm --filter @dmcc/player lint
+
+      - name: Typecheck (Player Companion)
+        run: pnpm --filter @dmcc/player typecheck
+
+      - name: Unit tests (Player Companion)
+        run: pnpm --filter @dmcc/player test
 
       - name: Lint (game table)
         run: pnpm --filter @dm-hero/staging lint
