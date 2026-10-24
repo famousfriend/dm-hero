@@ -3350,9 +3350,9 @@
       "inspiration": "Inspiration"
     },
     "pack": {
-      "button": "Player pack",
-      "title": "Send to Player Companion",
-      "intro": "Pick what the players have learned. You get a file to send them (Discord, email, USB). They open it in the Player Companion and everything lands in the right place.",
+      "button": "Player journal",
+      "title": "Player journal",
+      "intro": "Tick what the players know about. You get a file to send them (Discord, email, USB). The web page opens in any browser, works offline and lets players keep their own notes. Send a newer one after each session; their notes carry over.",
       "forCharacter": "For",
       "dmName": "Your name (shown to players)",
       "search": "Search",
@@ -3361,13 +3361,14 @@
       "nothing": "Nothing here yet",
       "includeDescriptions": "Include descriptions",
       "secretsWarning": "Descriptions can contain DM secrets. Only turn this on if everything written there is safe for players to read.",
-      "export": "Save file",
+      "export": "Save web page",
       "wholeParty": "Whole party",
       "quests": "Quests",
       "npcs": "NPCs",
       "places": "Places",
       "loadFailed": "Could not load campaign data.",
-      "exportFailed": "Could not create the file."
+      "exportFailed": "Could not create the file.",
+      "exportText": "Save text file"
     }
   },
   "palette": {

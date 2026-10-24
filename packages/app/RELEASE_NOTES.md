@@ -6,7 +6,7 @@ package.json to publish an update.
 
 ## 1.1.0
 
-- **Player pack:** on the Party page, pick the quests, NPCs and places your players know about and save them as a file. Send it to your players (Discord, email, USB); they open it in the new DM Command Center - Player Companion and everything lands in their journal. Sending a newer pack later updates what they have instead of adding duplicates. Descriptions are left out unless you turn them on, so your secrets stay yours.
+- **Player journal:** on the Party page, tick the quests, NPCs and places your players know about and save them as a web page (or a plain text file). Send it to your players on Discord, email or USB. The page opens in any browser, works offline, shows who they met where, and lets each player keep their own notes. Send a newer page after each session and their notes carry over. Descriptions are left out unless you switch them on, so your secrets stay yours.
 
 ## 1.0.0
 

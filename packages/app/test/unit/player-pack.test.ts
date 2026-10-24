@@ -1,6 +1,6 @@
 import { describe, it, expect, beforeAll } from 'vitest'
 import type Database from 'better-sqlite3'
-import { parsePlayerPack } from '@dmcc/character-core'
+import type { PlayerPack } from '../../types/player-pack'
 import { getTestDb } from '../utils/test-db'
 import { createQuest } from '../../server/utils/quests'
 import { handleQuestRequest } from '../../server/utils/quest-route'
@@ -27,9 +27,9 @@ describe('player pack export', () => {
   })
 
   const exportPack = (body: Record<string, unknown>) =>
-    parsePlayerPack(handleQuestRequest(db, { method: 'POST', segments: ['player-pack'], query: {}, body: { campaignId, ...body } }))
+    handleQuestRequest(db, { method: 'POST', segments: ['player-pack'], query: {}, body: { campaignId, ...body } }) as PlayerPack
 
-  it('exports only what the DM picked, as a valid pack', () => {
+  it('exports only what the DM picked, with places linked to NPCs', () => {
     const pack = exportPack({ npcIds: [ids.vex, ids.stranger], placeIds: [ids.saltmarsh], questIds: [ids.quest], forCharacter: 'Kara' })
     expect(pack.campaign.name).toBe('Crimson Moon')
     expect(pack.forCharacter).toBe('Kara')
@@ -44,7 +44,7 @@ describe('player pack export', () => {
     expect(pack.npcs[0]!.description).toBe('Friend of Captain Vex')
   })
 
-  it('keeps the same refs on every export, so re-imports update', () => {
+  it('keeps the same refs on every export, so notes of the players carry over', () => {
     const a = exportPack({ npcIds: [ids.vex] })
     const b = exportPack({ npcIds: [ids.vex] })
     expect(a.npcs[0]!.ref).toBe(b.npcs[0]!.ref)

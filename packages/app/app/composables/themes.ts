@@ -1,5 +1,4 @@
 import type { ThemeDefinition } from 'vuetify'
-import { MIDNIGHT_TAVERN } from '@dmcc/character-core'
 
 /**
  * DM Hero themes — 10 total: dark (default), hell, 5 colored, emily, music and nocturne.
@@ -9,8 +8,25 @@ import { MIDNIGHT_TAVERN } from '@dmcc/character-core'
 // "Midnight Tavern" — default
 const dark: ThemeDefinition = {
   dark: true,
-  // Shared with the Player Companion
-  colors: { ...MIDNIGHT_TAVERN },
+  colors: {
+    'background': '#1A1D29',
+    'surface': '#232632',
+    'surface-variant': '#2D3142',
+    'on-surface-variant': '#C5B8A0',
+    'primary': '#D4A574',
+    'primary-darken-1': '#B8935F',
+    'secondary': '#8B7355',
+    'secondary-darken-1': '#6B5742',
+    'accent': '#CC8844',
+    'error': '#D32F2F',
+    'info': '#7B92AB',
+    'success': '#689F38',
+    'warning': '#F9A825',
+    'on-background': '#E8DCC4',
+    'on-surface': '#E8DCC4',
+    'on-primary': '#1A1D29',
+    'on-secondary': '#E8DCC4',
+  },
   variables: {
     'md-bg': '#1A1D29',
     'md-surface': '#232632',

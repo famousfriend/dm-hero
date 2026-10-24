@@ -3350,9 +3350,9 @@
       "inspiration": "Inspiration"
     },
     "pack": {
-      "button": "Pack joueurs",
-      "title": "Envoyer au Player Companion",
-      "intro": "Choisissez ce que les joueurs ont appris. Vous obtenez un fichier à leur envoyer (Discord, e-mail, clé USB). Ils l’ouvrent dans le Player Companion et tout se range au bon endroit.",
+      "button": "Journal des joueurs",
+      "title": "Journal des joueurs",
+      "intro": "Cochez ce que les joueurs connaissent. Vous obtenez un fichier à leur envoyer (Discord, e-mail, clé USB). La page web s’ouvre dans n’importe quel navigateur, fonctionne hors ligne et permet aux joueurs de prendre leurs propres notes. Envoyez-en une nouvelle après chaque séance ; leurs notes sont conservées.",
       "forCharacter": "Pour",
       "dmName": "Votre nom (visible par les joueurs)",
       "search": "Rechercher",
@@ -3361,13 +3361,14 @@
       "nothing": "Rien pour l’instant",
       "includeDescriptions": "Inclure les descriptions",
       "secretsWarning": "Les descriptions peuvent contenir des secrets du MJ. N’activez que si tout leur contenu peut être lu par les joueurs.",
-      "export": "Enregistrer le fichier",
+      "export": "Enregistrer la page web",
       "wholeParty": "Tout le groupe",
       "quests": "Quêtes",
       "npcs": "PNJ",
       "places": "Lieux",
       "loadFailed": "Impossible de charger les données de la campagne.",
-      "exportFailed": "Impossible de créer le fichier."
+      "exportFailed": "Impossible de créer le fichier.",
+      "exportText": "Enregistrer en texte"
     }
   },
   "palette": {

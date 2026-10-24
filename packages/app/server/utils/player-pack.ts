@@ -1,12 +1,12 @@
 import type Database from 'better-sqlite3'
 import { randomBytes } from 'node:crypto'
-import { PLAYER_PACK_FORMAT, PLAYER_PACK_VERSION, type PackQuestStatus, type PlayerPack } from '@dmcc/character-core'
+import type { PackQuestStatus, PlayerPack } from '~~/types/player-pack'
 import { listQuests } from './quests'
 import { readSetting, writeSetting } from './settings'
 
 /*
- * Player pack export (Player Companion): the campaign info the DM chose to
- * hand to the players, as one file. No server involved.
+ * Player journal export: the campaign info the DM chose to hand to the
+ * players. The client turns it into a web page or a text file.
  */
 
 export class PlayerPackInputError extends Error {}
@@ -21,7 +21,7 @@ export interface PlayerPackRequest {
   dmName?: unknown
 }
 
-/** Random id of this DM install, so refs from two DMs never collide in a player's app */
+/** Random id of this DM install, so refs from two DMs never collide in a player's browser */
 function installId(db: Database.Database): string {
   let id = readSetting(db, 'player_pack_install_id')
   if (!id) {
@@ -90,8 +90,6 @@ export function buildPlayerPack(db: Database.Database, campaignId: number, input
   const quests = wantedQuests.size ? listQuests(db, campaignId).filter(q => wantedQuests.has(q.id)) : []
 
   return {
-    format: PLAYER_PACK_FORMAT,
-    version: PLAYER_PACK_VERSION,
     exportedAt: new Date().toISOString(),
     campaign: {
       ref: `${install}:campaign:${campaign.id}`,

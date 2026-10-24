@@ -64,7 +64,10 @@
       <v-card-actions>
         <v-spacer />
         <v-btn variant="text" @click="open = false">{{ $t('common.cancel') }}</v-btn>
-        <v-btn color="primary" variant="flat" prepend-icon="mdi-download" :loading="exporting" :disabled="!picked" @click="exportPack">
+        <v-btn variant="tonal" prepend-icon="mdi-text-box-outline" :loading="exporting === 'text'" :disabled="!picked || !!exporting" @click="exportJournal('text')">
+          {{ $t('party.pack.exportText') }}
+        </v-btn>
+        <v-btn color="primary" variant="flat" prepend-icon="mdi-web" :loading="exporting === 'page'" :disabled="!picked || !!exporting" @click="exportJournal('page')">
           {{ $t('party.pack.export') }}
         </v-btn>
       </v-card-actions>
@@ -73,12 +76,12 @@
 </template>
 
 <script setup lang="ts">
-import { PLAYER_PACK_EXTENSION } from '@dmcc/character-core'
 import type { PartyMember } from '~~/types/party'
+import type { PlayerPack } from '~~/types/player-pack'
 import type { LinkedEntity, Quest } from '~~/types/quests'
 
 const open = defineModel<boolean>({ required: true })
-const props = defineProps<{ campaignId: number, campaignName: string, members: PartyMember[] }>()
+const props = defineProps<{ campaignId: number, members: PartyMember[] }>()
 
 const { t } = useI18n()
 type Key = 'npcIds' | 'placeIds' | 'questIds'
@@ -92,10 +95,10 @@ const forCharacter = ref<string | null>(null)
 const dmName = ref('')
 const includeDescriptions = ref(false)
 const loading = ref(false)
-const exporting = ref(false)
+const exporting = ref<'page' | 'text' | null>(null)
 const error = ref('')
 
-const DM_NAME_KEY = 'dmcc-player-pack-dm-name'
+const DM_NAME_KEY = 'dmcc-player-journal-dm-name'
 
 const characterItems = computed(() => [
   { title: t('party.pack.wholeParty'), value: null },
@@ -151,8 +154,8 @@ watch(open, async (isOpen) => {
   }
 })
 
-async function exportPack() {
-  exporting.value = true
+async function exportJournal(kind: 'page' | 'text') {
+  exporting.value = kind
   error.value = ''
   try {
     localStorage.setItem(DM_NAME_KEY, dmName.value.trim())
@@ -161,7 +164,7 @@ async function exportPack() {
     // not remembered
   }
   try {
-    const pack = await $fetch('/api/quests/player-pack', {
+    const pack = await $fetch<PlayerPack>('/api/quests/player-pack', {
       method: 'POST',
       body: {
         campaignId: props.campaignId,
@@ -171,11 +174,13 @@ async function exportPack() {
         dmName: dmName.value,
       },
     })
-    const name = [props.campaignName, forCharacter.value].filter(Boolean).join(' - ').replace(/[\\/:*?"<>|]+/g, '').trim() || 'player-pack'
-    const url = URL.createObjectURL(new Blob([JSON.stringify(pack, null, 2)], { type: 'application/json' }))
+    const file = kind === 'page'
+      ? new Blob([playerJournalHtml(pack)], { type: 'text/html' })
+      : new Blob([playerJournalText(pack)], { type: 'text/plain' })
+    const url = URL.createObjectURL(file)
     const link = document.createElement('a')
     link.href = url
-    link.download = `${name}${PLAYER_PACK_EXTENSION}`
+    link.download = `${playerJournalFileName(pack)}.${kind === 'page' ? 'html' : 'txt'}`
     link.click()
     URL.revokeObjectURL(url)
     open.value = false
@@ -184,7 +189,7 @@ async function exportPack() {
     error.value = t('party.pack.exportFailed')
   }
   finally {
-    exporting.value = false
+    exporting.value = null
   }
 }
 </script>

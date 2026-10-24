@@ -26,7 +26,7 @@
           hide-details
           class="refresh-select"
         />
-        <v-btn variant="tonal" prepend-icon="mdi-file-send-outline" @click="packOpen = true">
+        <v-btn variant="tonal" prepend-icon="mdi-book-open-variant" @click="journalOpen = true">
           {{ $t('party.pack.button') }}
         </v-btn>
         <v-btn
@@ -63,13 +63,7 @@
     </div>
 
     <PartyEditDialog :member="editing" @close="editing = null" @updated="replaceMember" />
-    <PartyPlayerPackDialog
-      v-if="campaignId"
-      v-model="packOpen"
-      :campaign-id="campaignId"
-      :campaign-name="campaignStore.currentCampaign?.name ?? ''"
-      :members="members"
-    />
+    <PartyPlayerJournalDialog v-if="campaignId" v-model="journalOpen" :campaign-id="campaignId" :members="members" />
   </v-container>
 </template>
 
@@ -92,8 +86,7 @@ const {
   scheduleRefresh,
 } = useParty()
 
-const campaignStore = useCampaignStore()
-const packOpen = ref(false)
+const journalOpen = ref(false)
 const editing = ref<PartyMember | null>(null)
 const now = ref(Date.now())
 onReplace.push((updated) => {

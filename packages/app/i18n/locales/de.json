@@ -3350,9 +3350,9 @@
       "inspiration": "Inspiration"
     },
     "pack": {
-      "button": "Spieler-Paket",
-      "title": "An Player Companion senden",
-      "intro": "Wähle, was die Spieler erfahren haben. Du bekommst eine Datei zum Verschicken (Discord, E-Mail, USB). Sie öffnen sie im Player Companion und alles landet an der richtigen Stelle.",
+      "button": "Spieler-Journal",
+      "title": "Spieler-Journal",
+      "intro": "Hake an, was die Spieler kennen. Du bekommst eine Datei zum Verschicken (Discord, E-Mail, USB). Die Webseite öffnet sich in jedem Browser, funktioniert offline und Spieler können eigene Notizen festhalten. Schick nach jeder Sitzung eine neue; ihre Notizen bleiben erhalten.",
       "forCharacter": "Für",
       "dmName": "Dein Name (für Spieler sichtbar)",
       "search": "Suchen",
@@ -3361,13 +3361,14 @@
       "nothing": "Noch nichts vorhanden",
       "includeDescriptions": "Beschreibungen mitsenden",
       "secretsWarning": "Beschreibungen können SL-Geheimnisse enthalten. Nur aktivieren, wenn alles dort für Spieler unbedenklich ist.",
-      "export": "Datei speichern",
+      "export": "Webseite speichern",
       "wholeParty": "Ganze Gruppe",
       "quests": "Quests",
       "npcs": "NSCs",
       "places": "Orte",
       "loadFailed": "Kampagnendaten konnten nicht geladen werden.",
-      "exportFailed": "Datei konnte nicht erstellt werden."
+      "exportFailed": "Datei konnte nicht erstellt werden.",
+      "exportText": "Textdatei speichern"
     }
   },
   "palette": {

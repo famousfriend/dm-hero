@@ -3350,9 +3350,9 @@
       "inspiration": "激励"
     },
     "pack": {
-      "button": "玩家资料包",
-      "title": "发送到玩家助手",
-      "intro": "选择玩家已经知道的内容。你会得到一个文件，可通过 Discord、邮件或 U 盘发送。玩家在玩家助手中打开后，所有内容都会自动归位。",
+      "button": "玩家日志",
+      "title": "玩家日志",
+      "intro": "勾选玩家已经知道的内容。你会得到一个文件，可通过 Discord、邮件或 U 盘发送。网页可在任何浏览器中离线打开，玩家还能写自己的笔记。每次跑团后发送新版本，笔记会保留。",
       "forCharacter": "发给",
       "dmName": "你的名字（玩家可见）",
       "search": "搜索",
@@ -3361,13 +3361,14 @@
       "nothing": "暂无内容",
       "includeDescriptions": "包含描述",
       "secretsWarning": "描述中可能包含 DM 机密。只有当其中内容都适合玩家阅读时才开启。",
-      "export": "保存文件",
+      "export": "保存网页",
       "wholeParty": "整个队伍",
       "quests": "任务",
       "npcs": "NPC",
       "places": "地点",
       "loadFailed": "无法加载战役数据。",
-      "exportFailed": "无法创建文件。"
+      "exportFailed": "无法创建文件。",
+      "exportText": "保存文本文件"
     }
   },
   "palette": {
