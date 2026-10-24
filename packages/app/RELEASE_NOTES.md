@@ -4,6 +4,10 @@ Newest version first. Each "## version" section becomes the text of that GitHub 
 and the app shows it when it offers the update. Add a section and raise "version" in
 package.json to publish an update.
 
+## 1.1.0
+
+- **Player pack:** on the Party page, pick the quests, NPCs and places your players know about and save them as a file. Send it to your players (Discord, email, USB); they open it in the new DM Command Center - Player Companion and everything lands in their journal. Sending a newer pack later updates what they have instead of adding duplicates. Descriptions are left out unless you turn them on, so your secrets stay yours.
+
 ## 1.0.0
 
 The first official release of DM Command Center, a desktop app for running Dungeons & Dragons 5th Edition (2014) games.
