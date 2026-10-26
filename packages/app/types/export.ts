@@ -178,6 +178,7 @@ export interface CampaignExportManifest {
   sessionMentions?: ExportSessionMention[]
   sessionAttendance?: ExportSessionAttendance[]
   sessionImages?: ExportSessionImage[]
+  sessionRecapFiles?: ExportSessionRecapFile[]
   sessionAudio?: ExportSessionAudio[]
   audioMarkers?: ExportAudioMarker[]
 
@@ -334,6 +335,7 @@ export interface ExportSession {
   in_game_day_end?: number
   duration_minutes?: number
   music_links?: SessionMusicLink[]
+  recap?: string
   calendar_event?: string // Reference: "event:1"
   created_at?: string
   updated_at?: string
@@ -359,6 +361,12 @@ export interface ExportSessionImage {
   caption?: string
   is_primary: boolean
   display_order: number
+}
+
+export interface ExportSessionRecapFile {
+  session: string // "session:1"
+  file_name: string // Original name shown to the DM
+  file_path: string // In the archive: "recaps/<uuid>.pdf"
 }
 
 export interface ExportSessionAudio {

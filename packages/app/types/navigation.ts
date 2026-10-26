@@ -3,7 +3,7 @@
 // The dashboard always stays on top and isn't part of it.
 
 export const NAV_KEYS = [
-  'search', 'live', 'npcs', 'locations', 'items', 'factions', 'lore', 'players', 'party', 'sessions', 'quests',
+  'search', 'live', 'npcs', 'locations', 'items', 'factions', 'lore', 'players', 'party', 'sessions', 'recaps', 'quests',
   'encounters', 'calendar', 'maps', 'music', 'groups', 'notes',
 ] as const
 export type NavKey = typeof NAV_KEYS[number]

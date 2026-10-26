@@ -57,7 +57,8 @@
       "show": "Afficher {name}"
     },
     "party": "Groupe",
-    "live": "Séance en direct"
+    "live": "Séance en direct",
+    "recaps": "Récaps"
   },
   "themes": {
     "dark": "Sombre (Taverne de minuit)",
@@ -3544,5 +3545,42 @@
       "Session": "Séance",
       "skip": "Ignorer"
     }
+  },
+  "recaps": {
+    "title": "Récaps",
+    "subtitle": "Ce qui s'est passé à chaque session, au même endroit",
+    "tab": "Récap",
+    "heading": "Récap",
+    "hint": "Écris ce qui s'est passé pendant cette session ou dépose tes notes. Les fichiers texte (.txt, .md) sont ajoutés au récap ; les PDF, fichiers Word et photos sont joints à la session. Clique sur Enregistrer pour garder les modifications du texte.",
+    "placeholder": "Que s'est-il passé pendant cette session ?",
+    "dropHere": "Dépose tes notes ici, ou",
+    "dropShort": "Dépose des fichiers ici ou",
+    "chooseFiles": "Choisir des fichiers",
+    "fileTypes": "Texte (.txt, .md), PDF, Word (.doc, .docx, .odt, .rtf) et images. Jusqu'à 25 Mo par fichier.",
+    "attachments": "Notes jointes",
+    "openFile": "Ouvrir {name}",
+    "openFailed": "Impossible d'ouvrir {name}",
+    "empty": "Pas encore de récap.",
+    "deleteFileTitle": "Retirer les notes jointes",
+    "deleteFileConfirm": "Retirer « {name} » de ce récap ? Le fichier sera supprimé.",
+    "deleteFailed": "Impossible de retirer le fichier",
+    "unsupported": "{name} : ce type de fichier n'est pas pris en charge",
+    "tooLarge": "{name} est trop volumineux (25 Mo max.)",
+    "uploadFailed": "Impossible d'envoyer {name}",
+    "uploadDone": "Notes ajoutées : {added} dans le texte, {uploaded} jointes",
+    "uploadTitle": "Envoyer des notes de récap",
+    "uploadHint": "Choisis la session à laquelle appartiennent les notes (ou commence-en une nouvelle), puis dépose tes fichiers. Les fichiers texte vont dans le récap, les autres sont joints.",
+    "forSession": "Session",
+    "newSession": "Nouvelle session",
+    "newSessionTitle": "Titre de la nouvelle session",
+    "storySoFar": "L'histoire jusqu'ici",
+    "showEmpty": "Afficher les sessions sans récap",
+    "newestFirst": "Plus récentes d'abord",
+    "oldestFirst": "Plus anciennes d'abord",
+    "noSessions": "Pas encore de sessions. Envoie des notes ci-dessus pour en commencer une, ou crée des sessions sur la page Sessions.",
+    "noneYet": "Pas encore de récaps. Envoie des notes ci-dessus ou active « Afficher les sessions sans récap » pour en écrire un.",
+    "addRecap": "Ajouter un récap",
+    "saved": "Récap enregistré",
+    "saveFailed": "Impossible d'enregistrer le récap"
   }
 }

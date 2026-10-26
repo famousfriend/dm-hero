@@ -57,7 +57,8 @@
       "show": "Show {name}"
     },
     "party": "Party",
-    "live": "Live session"
+    "live": "Live session",
+    "recaps": "Recaps"
   },
   "themes": {
     "dark": "Dark (Midnight Tavern)",
@@ -3544,5 +3545,42 @@
       "Session": "Session",
       "skip": "Leave out"
     }
+  },
+  "recaps": {
+    "title": "Recaps",
+    "subtitle": "What happened each session, all in one place",
+    "tab": "Recap",
+    "heading": "Recap",
+    "hint": "Write what happened this session, or drop in your recap notes. Text files (.txt, .md) are added to the recap text; PDFs, Word files and photos are attached to the session. Click Save to keep text changes.",
+    "placeholder": "What happened this session?",
+    "dropHere": "Drop recap notes here, or",
+    "dropShort": "Drop files here or",
+    "chooseFiles": "Choose files",
+    "fileTypes": "Text (.txt, .md), PDF, Word (.doc, .docx, .odt, .rtf) and pictures. Up to 25 MB per file.",
+    "attachments": "Attached notes",
+    "openFile": "Open {name}",
+    "openFailed": "Could not open {name}",
+    "empty": "No recap yet.",
+    "deleteFileTitle": "Remove attached notes",
+    "deleteFileConfirm": "Remove \"{name}\" from this recap? The file will be deleted.",
+    "deleteFailed": "Could not remove the file",
+    "unsupported": "{name}: this file type is not supported",
+    "tooLarge": "{name} is too large (max 25 MB)",
+    "uploadFailed": "Could not upload {name}",
+    "uploadDone": "Recap notes added: {added} into the text, {uploaded} attached",
+    "uploadTitle": "Upload recap notes",
+    "uploadHint": "Pick the session the notes belong to (or start a new one), then drop your files. Text files go into the recap text, other files are attached.",
+    "forSession": "Session",
+    "newSession": "New session",
+    "newSessionTitle": "Title of the new session",
+    "storySoFar": "The story so far",
+    "showEmpty": "Show sessions without a recap",
+    "newestFirst": "Newest first",
+    "oldestFirst": "Oldest first",
+    "noSessions": "No sessions yet. Upload recap notes above to start one, or create sessions on the Sessions page.",
+    "noneYet": "No recaps yet. Upload notes above or switch on \"Show sessions without a recap\" to write one.",
+    "addRecap": "Add recap",
+    "saved": "Recap saved",
+    "saveFailed": "Could not save the recap"
   }
 }

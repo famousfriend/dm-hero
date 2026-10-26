@@ -4,6 +4,12 @@ Newest version first. Each "## version" section becomes the text of that GitHub 
 and the app shows it when it offers the update. Add a section and raise "version" in
 package.json to publish an update.
 
+## 1.2.0
+
+- **Session recaps:** every session has a new "Recap" tab. Write what happened, or drop in your recap notes: text files (.txt, .md) go straight into the recap, and PDFs, Word files and photos of handwritten notes are attached to the session (click one to open it). When you view a session, its recap is the first thing you see.
+- **Recaps page:** a new page in the sidebar shows every session's recap in order, the story so far, newest or oldest first. Upload recap notes there too: pick the session (or start a new one) and drop your files.
+- Recaps and their files travel with campaign exports.
+
 ## 1.1.0
 
 - **Player journal:** on the Party page, tick the quests, NPCs and places your players know about and save them as a web page (or a plain text file). Send it to your players on Discord, email or USB. The page opens in any browser, works offline, shows who they met where, and lets each player keep their own notes. Send a newer page after each session and their notes carry over. Descriptions are left out unless you switch them on, so your secrets stay yours.

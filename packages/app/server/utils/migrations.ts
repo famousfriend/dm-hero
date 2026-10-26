@@ -3201,6 +3201,30 @@ export const migrations: Migration[] = [
       console.log('✅ Migration 75: Search index triggers fixed')
     },
   },
+  {
+    version: 76,
+    name: 'session recaps',
+    up: (db: Database.Database) => {
+      db.exec(`
+        -- What happened in a session, written up afterwards (shown on top of the session)
+        ALTER TABLE sessions ADD COLUMN recap TEXT;
+
+        -- Recap notes uploaded as files (PDF, Word, photos of handwritten notes ...).
+        -- stored_name is relative to the uploads folder ("recaps/<uuid>.pdf").
+        CREATE TABLE session_recap_files (
+          id INTEGER PRIMARY KEY AUTOINCREMENT,
+          session_id INTEGER NOT NULL REFERENCES sessions(id) ON DELETE CASCADE,
+          file_name TEXT NOT NULL,
+          stored_name TEXT NOT NULL,
+          size_bytes INTEGER NOT NULL DEFAULT 0,
+          created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
+        );
+        CREATE INDEX idx_session_recap_files_session ON session_recap_files(session_id);
+      `)
+
+      console.log('✅ Migration 76: Session recaps')
+    },
+  },
 ]
 
 export async function runMigrations(db: Database.Database) {

@@ -29,6 +29,7 @@ export default defineEventHandler(async (event) => {
     in_game_month_end,
     in_game_day_end, // Day of month (1-31)
     duration_minutes,
+    recap,
   } = body
 
   db.prepare(
@@ -49,6 +50,7 @@ export default defineEventHandler(async (event) => {
       in_game_month_end = ?,
       in_game_day_end = ?,
       duration_minutes = ?,
+      recap = CASE WHEN ? THEN ? ELSE recap END,
       updated_at = CURRENT_TIMESTAMP
     WHERE id = ? AND deleted_at IS NULL
   `,
@@ -67,6 +69,9 @@ export default defineEventHandler(async (event) => {
     in_game_month_end,
     in_game_day_end,
     duration_minutes,
+    // Only touch the recap when it was sent (older callers don't know it)
+    recap === undefined ? 0 : 1,
+    typeof recap === 'string' && recap.trim() ? recap : null,
     id,
   )
 

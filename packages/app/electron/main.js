@@ -582,6 +582,20 @@ ipcMain.handle('open-uploads-folder', async () => {
   }
 })
 
+// Open an uploaded recap file (PDF, Word, photo ...) in its default program.
+// Only plain document/image types inside the uploads folder - never anything runnable.
+const OPENABLE_UPLOAD_EXTENSIONS = new Set(['.pdf', '.doc', '.docx', '.odt', '.rtf', '.txt', '.md', '.png', '.jpg', '.jpeg', '.gif', '.webp'])
+ipcMain.handle('open-upload-file', async (_event, relativePath) => {
+  const uploadPath = path.resolve(isDev ? path.join(process.cwd(), 'uploads') : getDataPaths().uploadPath)
+  const filePath = path.resolve(uploadPath, String(relativePath || ''))
+  if (!filePath.startsWith(uploadPath + path.sep) || !OPENABLE_UPLOAD_EXTENSIONS.has(path.extname(filePath).toLowerCase())) {
+    return { success: false, error: 'Not allowed' }
+  }
+  if (!existsSync(filePath)) return { success: false, error: 'File not found' }
+  const error = await shell.openPath(filePath)
+  return error ? { success: false, error } : { success: true }
+})
+
 ipcMain.handle('open-logs-folder', async () => {
   const paths = isDev
     ? { logsPath: path.join(process.cwd(), 'data', 'logs') }

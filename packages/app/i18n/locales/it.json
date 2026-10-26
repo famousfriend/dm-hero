@@ -57,7 +57,8 @@
       "show": "Mostra {name}"
     },
     "party": "Gruppo",
-    "live": "Sessione dal vivo"
+    "live": "Sessione dal vivo",
+    "recaps": "Riepiloghi"
   },
   "themes": {
     "dark": "Scuro (Taverna di mezzanotte)",
@@ -3544,5 +3545,42 @@
       "Session": "Sessione",
       "skip": "Escludi"
     }
+  },
+  "recaps": {
+    "title": "Riepiloghi",
+    "subtitle": "Cosa è successo in ogni sessione, tutto in un posto",
+    "tab": "Riepilogo",
+    "heading": "Riepilogo",
+    "hint": "Scrivi cosa è successo in questa sessione o trascina qui i tuoi appunti. I file di testo (.txt, .md) vengono aggiunti al riepilogo; PDF, file Word e foto vengono allegati alla sessione. Clicca Salva per mantenere le modifiche al testo.",
+    "placeholder": "Cosa è successo in questa sessione?",
+    "dropHere": "Trascina qui i tuoi appunti, oppure",
+    "dropShort": "Trascina qui i file oppure",
+    "chooseFiles": "Scegli file",
+    "fileTypes": "Testo (.txt, .md), PDF, Word (.doc, .docx, .odt, .rtf) e immagini. Fino a 25 MB per file.",
+    "attachments": "Appunti allegati",
+    "openFile": "Apri {name}",
+    "openFailed": "Impossibile aprire {name}",
+    "empty": "Ancora nessun riepilogo.",
+    "deleteFileTitle": "Rimuovi appunti allegati",
+    "deleteFileConfirm": "Rimuovere \"{name}\" da questo riepilogo? Il file verrà eliminato.",
+    "deleteFailed": "Impossibile rimuovere il file",
+    "unsupported": "{name}: tipo di file non supportato",
+    "tooLarge": "{name} è troppo grande (max 25 MB)",
+    "uploadFailed": "Impossibile caricare {name}",
+    "uploadDone": "Appunti aggiunti: {added} nel testo, {uploaded} allegati",
+    "uploadTitle": "Carica appunti di riepilogo",
+    "uploadHint": "Scegli la sessione a cui appartengono gli appunti (o iniziane una nuova), poi trascina i file. I file di testo vanno nel riepilogo, gli altri vengono allegati.",
+    "forSession": "Sessione",
+    "newSession": "Nuova sessione",
+    "newSessionTitle": "Titolo della nuova sessione",
+    "storySoFar": "La storia finora",
+    "showEmpty": "Mostra sessioni senza riepilogo",
+    "newestFirst": "Più recenti prima",
+    "oldestFirst": "Più vecchie prima",
+    "noSessions": "Ancora nessuna sessione. Carica appunti qui sopra per iniziarne una, o crea sessioni nella pagina Sessioni.",
+    "noneYet": "Ancora nessun riepilogo. Carica appunti qui sopra o attiva \"Mostra sessioni senza riepilogo\" per scriverne uno.",
+    "addRecap": "Aggiungi riepilogo",
+    "saved": "Riepilogo salvato",
+    "saveFailed": "Impossibile salvare il riepilogo"
   }
 }

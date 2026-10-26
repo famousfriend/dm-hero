@@ -57,7 +57,8 @@
       "show": "Mostrar {name}"
     },
     "party": "Grupo",
-    "live": "Sesión en vivo"
+    "live": "Sesión en vivo",
+    "recaps": "Resúmenes"
   },
   "themes": {
     "dark": "Oscuro (Taberna de medianoche)",
@@ -3544,5 +3545,42 @@
       "Session": "Sesión",
       "skip": "Omitir"
     }
+  },
+  "recaps": {
+    "title": "Resúmenes",
+    "subtitle": "Lo que pasó en cada sesión, todo en un lugar",
+    "tab": "Resumen",
+    "heading": "Resumen",
+    "hint": "Escribe lo que pasó en esta sesión o suelta aquí tus notas. Los archivos de texto (.txt, .md) se añaden al resumen; los PDF, archivos de Word y fotos se adjuntan a la sesión. Pulsa Guardar para conservar los cambios de texto.",
+    "placeholder": "¿Qué pasó en esta sesión?",
+    "dropHere": "Suelta aquí tus notas, o",
+    "dropShort": "Suelta archivos aquí o",
+    "chooseFiles": "Elegir archivos",
+    "fileTypes": "Texto (.txt, .md), PDF, Word (.doc, .docx, .odt, .rtf) e imágenes. Hasta 25 MB por archivo.",
+    "attachments": "Notas adjuntas",
+    "openFile": "Abrir {name}",
+    "openFailed": "No se pudo abrir {name}",
+    "empty": "Todavía no hay resumen.",
+    "deleteFileTitle": "Quitar notas adjuntas",
+    "deleteFileConfirm": "¿Quitar \"{name}\" de este resumen? El archivo se eliminará.",
+    "deleteFailed": "No se pudo quitar el archivo",
+    "unsupported": "{name}: este tipo de archivo no es compatible",
+    "tooLarge": "{name} es demasiado grande (máx. 25 MB)",
+    "uploadFailed": "No se pudo subir {name}",
+    "uploadDone": "Notas añadidas: {added} al texto, {uploaded} adjuntas",
+    "uploadTitle": "Subir notas de resumen",
+    "uploadHint": "Elige la sesión a la que pertenecen las notas (o empieza una nueva) y suelta tus archivos. Los archivos de texto van al resumen, los demás se adjuntan.",
+    "forSession": "Sesión",
+    "newSession": "Nueva sesión",
+    "newSessionTitle": "Título de la nueva sesión",
+    "storySoFar": "La historia hasta ahora",
+    "showEmpty": "Mostrar sesiones sin resumen",
+    "newestFirst": "Más recientes primero",
+    "oldestFirst": "Más antiguas primero",
+    "noSessions": "Todavía no hay sesiones. Sube notas arriba para empezar una, o crea sesiones en la página Sesiones.",
+    "noneYet": "Todavía no hay resúmenes. Sube notas arriba o activa \"Mostrar sesiones sin resumen\" para escribir uno.",
+    "addRecap": "Añadir resumen",
+    "saved": "Resumen guardado",
+    "saveFailed": "No se pudo guardar el resumen"
   }
 }

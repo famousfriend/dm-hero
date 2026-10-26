@@ -40,6 +40,7 @@ export interface ElectronAPI {
   exportDatabase: () => Promise<{ success: boolean, canceled?: boolean, filePath?: string, error?: string }>
   importBackupFile: () => Promise<{ success: boolean, canceled?: boolean, name?: string, error?: string }>
   openUploadsFolder: () => Promise<{ success: boolean, error?: string }>
+  openUploadFile?: (relativePath: string) => Promise<{ success: boolean, error?: string }>
   openLogsFolder: () => Promise<{ success: boolean, error?: string }>
   getDataPaths: () => Promise<{ databasePath: string, uploadPath: string, logsPath: string }>
   saveFileDialog: (options: SaveFileOptions) => Promise<SaveFileResult>
@@ -166,6 +167,16 @@ export function useElectron() {
         return { success: false, error: 'Not running in Electron' }
       }
       return electronAPI.openUploadsFolder()
+    },
+
+    /**
+     * Open an uploaded file in its default program. Outside Electron (or in an
+     * older desktop build) it opens in a new browser tab instead.
+     */
+    async openUploadFile(relativePath: string): Promise<{ success: boolean, error?: string }> {
+      if (electronAPI?.openUploadFile) return electronAPI.openUploadFile(relativePath)
+      window.open(`/uploads/${relativePath}`, '_blank')
+      return { success: true }
     },
 
     /**

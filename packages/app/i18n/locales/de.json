@@ -57,7 +57,8 @@
       "show": "{name} einblenden"
     },
     "party": "Gruppe",
-    "live": "Live-Sitzung"
+    "live": "Live-Sitzung",
+    "recaps": "Rückblicke"
   },
   "themes": {
     "dark": "Dunkel (Mitternachts-Taverne)",
@@ -3544,5 +3545,42 @@
       "Session": "Sitzung",
       "skip": "Weglassen"
     }
+  },
+  "recaps": {
+    "title": "Rückblicke",
+    "subtitle": "Was in jeder Sitzung passiert ist, an einem Ort",
+    "tab": "Rückblick",
+    "heading": "Rückblick",
+    "hint": "Schreibe auf, was in dieser Sitzung passiert ist, oder lade deine Notizen hoch. Textdateien (.txt, .md) werden in den Rückblick übernommen; PDFs, Word-Dateien und Fotos werden an die Sitzung angehängt. Klicke auf Speichern, um Textänderungen zu behalten.",
+    "placeholder": "Was ist in dieser Sitzung passiert?",
+    "dropHere": "Notizen hier ablegen, oder",
+    "dropShort": "Dateien hier ablegen oder",
+    "chooseFiles": "Dateien wählen",
+    "fileTypes": "Text (.txt, .md), PDF, Word (.doc, .docx, .odt, .rtf) und Bilder. Bis 25 MB pro Datei.",
+    "attachments": "Angehängte Notizen",
+    "openFile": "{name} öffnen",
+    "openFailed": "{name} konnte nicht geöffnet werden",
+    "empty": "Noch kein Rückblick.",
+    "deleteFileTitle": "Angehängte Notizen entfernen",
+    "deleteFileConfirm": "\"{name}\" aus diesem Rückblick entfernen? Die Datei wird gelöscht.",
+    "deleteFailed": "Die Datei konnte nicht entfernt werden",
+    "unsupported": "{name}: Dieser Dateityp wird nicht unterstützt",
+    "tooLarge": "{name} ist zu groß (max. 25 MB)",
+    "uploadFailed": "{name} konnte nicht hochgeladen werden",
+    "uploadDone": "Notizen hinzugefügt: {added} in den Text, {uploaded} angehängt",
+    "uploadTitle": "Notizen hochladen",
+    "uploadHint": "Wähle die Sitzung, zu der die Notizen gehören (oder starte eine neue), und lege dann deine Dateien ab. Textdateien landen im Rückblick, andere Dateien werden angehängt.",
+    "forSession": "Sitzung",
+    "newSession": "Neue Sitzung",
+    "newSessionTitle": "Titel der neuen Sitzung",
+    "storySoFar": "Die bisherige Geschichte",
+    "showEmpty": "Sitzungen ohne Rückblick zeigen",
+    "newestFirst": "Neueste zuerst",
+    "oldestFirst": "Älteste zuerst",
+    "noSessions": "Noch keine Sitzungen. Lade oben Notizen hoch, um eine zu starten, oder lege Sitzungen auf der Sitzungsseite an.",
+    "noneYet": "Noch keine Rückblicke. Lade oben Notizen hoch oder schalte \"Sitzungen ohne Rückblick zeigen\" ein, um einen zu schreiben.",
+    "addRecap": "Rückblick hinzufügen",
+    "saved": "Rückblick gespeichert",
+    "saveFailed": "Der Rückblick konnte nicht gespeichert werden"
   }
 }

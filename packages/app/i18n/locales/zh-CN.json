@@ -57,7 +57,8 @@
       "show": "显示 {name}"
     },
     "party": "队伍",
-    "live": "实时游戏"
+    "live": "实时游戏",
+    "recaps": "回顾"
   },
   "themes": {
     "dark": "黑暗（午夜酒馆）",
@@ -3544,5 +3545,42 @@
       "Session": "场次",
       "skip": "不导入"
     }
+  },
+  "recaps": {
+    "title": "回顾",
+    "subtitle": "每次团的经过，集中在一处",
+    "tab": "回顾",
+    "heading": "回顾",
+    "hint": "写下这次团发生了什么，或拖入你的回顾笔记。文本文件（.txt、.md）会加入回顾正文；PDF、Word 文件和照片会附加到本次团。点击保存以保留文本修改。",
+    "placeholder": "这次团发生了什么？",
+    "dropHere": "把回顾笔记拖到这里，或",
+    "dropShort": "把文件拖到这里或",
+    "chooseFiles": "选择文件",
+    "fileTypes": "文本（.txt、.md）、PDF、Word（.doc、.docx、.odt、.rtf）和图片。每个文件最大 25 MB。",
+    "attachments": "附加的笔记",
+    "openFile": "打开 {name}",
+    "openFailed": "无法打开 {name}",
+    "empty": "还没有回顾。",
+    "deleteFileTitle": "移除附加的笔记",
+    "deleteFileConfirm": "从此回顾中移除“{name}”？文件将被删除。",
+    "deleteFailed": "无法移除文件",
+    "unsupported": "{name}：不支持此文件类型",
+    "tooLarge": "{name} 太大（最大 25 MB）",
+    "uploadFailed": "无法上传 {name}",
+    "uploadDone": "已添加回顾笔记：{added} 个加入正文，{uploaded} 个已附加",
+    "uploadTitle": "上传回顾笔记",
+    "uploadHint": "选择笔记所属的团（或新建一个），然后拖入文件。文本文件加入回顾正文，其他文件作为附件。",
+    "forSession": "团",
+    "newSession": "新团",
+    "newSessionTitle": "新团的标题",
+    "storySoFar": "前情提要",
+    "showEmpty": "显示没有回顾的团",
+    "newestFirst": "最新在前",
+    "oldestFirst": "最早在前",
+    "noSessions": "还没有团。在上方上传笔记即可新建一个，或在团记录页面创建。",
+    "noneYet": "还没有回顾。在上方上传笔记，或打开“显示没有回顾的团”来写一个。",
+    "addRecap": "添加回顾",
+    "saved": "回顾已保存",
+    "saveFailed": "无法保存回顾"
   }
 }
