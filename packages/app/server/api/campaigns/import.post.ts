@@ -1,4 +1,4 @@
-import { createWriteStream, mkdirSync, existsSync } from 'fs'
+import { createWriteStream, mkdirSync, existsSync, statSync } from 'fs'
 import { readFile, rm } from 'fs/promises'
 import { join, dirname, extname } from 'path'
 import { tmpdir } from 'os'
@@ -23,6 +23,7 @@ import {
 import { resolveUniqueFolderName, entityTypeToFolderType } from '~~/server/utils/folders'
 // Reuse the folder rename convention ("Name (1)") for climate-zone collisions.
 import { uniqueFolderName as uniqueName } from '~~/types/folder'
+import { isAllowedRecapFile } from '~~/types/recaps'
 import type {
   RaceClassConflict,
   CampaignExportManifest,
@@ -1019,8 +1020,8 @@ export default defineEventHandler(async (event) => {
       const insertSession = db.prepare(`
         INSERT INTO sessions (campaign_id, session_number, title, date, summary, notes,
           in_game_date_start, in_game_date_end, in_game_day_start, in_game_day_end,
-          duration_minutes, music_links, calendar_event_id, created_at, updated_at)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+          duration_minutes, music_links, calendar_event_id, created_at, updated_at, recap)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
       `)
 
       for (const session of manifest.sessions) {
@@ -1041,6 +1042,7 @@ export default defineEventHandler(async (event) => {
           null, // calendar_event_id - set later
           session.created_at || new Date().toISOString(),
           session.updated_at || new Date().toISOString(),
+          typeof session.recap === 'string' && session.recap ? session.recap : null,
         )
 
         idMapping.sessions.set(session._exportId, result.lastInsertRowid as number)
@@ -1116,6 +1118,28 @@ export default defineEventHandler(async (event) => {
         if (imageUrl) {
           insertImage.run(sessionId, imageUrl, img.caption || null, img.is_primary ? 1 : 0, img.display_order)
           stats.imagesImported++
+        }
+      }
+    }
+
+    // Session recap files (stored in uploads/recaps/, like the recap upload)
+    if (manifest.sessionRecapFiles && manifest.sessionRecapFiles.length > 0) {
+      const insertRecapFile = db.prepare(`
+        INSERT INTO session_recap_files (session_id, file_name, stored_name, size_bytes)
+        VALUES (?, ?, ?, ?)
+      `)
+
+      for (const file of manifest.sessionRecapFiles) {
+        const sessionId = idMapping.sessions.get(file.session)
+        if (!sessionId || !isAllowedRecapFile(file.file_name || '')) {
+          stats.skipped++
+          continue
+        }
+
+        const storedName = await copyFile(file.file_path, 'recaps')
+        if (storedName) {
+          const size = statSync(join(uploadPath, storedName)).size
+          insertRecapFile.run(sessionId, file.file_name, storedName, size)
         }
       }
     }
@@ -1746,14 +1770,15 @@ export default defineEventHandler(async (event) => {
 
     // Update session notes and summaries with new IDs
     if (idMapping.sessions.size > 0) {
-      const updateSession = db.prepare('UPDATE sessions SET notes = ?, summary = ? WHERE id = ?')
+      const updateSession = db.prepare('UPDATE sessions SET notes = ?, summary = ?, recap = ? WHERE id = ?')
       for (const [_exportId, newId] of idMapping.sessions) {
-        const session = db.prepare('SELECT notes, summary FROM sessions WHERE id = ?').get(newId) as { notes: string | null, summary: string | null } | undefined
+        const session = db.prepare('SELECT notes, summary, recap FROM sessions WHERE id = ?').get(newId) as { notes: string | null, summary: string | null, recap: string | null } | undefined
         if (session) {
           const transformedNotes = transformEntityLinks(session.notes)
           const transformedSummary = transformEntityLinks(session.summary)
-          if (transformedNotes !== session.notes || transformedSummary !== session.summary) {
-            updateSession.run(transformedNotes, transformedSummary, newId)
+          const transformedRecap = transformEntityLinks(session.recap)
+          if (transformedNotes !== session.notes || transformedSummary !== session.summary || transformedRecap !== session.recap) {
+            updateSession.run(transformedNotes, transformedSummary, transformedRecap, newId)
           }
         }
       }

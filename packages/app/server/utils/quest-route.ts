@@ -14,6 +14,8 @@ import {
   updateQuest,
 } from './quests'
 import { PlayerPackInputError, buildPlayerPack } from './player-pack'
+import { RecapInputError, addRecapFile, deleteRecapFile, getRecap, listRecaps, updateRecap } from './recaps'
+import { getUploadPath } from './paths'
 
 /*
  * All quest and continuity endpoints live behind ONE route (/api/quests/**).
@@ -32,6 +34,13 @@ import { PlayerPackInputError, buildPlayerPack } from './player-pack'
  *   POST   /api/quests/player-pack                   { campaignId, npcIds, placeIds, questIds, includeDescriptions, ... }
  *                                                     file for the Player Companion (server/utils/player-pack.ts)
  *   GET | PATCH | DELETE /api/quests/:id
+ *
+ * Session recaps (server/utils/recaps.ts):
+ *   GET    /api/quests/recaps?campaignId=1           every session with its recap and files
+ *   GET    /api/quests/recaps/:sessionId
+ *   PATCH  /api/quests/recaps/:sessionId             { recap }
+ *   POST   /api/quests/recaps/:sessionId/files       { fileName, data (base64) }
+ *   DELETE /api/quests/recaps/files/:fileId
  */
 
 export interface QuestRequest {
@@ -58,7 +67,30 @@ function campaignIdFrom(source: Record<string, unknown> | null): number {
 
 const optionalNumber = (value: unknown) => (value ? Number(value) : undefined)
 
-function dispatch(db: Database.Database, { method, segments, query, body }: QuestRequest): unknown {
+function dispatchRecaps(db: Database.Database, { method, segments, query, body }: QuestRequest): unknown {
+  const [, second, third, ...rest] = segments
+  if (rest.length) throw notFound()
+  if (!second && method === 'GET') return listRecaps(db, campaignIdFrom(query))
+  if (second === 'files' && third && method === 'DELETE') {
+    if (!deleteRecapFile(db, getUploadPath(), Number(third))) throw notFound('File not found')
+    return { success: true }
+  }
+  if (second && /^\d+$/.test(second)) {
+    const sessionId = Number(second)
+    if (!third) {
+      if (method === 'GET') return getRecap(db, sessionId)
+      if (method === 'PATCH') return updateRecap(db, sessionId, body?.recap ?? null)
+    }
+    else if (third === 'files' && method === 'POST') {
+      return addRecapFile(db, getUploadPath(), sessionId, body ?? {})
+    }
+  }
+  throw notFound()
+}
+
+function dispatch(db: Database.Database, request: QuestRequest): unknown {
+  if (request.segments[0] === 'recaps') return dispatchRecaps(db, request)
+  const { method, segments, query, body } = request
   const [first, second, ...rest] = segments
   if (rest.length) throw notFound()
   const input = body ?? {}
@@ -120,7 +152,7 @@ export function handleQuestRequest(db: Database.Database, request: QuestRequest)
   }
   catch (error) {
     if (error instanceof PlayerPackInputError) throw new QuestRouteError(404, error.message)
-    if (error instanceof QuestInputError) {
+    if (error instanceof QuestInputError || error instanceof RecapInputError) {
       throw new QuestRouteError(error.message.endsWith('not found') ? 404 : 400, error.message)
     }
     throw error

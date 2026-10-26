@@ -110,6 +110,18 @@
                 {{ link.label }}
               </v-chip>
 
+              <!-- Has a recap -->
+              <v-chip
+                v-if="session.recap || session.recap_files_count"
+                size="small"
+                variant="tonal"
+                color="success"
+                prepend-icon="mdi-text-box-check-outline"
+                @click.stop="viewSession(session)"
+              >
+                {{ $t('recaps.tab') }}
+              </v-chip>
+
               <!-- Mentions Count (from notes) -->
               <v-chip
                 v-if="countMentionsInNotes(session.notes)"
@@ -160,6 +172,10 @@
           <v-tab value="details">
             <v-icon start> mdi-information </v-icon>
             {{ $t('sessions.details') }}
+          </v-tab>
+          <v-tab value="recap">
+            <v-icon start> mdi-text-box-check-outline </v-icon>
+            {{ $t('recaps.tab') }}
           </v-tab>
           <v-tab value="cover">
             <v-icon start> mdi-image </v-icon>
@@ -339,6 +355,18 @@
                   @upload-image="handleImageUpload"
                 />
               </div>
+            </v-tabs-window-item>
+
+            <!-- Recap Tab -->
+            <v-tabs-window-item value="recap">
+              <SessionsRecapEditor
+                v-if="editingSession"
+                v-model="sessionForm.recap"
+                class="mt-2"
+                :session-id="editingSession.id"
+                :sessions="sessions"
+                @files-changed="reloadSessions"
+              />
             </v-tabs-window-item>
 
             <!-- Cover Tab -->
@@ -640,6 +668,21 @@
         </v-card-subtitle>
 
         <v-card-text style="max-height: 70vh">
+          <!-- Recap first: what happened -->
+          <v-card v-if="viewingRecap && (viewingRecap.recap || viewingRecap.files.length)" variant="tonal" class="mb-4">
+            <v-card-title class="text-title-medium d-flex align-center">
+              <v-icon icon="mdi-text-box-check-outline" class="mr-2" color="primary" />
+              {{ $t('recaps.heading') }}
+            </v-card-title>
+            <v-card-text>
+              <SessionsRecapView
+                :recap="viewingRecap.recap"
+                :files="viewingRecap.files"
+                editor-id="session-view-recap"
+              />
+            </v-card-text>
+          </v-card>
+
           <div v-if="viewingSession.summary" class="text-body-large mb-4">
             {{ viewingSession.summary }}
           </div>
@@ -745,6 +788,7 @@ import { LazyMdPreview as MdPreview } from '~/utils/mdEditor'
 import 'md-editor-v3/lib/style.css'
 import { useTheme } from 'vuetify'
 import { musicLinkIcon, type SessionMusicLink } from '~~/types/session-music'
+import type { SessionRecap } from '~~/types/recaps'
 
 interface Session {
   id: number
@@ -753,6 +797,8 @@ interface Session {
   date: string | null
   summary: string | null
   notes: string | null
+  recap: string | null
+  recap_files_count: number
   in_game_date_start: string | null
   in_game_date_end: string | null
   in_game_year_start: number | null
@@ -961,6 +1007,7 @@ const sessionForm = ref({
   date: '',
   summary: '',
   notes: '',
+  recap: '',
   in_game_date_start: '',
   in_game_date_end: '',
   duration_minutes: null as number | null,
@@ -1272,9 +1319,20 @@ async function handleEditorClick(event: MouseEvent) {
   }
 }
 
-function viewSession(session: Session) {
+const viewingRecap = ref<SessionRecap | null>(null)
+
+async function viewSession(session: Session) {
   viewingSession.value = session
+  viewingRecap.value = session.recap ? { sessionId: session.id, sessionNumber: session.session_number, title: session.title, date: session.date, recap: session.recap, files: [] } : null
   showViewDialog.value = true
+  if (!session.recap_files_count) return
+  try {
+    const recap = await $fetch<SessionRecap>(`/api/quests/recaps/${session.id}`)
+    if (viewingSession.value?.id === session.id) viewingRecap.value = recap
+  }
+  catch (error) {
+    console.error('Failed to load recap:', error)
+  }
 }
 
 async function editSession(session: Session) {
@@ -1285,6 +1343,7 @@ async function editSession(session: Session) {
     date: session.date || '',
     summary: session.summary || '',
     notes: session.notes || '',
+    recap: session.recap || '',
     in_game_date_start: session.in_game_date_start || '',
     in_game_date_end: session.in_game_date_end || '',
     duration_minutes: session.duration_minutes,
@@ -1473,6 +1532,7 @@ function closeDialog() {
     date: '',
     summary: '',
     notes: '',
+    recap: '',
     in_game_date_start: '',
     in_game_date_end: '',
     duration_minutes: null,

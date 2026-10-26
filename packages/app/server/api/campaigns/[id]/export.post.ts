@@ -21,6 +21,7 @@ import type {
   ExportSessionMention,
   ExportSessionAttendance,
   ExportSessionImage,
+  ExportSessionRecapFile,
   ExportSessionAudio,
   ExportAudioMarker,
   ExportCalendar,
@@ -409,6 +410,7 @@ export default defineEventHandler(async (event) => {
   let exportSessionMentions: ExportSessionMention[] = []
   let exportSessionAttendance: ExportSessionAttendance[] = []
   let exportSessionImages: ExportSessionImage[] = []
+  const exportSessionRecapFiles: ExportSessionRecapFile[] = []
   let exportSessionAudio: ExportSessionAudio[] = []
   let exportAudioMarkers: ExportAudioMarker[] = []
   let exportCalendar: ExportCalendar | undefined
@@ -430,7 +432,7 @@ export default defineEventHandler(async (event) => {
     const sessions = db
       .prepare(
         `
-      SELECT id, session_number, title, date, summary, notes,
+      SELECT id, session_number, title, date, summary, notes, recap,
              in_game_date_start, in_game_date_end, in_game_day_start, in_game_day_end,
              duration_minutes, music_links, calendar_event_id, created_at, updated_at
       FROM sessions
@@ -445,6 +447,7 @@ export default defineEventHandler(async (event) => {
       date: string | null
       summary: string | null
       notes: string | null
+      recap: string | null
       in_game_date_start: string | null
       in_game_date_end: string | null
       in_game_day_start: number | null
@@ -467,6 +470,7 @@ export default defineEventHandler(async (event) => {
       date: s.date || undefined,
       summary: transformEntityLinks(s.summary),
       notes: transformEntityLinks(s.notes),
+      recap: transformEntityLinks(s.recap),
       in_game_date_start: s.in_game_date_start || undefined,
       in_game_date_end: s.in_game_date_end || undefined,
       in_game_day_start: s.in_game_day_start || undefined,
@@ -561,6 +565,25 @@ export default defineEventHandler(async (event) => {
         }
       })
       .filter(img => img.image_url)
+
+    // Session recap files
+    const recapFiles = db
+      .prepare(
+        `
+      SELECT rf.session_id, rf.file_name, rf.stored_name
+      FROM session_recap_files rf
+      JOIN sessions s ON rf.session_id = s.id
+      WHERE s.campaign_id = ? AND s.deleted_at IS NULL
+      ORDER BY rf.id
+    `,
+      )
+      .all(campaignId) as Array<{ session_id: number, file_name: string, stored_name: string }>
+
+    for (const file of recapFiles) {
+      const session = sessionExportIdMap.get(file.session_id)
+      const archivePath = session ? addFile(file.stored_name, 'recaps') : undefined
+      if (session && archivePath) exportSessionRecapFiles.push({ session, file_name: file.file_name, file_path: archivePath })
+    }
 
     // Session Audio
     const sessionAudio = db
@@ -1163,6 +1186,7 @@ export default defineEventHandler(async (event) => {
     sessionMentions: exportSessionMentions.length > 0 ? exportSessionMentions : undefined,
     sessionAttendance: exportSessionAttendance.length > 0 ? exportSessionAttendance : undefined,
     sessionImages: exportSessionImages.length > 0 ? exportSessionImages : undefined,
+    sessionRecapFiles: exportSessionRecapFiles.length > 0 ? exportSessionRecapFiles : undefined,
     sessionAudio: exportSessionAudio.length > 0 ? exportSessionAudio : undefined,
     audioMarkers: exportAudioMarkers.length > 0 ? exportAudioMarkers : undefined,
     calendar: exportCalendar,

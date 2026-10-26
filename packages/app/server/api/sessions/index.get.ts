@@ -17,6 +17,8 @@ interface SessionRow {
   in_game_month_end: number | null
   in_game_day_end: number | null // Day of month (1-31)
   duration_minutes: number | null
+  recap: string | null
+  recap_files_count: number
   music_links: string
   created_at: string
   updated_at: string
@@ -57,11 +59,13 @@ export default defineEventHandler((event) => {
       s.in_game_month_end,
       s.in_game_day_end,
       s.duration_minutes,
+      s.recap,
       s.music_links,
       s.created_at,
       s.updated_at,
       (SELECT COUNT(*) FROM session_mentions WHERE session_id = s.id) as mentions_count,
       (SELECT COUNT(*) FROM session_attendance WHERE session_id = s.id) as attendance_count,
+      (SELECT COUNT(*) FROM session_recap_files WHERE session_id = s.id) as recap_files_count,
       (SELECT image_url FROM session_images WHERE session_id = s.id AND is_primary = 1 LIMIT 1) as cover_image_url
     FROM sessions s
     WHERE s.campaign_id = ?
